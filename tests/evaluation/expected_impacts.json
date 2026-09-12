@@ -1,0 +1,13 @@
+{
+  "request": "Add RETURNED as a new order state that can occur after shipment and allow refunds after successful warehouse inspection.",
+  "must_find_files": [
+    "backend/models/order.py",
+    "backend/services/order_service.py",
+    "backend/services/refund_service.py",
+    "backend/jobs/refund_worker.py",
+    "backend/integrations/warehouse.py",
+    "schema.sql",
+    "tests/test_orders.py"
+  ],
+  "known_missing_categories": ["state transition", "integration failure", "duplicate event"]
+}

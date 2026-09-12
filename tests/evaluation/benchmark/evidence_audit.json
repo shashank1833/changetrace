@@ -1,0 +1,852 @@
+{
+  "method": "One row per unexpected evidence file per scenario against unchanged expected_important_evidence labels.",
+  "count": 84,
+  "by_cause": {
+    "file-level causal bridge evidence": 45,
+    "graph-corroborated lexical evidence": 25,
+    "broad lexical component evidence": 13,
+    "documentation existence, not claim support": 1
+  },
+  "relationships": [
+    {
+      "scenario": "return-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "return-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/inventory_service.py:7-10",
+      "why_selected": "Likely lexical match on: inspection, returned",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "return-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "delivered-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/notification_service.py:1-4",
+      "why_selected": "Likely lexical match on: customer, shipped",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "delivered-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:6-17",
+      "why_selected": "Likely lexical match on: customer, shipped",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "delivered-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "delivered-state",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:8-9",
+      "why_selected": "Likely match on customer, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/notification_service.py:1-4",
+      "why_selected": "Likely lexical match on: customer, shipped",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:8-9",
+      "why_selected": "Likely match on customer, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:4-8",
+      "why_selected": "Likely match on paid, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-retry",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-retry",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-retry",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely lexical match on: failed, refund",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/inventory_service.py:7-10",
+      "why_selected": "Likely lexical match on: inspection, returned",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-required",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:4-5",
+      "why_selected": "Likely match on refunded, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "return-api",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:8-10",
+      "why_selected": "Likely lexical match on: api",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "return-api",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-api",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:4-8",
+      "why_selected": "Likely match on shipped, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "return-api",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-api",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a direct dependency",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:6-17",
+      "why_selected": "Likely match on transition, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-rollback",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-authorization",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "return-authorization",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/notification_service.py:1-4",
+      "why_selected": "Likely lexical match on: customer, shipped",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "return-authorization",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-contract",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/orders.py:8-9",
+      "why_selected": "Likely lexical match on: api",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "refund-contract",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-contract",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-contract",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely lexical match on: refund, return, returned",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely lexical match on: refund, return, returned",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "frontend-returned",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:8-9",
+      "why_selected": "Likely match on customer, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "restock-return",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely lexical match on: inspection, return, returned",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/payment_service.py:4-5",
+      "why_selected": "Likely match on refunds, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "final-order-doc",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely match on inspection, return, corroborated by a direct dependency",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely match on refund, corroborated by a direct dependency",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "docs/refunds.md:1-4",
+      "why_selected": "Likely lexical match on: refund, worker",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "documentation existence, not claim support"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:4-5",
+      "why_selected": "Likely match on cancelled, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "payment-timeout",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "payment-timeout",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely match on handle, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "inspection-failure",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:4-8",
+      "why_selected": "Likely match on shipped, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "inspection-failure",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-failure",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/integrations/warehouse.py:1-9",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:1-15",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "tests/test_orders.py:8-9",
+      "why_selected": "Likely match on customer, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/return_service.py:5-12",
+      "why_selected": "Likely match on inspection, corroborated by a direct dependency",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/analytics_job.py:4-5",
+      "why_selected": "Likely lexical match on: analytics, bucket",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "broad lexical component evidence"
+    },
+    {
+      "scenario": "inspection-audit",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/api/refunds.py:1-14",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-audit",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/jobs/refund_worker.py:4-7",
+      "why_selected": "Likely match on refund, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "inspection-audit",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/models/order.py:11-15",
+      "why_selected": "Likely match on inspection, corroborated by a related file",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "graph-corroborated lexical evidence"
+    },
+    {
+      "scenario": "inspection-audit",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/order_service.py:1-17",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    },
+    {
+      "scenario": "inspection-audit",
+      "finding": "impact/risk/test-gap bundle",
+      "evidence": "backend/services/refund_service.py:1-13",
+      "why_selected": "Likely causal bridge to multiple affected files",
+      "why_incorrect": "File is not in scenario expected important evidence; source may establish existence or adjacency but not the evaluated claim.",
+      "evidence_tier": "STRONG",
+      "expected_behavior": "Keep as candidate/context or link only to a claim that this exact range supports.",
+      "corrective_rule": "file-level causal bridge evidence"
+    }
+  ]
+}

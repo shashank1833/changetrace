@@ -1,0 +1,477 @@
+{
+  "method": "First unexpected promoted component per file classified from deterministic reasoning path; original ground truth unchanged.",
+  "total_false_positive_files": 58,
+  "counts": {
+    "weak graph relationship": 30,
+    "naming/lexical similarity": 10,
+    "test relationship": 3,
+    "broad transitive dependency": 14,
+    "documentation only": 1
+  },
+  "relationships": [
+    {
+      "scenario": "return-state",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/inventory_service.py",
+      "component": "restock_returned_item",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: inspection, returned",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/return_service.py",
+      "component": "backend/services/return_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/notification_service.py",
+      "component": "notify_order_status",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: customer, shipped",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/refund_service.py",
+      "component": "backend/services/refund_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/notification_service.py",
+      "component": "notify_order_status",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: customer, shipped",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "tests/test_orders.py",
+      "component": "test_customer_cannot_modify_another_order",
+      "category": "test relationship",
+      "reason": "Likely match on customer, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/refund_service.py",
+      "component": "backend/services/refund_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: failed, refund",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/models/order.py",
+      "component": "backend/models/order.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/inventory_service.py",
+      "component": "restock_returned_item",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: inspection, returned",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/api/refunds.py",
+      "component": "get_refund_eligibility",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: api",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/integrations/warehouse.py",
+      "component": "backend/integrations/warehouse.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/refund_service.py",
+      "component": "backend/services/refund_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/integrations/warehouse.py",
+      "component": "backend/integrations/warehouse.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a direct dependency",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/order_service.py",
+      "component": "change_status",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on transition, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/models/order.py",
+      "component": "backend/models/order.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/notification_service.py",
+      "component": "notify_order_status",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: customer, shipped",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/refund_service.py",
+      "component": "backend/services/refund_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/api/orders.py",
+      "component": "update_order_status",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: api",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: refund, return, returned",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/integrations/warehouse.py",
+      "component": "backend/integrations/warehouse.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "naming/lexical similarity",
+      "reason": "Likely lexical match on: refund, return, returned",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "tests/test_orders.py",
+      "component": "test_customer_cannot_modify_another_order",
+      "category": "test relationship",
+      "reason": "Likely match on customer, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/models/order.py",
+      "component": "backend/models/order.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/payment_service.py",
+      "component": "reverse_payment",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refunds, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on inspection, return, corroborated by a direct dependency",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/integrations/warehouse.py",
+      "component": "backend/integrations/warehouse.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a direct dependency",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "docs/refunds.md",
+      "component": "docs/refunds.md",
+      "category": "documentation only",
+      "reason": "Likely lexical match on: refund, worker",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "tests/test_orders.py",
+      "component": "test_cancelled_order_can_be_refunded",
+      "category": "test relationship",
+      "reason": "Likely match on cancelled, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on handle, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/refund_service.py",
+      "component": "backend/services/refund_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/integrations/warehouse.py",
+      "component": "backend/integrations/warehouse.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/models/order.py",
+      "component": "backend/models/order.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/return_service.py",
+      "component": "handle_return",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/api/refunds.py",
+      "component": "backend/api/refunds.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/jobs/refund_worker.py",
+      "component": "refund_worker",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on refund, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/models/order.py",
+      "component": "Order",
+      "category": "broad transitive dependency",
+      "reason": "Likely match on inspection, corroborated by a related file",
+      "status": "LIKELY"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/order_service.py",
+      "component": "backend/services/order_service.py",
+      "category": "weak graph relationship",
+      "reason": "Likely causal bridge to multiple affected files",
+      "status": "LIKELY"
+    }
+  ]
+}

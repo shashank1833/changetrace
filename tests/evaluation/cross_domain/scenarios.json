@@ -1,0 +1,122 @@
+[
+  {
+    "id": "subscription-cancel-authorization", "domain": "subscription_billing", "category": "authorization",
+    "change_request": "Allow only the account owner to cancel an active subscription.",
+    "directly_affected": ["backend/services/subscription_service.py", "backend/api/subscriptions.py"],
+    "transitively_affected": ["backend/models/subscription.py", "backend/integrations/billing.py"],
+    "potentially_related": ["docs/subscriptions.md", "tests/subscription_checks.py"],
+    "irrelevant": ["backend/services/ticket_export.py", "backend/services/usage_export.py"],
+    "expected_evidence": ["backend/services/subscription_service.py"], "expected_test_gaps": ["authorization", "negative path"]
+  },
+  {
+    "id": "pause-active", "domain": "subscription_billing", "category": "state transition",
+    "change_request": "Pause an ACTIVE subscription and prevent renewal until it is resumed.",
+    "directly_affected": ["backend/services/billing_service.py", "backend/models/subscription.py"],
+    "transitively_affected": ["backend/jobs/renewal_job.py"],
+    "potentially_related": ["docs/subscriptions.md"],
+    "irrelevant": ["backend/services/pause_preview.py", "backend/services/ticket_export.py"],
+    "expected_evidence": ["backend/services/billing_service.py", "backend/models/subscription.py"], "expected_test_gaps": ["state transition", "negative path"]
+  },
+  {
+    "id": "invoice-processing-cancel", "domain": "subscription_billing", "category": "business rule",
+    "change_request": "Prevent cancellation while a subscription invoice is processing.",
+    "directly_affected": ["backend/services/subscription_service.py", "schema.sql"],
+    "transitively_affected": ["backend/api/subscriptions.py"],
+    "potentially_related": [], "irrelevant": ["backend/services/notification_service.py"],
+    "expected_evidence": ["backend/services/subscription_service.py", "schema.sql"], "expected_test_gaps": ["negative path", "data consistency"]
+  },
+  {
+    "id": "past-due-retry", "domain": "subscription_billing", "category": "integration and retry",
+    "change_request": "Retry payment for a PAST_DUE subscription without charging twice.",
+    "directly_affected": ["backend/services/billing_service.py", "backend/integrations/billing.py"],
+    "transitively_affected": ["backend/api/billing.py", "backend/jobs/billing_event_job.py"],
+    "potentially_related": ["schema.sql"], "irrelevant": ["backend/services/usage_export.py"],
+    "expected_evidence": ["backend/services/billing_service.py", "backend/integrations/billing.py"], "expected_test_gaps": ["integration failure", "idempotency"]
+  },
+  {
+    "id": "past-due-notification", "domain": "subscription_billing", "category": "notification",
+    "change_request": "Notify the account owner when a subscription becomes PAST_DUE.",
+    "directly_affected": ["backend/services/notification_service.py", "backend/models/subscription.py"],
+    "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/services/ticket_export.py", "backend/services/usage_export.py"],
+    "expected_evidence": ["backend/services/notification_service.py"], "expected_test_gaps": ["happy path", "state transition"]
+  },
+  {
+    "id": "duplicate-billing-event", "domain": "subscription_billing", "category": "idempotency",
+    "change_request": "Prevent duplicate billing events from charging a subscription twice.",
+    "directly_affected": ["backend/jobs/billing_event_job.py", "backend/services/billing_service.py", "backend/integrations/billing.py"],
+    "transitively_affected": ["schema.sql"], "potentially_related": [],
+    "irrelevant": ["backend/services/subscription_service.py"],
+    "expected_evidence": ["backend/jobs/billing_event_job.py", "backend/integrations/billing.py"], "expected_test_gaps": ["duplicate event", "idempotency"]
+  },
+  {
+    "id": "payment-rollback", "domain": "subscription_billing", "category": "rollback",
+    "change_request": "Roll back an ACTIVE subscription to PAST_DUE when payment fails.",
+    "directly_affected": ["backend/services/billing_service.py", "backend/models/subscription.py"],
+    "transitively_affected": ["backend/integrations/billing.py"], "potentially_related": [],
+    "irrelevant": ["backend/services/notification_service.py"],
+    "expected_evidence": ["backend/services/billing_service.py"], "expected_test_gaps": ["rollback", "integration failure"]
+  },
+  {
+    "id": "billing-api-contract", "domain": "subscription_billing", "category": "API contract",
+    "change_request": "Expose an API operation to retry a past-due subscription payment with an idempotency key.",
+    "directly_affected": ["backend/api/billing.py", "backend/services/billing_service.py"],
+    "transitively_affected": ["backend/integrations/billing.py"], "potentially_related": [],
+    "irrelevant": ["backend/api/subscriptions.py"],
+    "expected_evidence": ["backend/api/billing.py", "backend/services/billing_service.py"], "expected_test_gaps": ["integration failure", "idempotency"]
+  },
+  {
+    "id": "renewal-background-job", "domain": "subscription_billing", "category": "background job",
+    "change_request": "Stop the renewal job from charging PAST_DUE subscriptions.",
+    "directly_affected": ["backend/jobs/renewal_job.py", "backend/integrations/billing.py", "backend/models/subscription.py"],
+    "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/jobs/billing_event_job.py"],
+    "expected_evidence": ["backend/jobs/renewal_job.py"], "expected_test_gaps": ["negative path"]
+  },
+  {
+    "id": "subscription-state-constraint", "domain": "subscription_billing", "category": "database",
+    "change_request": "Persist PAUSED subscriptions and update the subscription status database constraint.",
+    "directly_affected": ["schema.sql", "backend/models/subscription.py", "backend/repositories/subscription_repository.py"],
+    "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/services/pause_preview.py"],
+    "expected_evidence": ["schema.sql"], "expected_test_gaps": ["data consistency"]
+  },
+  {
+    "id": "billing-timeout", "domain": "subscription_billing", "category": "integration failure",
+    "change_request": "Handle billing provider timeout while charging a past-due subscription.",
+    "directly_affected": ["backend/integrations/billing.py", "backend/services/billing_service.py"],
+    "transitively_affected": ["backend/jobs/billing_event_job.py"], "potentially_related": [],
+    "irrelevant": ["backend/services/subscription_service.py"],
+    "expected_evidence": ["backend/integrations/billing.py"], "expected_test_gaps": ["integration failure", "rollback"]
+  },
+  {
+    "id": "subscription-documentation", "domain": "subscription_billing", "category": "contradiction",
+    "change_request": "Permit suspended subscriptions to renew before payment succeeds.",
+    "directly_affected": ["backend/jobs/renewal_job.py", "docs/subscriptions.md"],
+    "transitively_affected": ["backend/integrations/billing.py", "backend/models/subscription.py"],
+    "potentially_related": ["backend/services/subscription_service.py"],
+    "irrelevant": ["backend/services/ticket_export.py"],
+    "expected_evidence": ["backend/jobs/renewal_job.py", "docs/subscriptions.md"], "expected_test_gaps": ["negative path", "integration failure"]
+  },
+  {
+    "id": "pause-preview-dead-code", "domain": "subscription_billing", "category": "dead code",
+    "change_request": "Remove the unused subscription pause preview experiment.",
+    "directly_affected": ["backend/services/pause_preview.py"], "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/services/billing_service.py"],
+    "expected_evidence": ["backend/services/pause_preview.py"], "expected_test_gaps": []
+  },
+  {
+    "id": "usage-period-ambiguous", "domain": "subscription_billing", "category": "ambiguous terminology",
+    "change_request": "Return the subscription usage period from the export operation.",
+    "directly_affected": ["backend/services/usage_export.py"], "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/services/billing_service.py", "backend/services/subscription_service.py"],
+    "expected_evidence": ["backend/services/usage_export.py"], "expected_test_gaps": []
+  },
+  {
+    "id": "ticket-export-negative", "domain": "subscription_billing", "category": "irrelevant code",
+    "change_request": "Export support tickets to a CSV archive.",
+    "directly_affected": ["backend/services/ticket_export.py"], "transitively_affected": [], "potentially_related": [],
+    "irrelevant": ["backend/services/subscription_service.py", "backend/integrations/billing.py", "schema.sql"],
+    "expected_evidence": ["backend/services/ticket_export.py"], "expected_test_gaps": []
+  }
+]

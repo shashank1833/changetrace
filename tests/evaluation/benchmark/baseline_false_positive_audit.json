@@ -1,0 +1,3662 @@
+{
+  "method": "First unexpected component per file classified by emitted reason/type; categories overlap conceptually and this assigns one primary cause.",
+  "total_false_positive_files": 456,
+  "counts": {
+    "lexical/naming seed": 367,
+    "documentation only": 23,
+    "dead code": 30,
+    "weak graph distance 1": 24,
+    "test relationship": 8,
+    "broad transitive distance 2": 4
+  },
+  "relationships": [
+    {
+      "scenario": "return-state",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-state",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 16 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 16 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/api/refunds.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/integrations/warehouse.py",
+      "category": "weak graph distance 1",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "delivered-state",
+      "file": "backend/services/payment_service.py",
+      "category": "weak graph distance 1",
+      "component": "reverse_payment",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 14 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/api/refunds.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/integrations/warehouse.py",
+      "category": "weak graph distance 1",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "cancel-after-shipment",
+      "file": "backend/services/payment_service.py",
+      "category": "weak graph distance 1",
+      "component": "reverse_payment",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/api/refunds.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/integrations/warehouse.py",
+      "category": "weak graph distance 1",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "block-paid-cancel",
+      "file": "backend/services/payment_service.py",
+      "category": "weak graph distance 1",
+      "component": "reverse_payment",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "request_inspection",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/api/orders.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/services/return_service.py",
+      "category": "weak graph distance 1",
+      "component": "handle_return",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "refund-retry",
+      "file": "backend/services/order_service.py",
+      "category": "broad transitive distance 2",
+      "component": "change_status",
+      "reason": "Dependency graph distance 2 from direct evidence",
+      "strength": "INDIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-required",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-notification",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-analytics",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-api",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "returned-at",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "duplicate-return-event",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "backend/jobs/analytics_job.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "backend/services/legacy_return_preview.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-rollback",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-authorization",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "Order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_bucket",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "admin-refund",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-contract",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "frontend-returned",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "Order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_bucket",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "restock-return",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "analytics-job-return",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 13 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "final-order-doc",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_bucket",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "tax-return-report",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_bucket",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "legacy-preview",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"SHIPPED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "shipment-label-return",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/integrations/warehouse.py",
+      "category": "weak graph distance 1",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "cancel-refund-worker",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/api/refunds.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "payment-timeout",
+      "file": "backend/integrations/warehouse.py",
+      "category": "weak graph distance 1",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "weak graph distance 1",
+      "component": "refund_worker",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/api/refunds.py",
+      "category": "weak graph distance 1",
+      "component": "load_order",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "weak graph distance 1",
+      "component": "analytics_job",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "inspection-failure",
+      "file": "backend/services/payment_service.py",
+      "category": "weak graph distance 1",
+      "component": "reverse_payment",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-unique-order",
+      "file": "backend/integrations/warehouse.py",
+      "category": "broad transitive distance 2",
+      "component": "inspection_succeeded",
+      "reason": "Dependency graph distance 2 from direct evidence",
+      "strength": "INDIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 13 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "status-db-check",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 8 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "orders",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "cancel-notification",
+      "file": "tests/test_orders.py",
+      "category": "test relationship",
+      "component": "test_cancelled_order_can_be_refunded",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "request_inspection",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status != \"SHIPPED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "schema.sql",
+      "category": "lexical/naming seed",
+      "component": "refunds",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-owned-order",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "Order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "file": "backend/services/refund_service.py",
+      "category": "weak graph distance 1",
+      "component": "process_refund",
+      "reason": "Dependency graph distance 1 from direct evidence",
+      "strength": "STRONG"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "broad transitive distance 2",
+      "component": "refund_worker",
+      "reason": "Dependency graph distance 2 from direct evidence",
+      "strength": "INDIRECT"
+    },
+    {
+      "scenario": "warehouse-contract",
+      "file": "backend/services/payment_service.py",
+      "category": "broad transitive distance 2",
+      "component": "reverse_payment",
+      "reason": "Dependency graph distance 2 from direct evidence",
+      "strength": "INDIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/return_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:not inspection_succeeded(inspection_payload)",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "refund-reporting-consistency",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "OrderStatus.SHIPPED",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status == \"CANCELLED\"",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 7 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:order.status in {\"SHIPPED\", \"CANCELLED\"}",
+      "reason": "Directly matched 11 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/integrations/warehouse.py",
+      "category": "lexical/naming seed",
+      "component": "httpx.post",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "backend/api/orders.py",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "release_inventory",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "get_refund_eligibility",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 5 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "frontend/orderStatus.ts",
+      "category": "lexical/naming seed",
+      "component": "orderStatusLabel",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/services/refund_service.py",
+      "category": "lexical/naming seed",
+      "component": "process_refund",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "return-concurrent",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/repositories/order_repository.py",
+      "category": "lexical/naming seed",
+      "component": "save_order",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/jobs/refund_worker.py",
+      "category": "lexical/naming seed",
+      "component": "refund_worker",
+      "reason": "Directly matched 4 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/inventory_service.py",
+      "category": "lexical/naming seed",
+      "component": "rule:inspection == \"PASS\"",
+      "reason": "Directly matched 6 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/payment_service.py",
+      "category": "lexical/naming seed",
+      "component": "requests.post",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/api/refunds.py",
+      "category": "lexical/naming seed",
+      "component": "load_order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "docs/refunds.md",
+      "category": "documentation only",
+      "component": "docs/refunds.md",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/order_service.py",
+      "category": "lexical/naming seed",
+      "component": "change_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/models/order.py",
+      "category": "lexical/naming seed",
+      "component": "Order",
+      "reason": "Directly matched 2 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/legacy_return_preview.py",
+      "category": "dead code",
+      "component": "rule:order.status == \"RETURNED\"",
+      "reason": "Directly matched 3 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/analytics_service.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_bucket",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/jobs/analytics_job.py",
+      "category": "lexical/naming seed",
+      "component": "analytics_job",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/services/notification_service.py",
+      "category": "lexical/naming seed",
+      "component": "notify_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    },
+    {
+      "scenario": "inspection-audit",
+      "file": "backend/api/orders.py",
+      "category": "lexical/naming seed",
+      "component": "update_order_status",
+      "reason": "Directly matched 1 change-intent term(s)",
+      "strength": "DIRECT"
+    }
+  ]
+}

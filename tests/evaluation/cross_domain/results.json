@@ -1,0 +1,245 @@
+{
+  "metrics": {
+    "scenarios": 15,
+    "impact_precision": 0.5689655172413793,
+    "impact_recall": 0.7857142857142857,
+    "impact_f1": 0.66,
+    "evidence_precision": 0.29310344827586204,
+    "evidence_recall": 0.8095238095238095,
+    "evidence_f1": 0.430379746835443,
+    "test_gap_precision": 0.5333333333333333,
+    "test_gap_recall": 0.7272727272727273,
+    "test_gap_f1": 0.6153846153846153,
+    "irrelevant_selection_rate": 0.14285714285714285,
+    "unsupported_claim_rate": 0.0,
+    "median_analysis_seconds": 0.092
+  },
+  "scenarios": [
+    {
+      "id": "subscription-cancel-authorization",
+      "category": "authorization",
+      "found": [
+        "backend/api/subscriptions.py",
+        "backend/integrations/billing.py",
+        "backend/models/subscription.py",
+        "backend/services/subscription_service.py",
+        "tests/subscription_checks.py"
+      ],
+      "false_positives": [
+        "tests/subscription_checks.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "pause-active",
+      "category": "state transition",
+      "found": [
+        "backend/integrations/billing.py",
+        "backend/jobs/renewal_job.py",
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/pause_preview.py"
+      ],
+      "false_positives": [
+        "backend/integrations/billing.py",
+        "backend/services/pause_preview.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "invoice-processing-cancel",
+      "category": "business rule",
+      "found": [],
+      "false_positives": [],
+      "missing": [
+        "backend/api/subscriptions.py",
+        "backend/services/subscription_service.py",
+        "schema.sql"
+      ]
+    },
+    {
+      "id": "past-due-retry",
+      "category": "integration and retry",
+      "found": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/jobs/renewal_job.py",
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/jobs/renewal_job.py",
+        "backend/models/subscription.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "past-due-notification",
+      "category": "notification",
+      "found": [
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "duplicate-billing-event",
+      "category": "idempotency",
+      "found": [
+        "backend/jobs/billing_event_job.py",
+        "backend/services/billing_service.py"
+      ],
+      "false_positives": [],
+      "missing": [
+        "backend/integrations/billing.py",
+        "schema.sql"
+      ]
+    },
+    {
+      "id": "payment-rollback",
+      "category": "rollback",
+      "found": [
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/services/subscription_service.py"
+      ],
+      "missing": [
+        "backend/integrations/billing.py"
+      ]
+    },
+    {
+      "id": "billing-api-contract",
+      "category": "API contract",
+      "found": [
+        "backend/api/billing.py",
+        "backend/api/subscriptions.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/api/subscriptions.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/models/subscription.py",
+        "backend/services/notification_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "renewal-background-job",
+      "category": "background job",
+      "found": [
+        "backend/integrations/billing.py",
+        "backend/jobs/renewal_job.py",
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "subscription-state-constraint",
+      "category": "database",
+      "found": [
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "schema.sql"
+      ],
+      "false_positives": [
+        "backend/services/billing_service.py"
+      ],
+      "missing": [
+        "backend/repositories/subscription_repository.py"
+      ]
+    },
+    {
+      "id": "billing-timeout",
+      "category": "integration failure",
+      "found": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/models/subscription.py",
+        "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "false_positives": [
+        "backend/api/billing.py",
+        "backend/models/subscription.py",
+        "backend/services/notification_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": []
+    },
+    {
+      "id": "subscription-documentation",
+      "category": "contradiction",
+      "found": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py",
+        "docs/subscriptions.md"
+      ],
+      "false_positives": [
+        "backend/api/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/services/billing_service.py",
+        "backend/services/subscription_service.py"
+      ],
+      "missing": [
+        "backend/jobs/renewal_job.py",
+        "backend/models/subscription.py"
+      ]
+    },
+    {
+      "id": "pause-preview-dead-code",
+      "category": "dead code",
+      "found": [
+        "backend/services/pause_preview.py"
+      ],
+      "false_positives": [],
+      "missing": []
+    },
+    {
+      "id": "usage-period-ambiguous",
+      "category": "ambiguous terminology",
+      "found": [
+        "backend/services/usage_export.py"
+      ],
+      "false_positives": [],
+      "missing": []
+    },
+    {
+      "id": "ticket-export-negative",
+      "category": "irrelevant code",
+      "found": [
+        "backend/services/ticket_export.py"
+      ],
+      "false_positives": [],
+      "missing": []
+    }
+  ]
+}
