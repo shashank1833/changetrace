@@ -133,12 +133,30 @@ def test_real_postgres_migrations_and_rls_live():
         )
         conn.commit()
 
-        # Query with Tenant A context
-        conn.execute(text("SELECT set_config('app.current_organization_id', 'org-a', true)"))
-        rows_a = conn.execute(text("SELECT id FROM repositories WHERE id = 'repo-a'")).fetchall()
-        assert len(rows_a) == 1
+        # In PostgreSQL, superusers bypass RLS. Switch to a non-superuser role to test RLS policies.
+        conn.execute(
+            text(
+                "DO $$ BEGIN "
+                "IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'changetrace_test_user') THEN "
+                "  CREATE ROLE changetrace_test_user NOSUPERUSER NOBYPASSRLS; "
+                "END IF; "
+                "END $$;"
+            )
+        )
+        conn.execute(text("GRANT ALL ON ALL TABLES IN SCHEMA public TO changetrace_test_user"))
+        conn.execute(text("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO changetrace_test_user"))
+        conn.execute(text("SET ROLE changetrace_test_user"))
 
-        # Query with Tenant B context -> MUST return 0 rows (isolated by RLS)
-        conn.execute(text("SELECT set_config('app.current_organization_id', 'org-b', true)"))
-        rows_b = conn.execute(text("SELECT id FROM repositories WHERE id = 'repo-a'")).fetchall()
-        assert len(rows_b) == 0
+        try:
+            # Query with Tenant A context
+            conn.execute(text("SELECT set_config('app.current_organization_id', 'org-a', true)"))
+            rows_a = conn.execute(text("SELECT id FROM repositories WHERE id = 'repo-a'")).fetchall()
+            assert len(rows_a) == 1
+
+            # Query with Tenant B context -> MUST return 0 rows (isolated by RLS)
+            conn.execute(text("SELECT set_config('app.current_organization_id', 'org-b', true)"))
+            rows_b = conn.execute(text("SELECT id FROM repositories WHERE id = 'repo-a'")).fetchall()
+            assert len(rows_b) == 0
+        finally:
+            conn.execute(text("RESET ROLE"))
+

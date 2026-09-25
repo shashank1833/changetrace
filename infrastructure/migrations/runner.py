@@ -9,10 +9,15 @@ import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from sqlalchemy import text
-from sqlalchemy.engine import Engine
+# Ensure repo root is on sys.path if invoked directly
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-from apps.api.changetrace_api.database import engine as default_engine
+from sqlalchemy import text  # noqa: E402
+from sqlalchemy.engine import Engine  # noqa: E402
+
+from apps.api.changetrace_api.database import engine as default_engine  # noqa: E402
 
 logger = logging.getLogger("changetrace.migrations")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")

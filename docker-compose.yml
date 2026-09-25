@@ -13,6 +13,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./infrastructure/migrations/versions:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5432:5432"
   redis:
     image: redis:7.4-alpine
     command: redis-server --appendonly yes
@@ -21,6 +23,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    ports:
+      - "6379:6379"
   api:
     build:
       context: .

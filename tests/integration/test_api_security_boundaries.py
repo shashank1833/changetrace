@@ -47,7 +47,7 @@ def test_security_headers_and_rate_limit(monkeypatch):
     import changetrace_api.main as main
 
     monkeypatch.setattr(main.settings, "rate_limit_per_minute", 1)
-    main._rate_windows.clear()
+    main.get_rate_limiter().reset()
     with TestClient(app) as client:
         first = client.get("/health")
         second = client.get("/health")

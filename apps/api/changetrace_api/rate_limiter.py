@@ -60,6 +60,7 @@ class DistributedRateLimiter:
 
                 current_count = results[1]
                 if current_count >= max_requests:
+                    r.zrem(key, member)
                     return False
                 return True
             except Exception as exc:
@@ -79,9 +80,12 @@ class DistributedRateLimiter:
     def reset(self) -> None:
         with self._local_lock:
             self._local_windows.clear()
-        if self._redis_client is not None:
+        r = self._get_redis()
+        if r is not None:
             try:
-                self._redis_client.flushdb()
+                keys = list(r.scan_iter("changetrace:ratelimit:*"))
+                if keys:
+                    r.delete(*keys)
             except Exception:
                 pass
 

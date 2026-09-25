@@ -12,7 +12,7 @@
     "test_gap_f1": 0.6666666666666666,
     "irrelevant_selection_rate": 0.14285714285714285,
     "unsupported_claim_rate": 0.0,
-    "median_analysis_seconds": 0.156
+    "median_analysis_seconds": 0.148
   },
   "scenarios": [
     {
