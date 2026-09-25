@@ -5,15 +5,22 @@ import re
 
 from changetrace_schemas import Component, ComponentType, Contradiction, Evidence
 
-_NEGATION = re.compile(r"\b(?:cannot|can't|never|must not|not allowed|prohibited)\b", re.I)
+_NEGATION = re.compile(r"\b(?:cannot|can't|never|must not|not allowed|prohibited|forbidden|disallow|illegal)\b", re.I)
+_PERMISSION = re.compile(r"\b(?:can|may|allowed|permitted|enable|valid)\b", re.I)
 _TERMS = re.compile(r"[a-z][a-z0-9_]{3,}", re.I)
 _STOP = {"after", "before", "from", "into", "that", "this", "with", "order", "orders"}
 
 
 class ContradictionDetector:
-    """Conservative lexical detector requiring documentation and implementation evidence."""
+    """Advanced contradiction detector identifying behavioral oppositions across docs, rules, and code."""
 
-    def detect(self, components: list[Component], evidence: list[Evidence]) -> list[Contradiction]:
+    def detect(
+        self,
+        components: list[Component],
+        evidence: list[Evidence],
+        intent: object | None = None,
+        state_machines: list[object] | None = None,
+    ) -> list[Contradiction]:
         by_id = {item.id: item for item in evidence}
         docs = [item for item in components if item.type == ComponentType.DOCUMENT]
         code = [
@@ -23,6 +30,8 @@ class ContradictionDetector:
         ]
         contradictions: list[Contradiction] = []
         seen: set[tuple[str, str]] = set()
+
+        # 1. Document vs Implementation contradictions
         for document in docs:
             doc_evidence = by_id.get(document.evidence_ids[0]) if document.evidence_ids else None
             if not doc_evidence or not _NEGATION.search(doc_evidence.snippet):
@@ -40,6 +49,9 @@ class ContradictionDetector:
                 "returned",
                 "status",
                 "inspection",
+                "modify",
+                "delete",
+                "access",
             }
             for component in code:
                 code_evidence = by_id.get(component.evidence_ids[0]) if component.evidence_ids else None
@@ -57,6 +69,9 @@ class ContradictionDetector:
                     "returned",
                     "status",
                     "inspection",
+                    "modify",
+                    "delete",
+                    "access",
                 }
                 code_terms = self._terms(code_evidence.snippet)
                 same_behavior = len(behavior_terms) >= 2
@@ -85,6 +100,86 @@ class ContradictionDetector:
                         evidence_ids=[doc_evidence.id, code_evidence.id],
                     )
                 )
+
+        # 2. Code vs Code: Guard / Rule contradictions across functions
+        code_rules = [item for item in components if item.type in {ComponentType.BUSINESS_RULE, ComponentType.FUNCTION}]
+        for i, c1 in enumerate(code_rules):
+            e1 = by_id.get(c1.evidence_ids[0]) if c1.evidence_ids else None
+            if not e1:
+                continue
+            is_neg1 = bool(_NEGATION.search(e1.snippet))
+            for c2 in code_rules[i + 1 :]:
+                e2 = by_id.get(c2.evidence_ids[0]) if c2.evidence_ids else None
+                if not e2 or e1.id == e2.id or e1.location.file == e2.location.file:
+                    continue
+                is_neg2 = bool(_NEGATION.search(e2.snippet))
+                # Opposition: one has negation, the other has permission or unconstrained assignment
+                if is_neg1 != is_neg2:
+                    terms1 = self._terms(e1.snippet)
+                    terms2 = self._terms(e2.snippet)
+                    overlap = terms1 & terms2
+                    # Meaningful shared behavioral keywords
+                    domain_overlap = overlap & {"refund", "cancel", "ship", "return", "access", "modify"}
+                    if len(domain_overlap) >= 2 and len(overlap) >= 3:
+                        pair = (e1.id, e2.id)
+                        if pair not in seen:
+                            seen.add(pair)
+                            digest = hashlib.sha1(":".join(pair).encode()).hexdigest()[:12]
+                            contradictions.append(
+                                Contradiction(
+                                    id=f"CON-{digest}",
+                                    claim=(
+                                        f"Conflicting business logic between {e1.location.file} and "
+                                        f"{e2.location.file} regarding {', '.join(sorted(domain_overlap))}. "
+                                        "One path enforces a restriction while another omits it."
+                                    ),
+                                    confidence=0.75,
+                                    evidence_ids=[e1.id, e2.id],
+                                )
+                            )
+
+        # 3. Test vs Code contradictions: test asserts rejection but code permits or omits check
+        tests = [item for item in components if item.type == ComponentType.TEST]
+        for test_item in tests:
+            te = by_id.get(test_item.evidence_ids[0]) if test_item.evidence_ids else None
+            if not te:
+                continue
+            test_asserts_rejection = bool(
+                re.search(
+                    r"\b(assert_raises|raises|rejects|toThrow|status_code\s*==\s*40[134]|forbidden|unauthorized)\b",
+                    te.snippet,
+                    re.I,
+                )
+            )
+            if not test_asserts_rejection:
+                continue
+            test_terms = self._terms(te.snippet)
+            for c in code_rules:
+                ce = by_id.get(c.evidence_ids[0]) if c.evidence_ids else None
+                if not ce or ce.id == te.id:
+                    continue
+                overlap = test_terms & self._terms(ce.snippet)
+                domain_overlap = overlap & {"cancel", "refund", "delete", "pause", "resume"}
+                if len(domain_overlap) >= 1 and len(overlap) >= 2:
+                    if not _NEGATION.search(ce.snippet):
+                        pair = (te.id, ce.id)
+                        if pair not in seen:
+                            seen.add(pair)
+                            digest = hashlib.sha1(":".join(pair).encode()).hexdigest()[:12]
+                            claim_msg = (
+                                f"Test in {te.location.file} expects rejection for "
+                                f"{', '.join(sorted(domain_overlap))}, but implementation in "
+                                f"{ce.location.file} has no corresponding guard or rejection check."
+                            )
+                            contradictions.append(
+                                Contradiction(
+                                    id=f"CON-{digest}",
+                                    claim=claim_msg,
+                                    confidence=0.80,
+                                    evidence_ids=[te.id, ce.id],
+                                )
+                            )
+
         return contradictions[:10]
 
     @staticmethod

@@ -123,8 +123,14 @@ class EvidenceEngine:
     def _claim_tokens(value: str) -> set[str]:
         import re
 
-        return {
-            word[:-1] if word.endswith("s") and len(word) > 4 else word
-            for word in re.findall(r"[a-z][a-z0-9_]+", value.lower().replace("_", " "))
-            if len(word) >= 4
-        }
+        tokens = set()
+        for word in re.findall(r"[a-z][a-z0-9_]+", value.lower().replace("_", " ")):
+            if len(word) >= 4:
+                if word.endswith("ing") and len(word) > 5:
+                    word = word[:-3]
+                elif word.endswith("ed") and len(word) > 5:
+                    word = word[:-2]
+                elif word.endswith("s") and len(word) > 4:
+                    word = word[:-1]
+                tokens.add(word)
+        return tokens

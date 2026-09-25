@@ -1,78 +1,78 @@
 {
   "metrics": {
     "scenarios": 33,
-    "impact_precision": 0.7634408602150538,
-    "impact_recall": 0.6513761467889908,
-    "impact_f1": 0.7029702970297028,
-    "evidence_precision": 0.46236559139784944,
-    "evidence_recall": 0.7678571428571429,
-    "evidence_f1": 0.5771812080536913,
-    "risk_precision": 0.8214285714285714,
-    "risk_recall": 0.7666666666666667,
-    "risk_f1": 0.793103448275862,
-    "test_gap_precision": 0.5416666666666666,
-    "test_gap_recall": 0.75,
-    "test_gap_f1": 0.6290322580645162,
+    "impact_precision": 0.7155963302752294,
+    "impact_recall": 0.7155963302752294,
+    "impact_f1": 0.7155963302752294,
+    "evidence_precision": 0.46534653465346537,
+    "evidence_recall": 0.8392857142857143,
+    "evidence_f1": 0.5987261146496815,
+    "risk_precision": 0.84375,
+    "risk_recall": 0.9,
+    "risk_f1": 0.870967741935484,
+    "test_gap_precision": 0.7454545454545455,
+    "test_gap_recall": 0.7884615384615384,
+    "test_gap_f1": 0.766355140186916,
     "false_positive_rate": 0.1,
     "unsupported_claim_rate": 0.0,
     "evidence_validity_rate": 1.0,
     "schema_valid_output_rate": 1.0,
-    "median_analysis_seconds": 0.105
+    "median_analysis_seconds": 0.125
   },
   "categories": {
     "state transition impact": {
-      "impact_precision": 0.7142857142857143,
-      "impact_recall": 0.7142857142857143,
+      "impact_precision": 0.75,
+      "impact_recall": 0.8571428571428571,
       "evidence_precision": 0.42857142857142855,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6,
-      "test_gap_recall": 1.0,
-      "impact_f1": 0.7142857142857143,
+      "test_gap_precision": 0.6666666666666666,
+      "test_gap_recall": 0.6666666666666666,
+      "impact_f1": 0.7999999999999999,
       "evidence_f1": 0.6,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.7499999999999999
+      "test_gap_f1": 0.6666666666666666
     },
     "direct dependency": {
-      "impact_precision": 0.9,
-      "impact_recall": 0.8333333333333333,
-      "evidence_precision": 0.35,
+      "impact_precision": 1.0,
+      "impact_recall": 0.75,
+      "evidence_precision": 0.5,
       "evidence_recall": 0.75,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.8333333333333333,
-      "test_gap_recall": 0.5,
-      "impact_f1": 0.8653846153846153,
-      "evidence_f1": 0.4772727272727271,
+      "test_gap_precision": 1.0,
+      "test_gap_recall": 1.0,
+      "impact_f1": 0.8571428571428571,
+      "evidence_f1": 0.6,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.625
+      "test_gap_f1": 1.0
     },
     "contradictory documentation": {
-      "impact_precision": 0.8333333333333333,
+      "impact_precision": 0.7,
       "impact_recall": 0.7,
-      "evidence_precision": 0.41666666666666663,
+      "evidence_precision": 0.35,
       "evidence_recall": 0.75,
       "risk_precision": 0.5,
       "risk_recall": 0.5,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 1.0,
-      "impact_f1": 0.7608695652173912,
-      "evidence_f1": 0.5357142857142858,
+      "test_gap_recall": 0.5,
+      "impact_f1": 0.7,
+      "evidence_f1": 0.4772727272727271,
       "risk_f1": 0.5,
-      "test_gap_f1": 1.0
+      "test_gap_f1": 0.6666666666666666
     },
     "business rule dependency": {
       "impact_precision": 1.0,
       "impact_recall": 0.5,
-      "evidence_precision": 0.75,
-      "evidence_recall": 0.75,
+      "evidence_precision": 0.5,
+      "evidence_recall": 0.25,
       "risk_precision": 0.5,
       "risk_recall": 0.5,
       "test_gap_precision": 0.75,
       "test_gap_recall": 1.0,
       "impact_f1": 0.6666666666666666,
-      "evidence_f1": 0.75,
+      "evidence_f1": 0.3333333333333333,
       "risk_f1": 0.5,
       "test_gap_f1": 0.8571428571428571
     },
@@ -83,40 +83,40 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.7,
+      "test_gap_precision": 0.8333333333333333,
       "test_gap_recall": 1.0,
       "impact_f1": 0.7828947368421052,
       "evidence_f1": 0.6666666666666666,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.8235294117647058
+      "test_gap_f1": 0.9090909090909091
     },
     "hidden business logic": {
-      "impact_precision": 0.875,
+      "impact_precision": 0.775,
       "impact_recall": 0.875,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.45,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 0.8333333333333333,
-      "test_gap_recall": 0.75,
-      "impact_f1": 0.875,
-      "evidence_f1": 0.6666666666666666,
+      "test_gap_recall": 1.0,
+      "impact_f1": 0.821969696969697,
+      "evidence_f1": 0.6206896551724138,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.7894736842105263
+      "test_gap_f1": 0.9090909090909091
     },
     "semantic-only relationship": {
       "impact_precision": 0.5,
       "impact_recall": 0.6666666666666666,
-      "evidence_precision": 0.25,
+      "evidence_precision": 0.5,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
+      "test_gap_precision": 0.5,
       "test_gap_recall": 1.0,
       "impact_f1": 0.5714285714285715,
-      "evidence_f1": 0.4,
+      "evidence_f1": 0.6666666666666666,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.5
+      "test_gap_f1": 0.6666666666666666
     },
     "background job dependency": {
       "impact_precision": 1.0,
@@ -125,26 +125,26 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.16666666666666666,
-      "test_gap_recall": 0.5,
+      "test_gap_precision": 1.0,
+      "test_gap_recall": 1.0,
       "impact_f1": 0.8,
       "evidence_f1": 1.0,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.25
+      "test_gap_f1": 1.0
     },
     "API contract impact": {
       "impact_precision": 0.6555555555555556,
       "impact_recall": 0.8888888888888888,
-      "evidence_precision": 0.4111111111111111,
+      "evidence_precision": 0.4444444444444444,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 0.5555555555555556,
-      "test_gap_recall": 0.5,
+      "test_gap_recall": 0.6666666666666666,
       "impact_f1": 0.7545963229416468,
-      "evidence_f1": 0.5826771653543308,
+      "evidence_f1": 0.6153846153846153,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.5263157894736842
+      "test_gap_f1": 0.606060606060606
     },
     "database dependency": {
       "impact_precision": 1.0,
@@ -154,67 +154,67 @@
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 0.5,
-      "test_gap_recall": 1.0,
+      "test_gap_recall": 0.5,
       "impact_f1": 0.6285714285714286,
       "evidence_f1": 0.75,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.6666666666666666
+      "test_gap_f1": 0.5
     },
     "idempotency issue": {
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 0.25,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
+      "evidence_recall": 0.5,
       "risk_precision": 1.0,
-      "risk_recall": 0.0,
+      "risk_recall": 1.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 0.0,
-      "impact_f1": 0.0,
-      "evidence_f1": 0.0,
-      "risk_f1": 0.0,
-      "test_gap_f1": 0.0
+      "test_gap_recall": 1.0,
+      "impact_f1": 0.4,
+      "evidence_f1": 0.6666666666666666,
+      "risk_f1": 1.0,
+      "test_gap_f1": 1.0
     },
     "rollback behavior": {
-      "impact_precision": 0.6666666666666666,
+      "impact_precision": 0.5714285714285714,
       "impact_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.4,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
+      "test_gap_precision": 0.5,
       "test_gap_recall": 1.0,
-      "impact_f1": 0.8,
-      "evidence_f1": 0.5,
+      "impact_f1": 0.7272727272727273,
+      "evidence_f1": 0.5714285714285715,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.5
+      "test_gap_f1": 0.6666666666666666
     },
     "authorization impact": {
-      "impact_precision": 0.75,
-      "impact_recall": 0.16666666666666666,
-      "evidence_precision": 0.75,
-      "evidence_recall": 0.25,
+      "impact_precision": 0.41666666666666663,
+      "impact_recall": 0.5,
+      "evidence_precision": 0.29166666666666663,
+      "evidence_recall": 0.5,
       "risk_precision": 0.5,
-      "risk_recall": 0.0,
+      "risk_recall": 0.5,
       "test_gap_precision": 1.0,
       "test_gap_recall": 0.5,
-      "impact_f1": 0.27272727272727276,
-      "evidence_f1": 0.375,
-      "risk_f1": 0.0,
+      "impact_f1": 0.45454545454545453,
+      "evidence_f1": 0.3684210526315789,
+      "risk_f1": 0.5,
       "test_gap_f1": 0.6666666666666666
     },
     "cross-module dependency": {
-      "impact_precision": 0.75,
+      "impact_precision": 0.7083333333333333,
       "impact_recall": 1.0,
-      "evidence_precision": 0.4583333333333333,
+      "evidence_precision": 0.41666666666666663,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.43333333333333335,
+      "test_gap_precision": 0.75,
       "test_gap_recall": 1.0,
-      "impact_f1": 0.8571428571428571,
-      "evidence_f1": 0.6285714285714286,
+      "impact_f1": 0.8292682926829268,
+      "evidence_f1": 0.5882352941176471,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.6046511627906976
+      "test_gap_f1": 0.8571428571428571
     },
     "false dependency": {
       "impact_precision": 1.0,
@@ -232,16 +232,16 @@
     },
     "dead code": {
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 1.0,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
-      "risk_precision": 1.0,
+      "evidence_recall": 1.0,
+      "risk_precision": 0.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
-      "impact_f1": 0.0,
-      "evidence_f1": 0.0,
-      "risk_f1": 1.0,
+      "impact_f1": 1.0,
+      "evidence_f1": 1.0,
+      "risk_f1": 0.0,
       "test_gap_f1": 1.0
     },
     "ambiguous naming": {
@@ -259,18 +259,18 @@
       "test_gap_f1": 1.0
     },
     "indirect dependency": {
-      "impact_precision": 0.6,
+      "impact_precision": 0.375,
       "impact_recall": 1.0,
-      "evidence_precision": 0.4,
+      "evidence_precision": 0.25,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.5,
-      "test_gap_recall": 0.5,
-      "impact_f1": 0.7499999999999999,
-      "evidence_f1": 0.5714285714285715,
+      "test_gap_precision": 1.0,
+      "test_gap_recall": 0.0,
+      "impact_f1": 0.5454545454545454,
+      "evidence_f1": 0.4,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.5
+      "test_gap_f1": 0.0
     },
     "negative path": {
       "impact_precision": 1.0,
@@ -279,54 +279,54 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6666666666666666,
-      "test_gap_recall": 1.0,
+      "test_gap_precision": 0.5,
+      "test_gap_recall": 0.5,
       "impact_f1": 1.0,
       "evidence_f1": 0.8,
       "risk_f1": 1.0,
-      "test_gap_f1": 0.8
+      "test_gap_f1": 0.5
     },
     "data consistency issue": {
-      "impact_precision": 1.0,
-      "impact_recall": 0.41666666666666663,
-      "evidence_precision": 0.75,
-      "evidence_recall": 0.75,
-      "risk_precision": 0.5,
-      "risk_recall": 0.5,
-      "test_gap_precision": 0.6666666666666666,
+      "impact_precision": 0.9,
+      "impact_recall": 0.6666666666666666,
+      "evidence_precision": 0.7,
+      "evidence_recall": 1.0,
+      "risk_precision": 1.0,
+      "risk_recall": 1.0,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 0.75,
-      "impact_f1": 0.5882352941176471,
-      "evidence_f1": 0.75,
-      "risk_f1": 0.5,
-      "test_gap_f1": 0.7058823529411765
+      "impact_f1": 0.7659574468085106,
+      "evidence_f1": 0.8235294117647058,
+      "risk_f1": 1.0,
+      "test_gap_f1": 0.8571428571428571
     },
     "boundary condition": {
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 0.3333333333333333,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
+      "evidence_recall": 0.5,
       "risk_precision": 1.0,
-      "risk_recall": 0.0,
-      "test_gap_precision": 1.0,
-      "test_gap_recall": 0.0,
-      "impact_f1": 0.0,
-      "evidence_f1": 0.0,
-      "risk_f1": 0.0,
-      "test_gap_f1": 0.0
+      "risk_recall": 1.0,
+      "test_gap_precision": 0.6666666666666666,
+      "test_gap_recall": 1.0,
+      "impact_f1": 0.5,
+      "evidence_f1": 0.6666666666666666,
+      "risk_f1": 1.0,
+      "test_gap_f1": 0.8
     }
   },
   "scenarios": [
     {
       "id": "return-state",
       "category": "state transition impact",
-      "impact_precision": 0.7142857142857143,
-      "impact_recall": 0.7142857142857143,
+      "impact_precision": 0.75,
+      "impact_recall": 0.8571428571428571,
       "evidence_precision": 0.42857142857142855,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6,
-      "test_gap_recall": 1.0,
+      "test_gap_precision": 0.6666666666666666,
+      "test_gap_recall": 0.6666666666666666,
       "false_positives": [
         "backend/services/inventory_service.py",
         "backend/services/return_service.py"
@@ -335,31 +335,31 @@
     {
       "id": "delivered-state",
       "category": "direct dependency",
-      "impact_precision": 0.8,
-      "impact_recall": 0.6666666666666666,
-      "evidence_precision": 0.2,
+      "impact_precision": 1.0,
+      "impact_recall": 0.5,
+      "evidence_precision": 0.5,
       "evidence_recall": 0.5,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6666666666666666,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
-      "false_positives": [
-        "backend/services/notification_service.py"
-      ]
+      "false_positives": []
     },
     {
       "id": "cancel-after-shipment",
       "category": "contradictory documentation",
-      "impact_precision": 0.6666666666666666,
+      "impact_precision": 0.4,
       "impact_recall": 0.4,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.2,
       "evidence_recall": 0.5,
       "risk_precision": 0.0,
       "risk_recall": 0.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 1.0,
+      "test_gap_recall": 0.0,
       "false_positives": [
-        "backend/services/notification_service.py"
+        "backend/services/analytics_service.py",
+        "backend/services/notification_service.py",
+        "frontend/orderStatus.ts"
       ]
     },
     {
@@ -367,8 +367,8 @@
       "category": "business rule dependency",
       "impact_precision": 1.0,
       "impact_recall": 0.6666666666666666,
-      "evidence_precision": 0.5,
-      "evidence_recall": 1.0,
+      "evidence_precision": 0.0,
+      "evidence_recall": 0.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
@@ -384,7 +384,7 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.4,
+      "test_gap_precision": 0.6666666666666666,
       "test_gap_recall": 1.0,
       "false_positives": [
         "backend/services/return_service.py"
@@ -400,7 +400,7 @@
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 0.5,
+      "test_gap_recall": 1.0,
       "false_positives": [
         "backend/services/inventory_service.py"
       ]
@@ -410,11 +410,11 @@
       "category": "semantic-only relationship",
       "impact_precision": 0.5,
       "impact_recall": 0.6666666666666666,
-      "evidence_precision": 0.25,
+      "evidence_precision": 0.5,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
+      "test_gap_precision": 0.5,
       "test_gap_recall": 1.0,
       "false_positives": [
         "backend/services/order_service.py",
@@ -430,8 +430,8 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.0,
-      "test_gap_recall": 0.0,
+      "test_gap_precision": 1.0,
+      "test_gap_recall": 1.0,
       "false_positives": []
     },
     {
@@ -439,7 +439,7 @@
       "category": "API contract impact",
       "impact_precision": 0.8,
       "impact_recall": 1.0,
-      "evidence_precision": 0.4,
+      "evidence_precision": 0.5,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
@@ -458,7 +458,7 @@
       "evidence_recall": 0.5,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6666666666666666,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
       "false_positives": []
     },
@@ -466,58 +466,63 @@
       "id": "duplicate-return-event",
       "category": "idempotency issue",
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 0.25,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
+      "evidence_recall": 0.5,
       "risk_precision": 1.0,
-      "risk_recall": 0.0,
+      "risk_recall": 1.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 0.0,
+      "test_gap_recall": 1.0,
       "false_positives": []
     },
     {
       "id": "refund-rollback",
       "category": "rollback behavior",
-      "impact_precision": 0.6666666666666666,
+      "impact_precision": 0.5714285714285714,
       "impact_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.4,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
+      "test_gap_precision": 0.5,
       "test_gap_recall": 1.0,
       "false_positives": [
         "backend/jobs/refund_worker.py",
-        "backend/services/order_service.py"
+        "backend/services/order_service.py",
+        "tests/test_orders.py"
       ]
     },
     {
       "id": "return-authorization",
       "category": "authorization impact",
-      "impact_precision": 0.5,
+      "impact_precision": 0.3333333333333333,
       "impact_recall": 0.3333333333333333,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.3333333333333333,
       "evidence_recall": 0.5,
       "risk_precision": 0.0,
       "risk_recall": 0.0,
       "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
       "false_positives": [
-        "backend/services/notification_service.py"
+        "backend/services/notification_service.py",
+        "backend/services/return_service.py"
       ]
     },
     {
       "id": "admin-refund",
       "category": "authorization impact",
-      "impact_precision": 1.0,
-      "impact_recall": 0.0,
-      "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
+      "impact_precision": 0.5,
+      "impact_recall": 0.6666666666666666,
+      "evidence_precision": 0.25,
+      "evidence_recall": 0.5,
       "risk_precision": 1.0,
-      "risk_recall": 0.0,
+      "risk_recall": 1.0,
       "test_gap_precision": 1.0,
       "test_gap_recall": 0.0,
-      "false_positives": []
+      "false_positives": [
+        "backend/integrations/warehouse.py",
+        "backend/services/inventory_service.py"
+      ]
     },
     {
       "id": "refund-contract",
@@ -529,7 +534,7 @@
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 0.5,
+      "test_gap_recall": 1.0,
       "false_positives": [
         "backend/api/orders.py",
         "backend/services/return_service.py"
@@ -538,33 +543,33 @@
     {
       "id": "frontend-returned",
       "category": "cross-module dependency",
-      "impact_precision": 0.5,
+      "impact_precision": 0.6666666666666666,
       "impact_recall": 1.0,
-      "evidence_precision": 0.25,
+      "evidence_precision": 0.3333333333333333,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.2,
+      "test_gap_precision": 0.5,
       "test_gap_recall": 1.0,
       "false_positives": [
         "backend/jobs/refund_worker.py",
-        "backend/services/order_service.py",
-        "backend/services/return_service.py",
-        "tests/test_orders.py"
+        "backend/services/return_service.py"
       ]
     },
     {
       "id": "restock-return",
       "category": "cross-module dependency",
-      "impact_precision": 1.0,
+      "impact_precision": 0.75,
       "impact_recall": 1.0,
-      "evidence_precision": 0.6666666666666666,
+      "evidence_precision": 0.5,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6666666666666666,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
-      "false_positives": []
+      "false_positives": [
+        "backend/models/order.py"
+      ]
     },
     {
       "id": "analytics-job-return",
@@ -575,7 +580,7 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
       "false_positives": []
     },
@@ -609,10 +614,10 @@
       "id": "legacy-preview",
       "category": "dead code",
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 1.0,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
-      "risk_precision": 1.0,
+      "evidence_recall": 1.0,
+      "risk_precision": 0.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
@@ -636,17 +641,20 @@
     {
       "id": "cancel-refund-worker",
       "category": "indirect dependency",
-      "impact_precision": 0.6,
+      "impact_precision": 0.375,
       "impact_recall": 1.0,
-      "evidence_precision": 0.4,
+      "evidence_precision": 0.25,
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.5,
-      "test_gap_recall": 0.5,
+      "test_gap_precision": 1.0,
+      "test_gap_recall": 0.0,
       "false_positives": [
         "backend/api/refunds.py",
-        "backend/services/return_service.py"
+        "backend/services/payment_service.py",
+        "backend/services/return_service.py",
+        "docs/refunds.md",
+        "tests/test_orders.py"
       ]
     },
     {
@@ -671,8 +679,8 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.6666666666666666,
-      "test_gap_recall": 1.0,
+      "test_gap_precision": 0.5,
+      "test_gap_recall": 0.5,
       "false_positives": []
     },
     {
@@ -697,8 +705,8 @@
       "evidence_recall": 1.0,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
-      "test_gap_precision": 0.3333333333333333,
-      "test_gap_recall": 1.0,
+      "test_gap_precision": 0.0,
+      "test_gap_recall": 0.0,
       "false_positives": []
     },
     {
@@ -711,7 +719,7 @@
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 1.0,
-      "test_gap_recall": 0.0,
+      "test_gap_recall": 1.0,
       "false_positives": []
     },
     {
@@ -745,41 +753,45 @@
     {
       "id": "refund-reporting-consistency",
       "category": "data consistency issue",
-      "impact_precision": 1.0,
-      "impact_recall": 0.5,
-      "evidence_precision": 0.5,
-      "evidence_recall": 0.5,
-      "risk_precision": 0.0,
-      "risk_recall": 0.0,
-      "test_gap_precision": 0.3333333333333333,
+      "impact_precision": 0.8,
+      "impact_recall": 1.0,
+      "evidence_precision": 0.4,
+      "evidence_recall": 1.0,
+      "risk_precision": 1.0,
+      "risk_recall": 1.0,
+      "test_gap_precision": 1.0,
       "test_gap_recall": 1.0,
-      "false_positives": []
+      "false_positives": [
+        "backend/services/return_service.py"
+      ]
     },
     {
       "id": "return-concurrent",
       "category": "boundary condition",
       "impact_precision": 1.0,
-      "impact_recall": 0.0,
+      "impact_recall": 0.3333333333333333,
       "evidence_precision": 1.0,
-      "evidence_recall": 0.0,
-      "risk_precision": 1.0,
-      "risk_recall": 0.0,
-      "test_gap_precision": 1.0,
-      "test_gap_recall": 0.0,
-      "false_positives": []
-    },
-    {
-      "id": "inspection-audit",
-      "category": "hidden business logic",
-      "impact_precision": 1.0,
-      "impact_recall": 1.0,
-      "evidence_precision": 0.5,
-      "evidence_recall": 1.0,
+      "evidence_recall": 0.5,
       "risk_precision": 1.0,
       "risk_recall": 1.0,
       "test_gap_precision": 0.6666666666666666,
       "test_gap_recall": 1.0,
       "false_positives": []
+    },
+    {
+      "id": "inspection-audit",
+      "category": "hidden business logic",
+      "impact_precision": 0.8,
+      "impact_recall": 1.0,
+      "evidence_precision": 0.4,
+      "evidence_recall": 1.0,
+      "risk_precision": 1.0,
+      "risk_recall": 1.0,
+      "test_gap_precision": 0.6666666666666666,
+      "test_gap_recall": 1.0,
+      "false_positives": [
+        "backend/services/inventory_service.py"
+      ]
     }
   ]
 }

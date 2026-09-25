@@ -4,15 +4,15 @@
     "impact_precision": 0.5689655172413793,
     "impact_recall": 0.7857142857142857,
     "impact_f1": 0.66,
-    "evidence_precision": 0.29310344827586204,
+    "evidence_precision": 0.37777777777777777,
     "evidence_recall": 0.8095238095238095,
-    "evidence_f1": 0.430379746835443,
-    "test_gap_precision": 0.5333333333333333,
-    "test_gap_recall": 0.7272727272727273,
-    "test_gap_f1": 0.6153846153846153,
+    "evidence_f1": 0.5151515151515151,
+    "test_gap_precision": 0.6521739130434783,
+    "test_gap_recall": 0.6818181818181818,
+    "test_gap_f1": 0.6666666666666666,
     "irrelevant_selection_rate": 0.14285714285714285,
     "unsupported_claim_rate": 0.0,
-    "median_analysis_seconds": 0.092
+    "median_analysis_seconds": 0.132
   },
   "scenarios": [
     {

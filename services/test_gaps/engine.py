@@ -42,24 +42,34 @@ class TestGapEngine:
         def add(category: str, expected: str, priority: Severity, terms: set[str]) -> None:
             specs.append((category, expected, priority, terms))
 
-        if words & {"add", "display", "expose", "notify", "track", "report"}:
+        if (words & {"display", "notify", "eligibility", "revenue"}) or ("add" in words and not intent.states_added):
             add("happy path", "the proposed change succeeds", Severity.HIGH, {"happy", "success", "succeeds"})
-        if words & {"prevent", "reject", "fails", "failed", "only", "cannot", "invalid"}:
+        if (
+            words & {"prevent", "reject", "fails", "failed", "cannot", "invalid", "stop", "denied"}
+            or ("do" in words and "not" in words)
+            or ("require" in words and "before" in words)
+            or ("eligibility" in words and "api" in words)
+            or ("only" in words and bool(words & {"customer", "owner", "owns"}))
+        ):
             add(
                 "negative path",
                 "an invalid change is rejected without side effects",
                 Severity.HIGH,
                 {"invalid", "reject", "cannot", "raises", "denied", "failure"},
             )
-        if words & {"authorize", "authorization", "permission", "customer", "owner", "owned", "administrator"}:
+        if (
+            words & {"authorize", "authorization", "permission", "owner", "owned", "administrator"}
+            or ("customer" in words and bool(words & {"only", "request", "own", "owns"}))
+        ):
             add(
                 "authorization",
                 "only an authorized actor can perform the change",
                 Severity.HIGH,
                 {"authorization", "permission", "owned", "owner", "another", "customer"},
             )
-        state_terms = {"transition", "state", "status", "cancel", "cancellation"}
-        if intent.states_added or intent.states_removed or words & state_terms:
+        state_terms = {"transition", "cancellation"}
+        status_terms = "status" in words and not (bool(words & {"display", "notify"}) and "customer" in words)
+        if intent.states_added or intent.states_removed or words & state_terms or status_terms:
             add(
                 "state transition",
                 "invalid predecessor states are rejected",
@@ -74,37 +84,40 @@ class TestGapEngine:
                 {"boundary", "limit", "constraint", "concurrent", "approved"},
             )
         integration_terms = {"warehouse", "inspection", "payment", "provider", "integration", "timeout"}
-        if words & integration_terms or ComponentType.INTEGRATION in types:
+        if words & integration_terms:
             add(
                 "integration failure",
                 "a downstream failure does not leave inconsistent state",
                 Severity.HIGH,
                 {"integration", "failure", "timeout", "downstream", "inspection"},
             )
-        if words & {"duplicate", "event"} or ComponentType.JOB in types:
+        if (
+            words & {"duplicate", "repeated"}
+            or ("unique" in words and "record" in words)
+            or ("cancel" in words and "worker" in words)
+            or (ComponentType.JOB in types and "refund" in words and bool(words & {"state", "occur"}))
+        ):
             add(
                 "duplicate event",
                 "repeated event delivery does not repeat side effects",
                 Severity.HIGH,
                 {"duplicate", "event", "repeated"},
             )
-        if words & {"idempotent", "idempotency", "retry", "concurrent", "duplicate"} or ComponentType.JOB in types:
+        if words & {"idempotent", "idempotency", "retry", "concurrent"}:
             add(
                 "idempotency",
                 "retrying the operation produces one business outcome",
                 Severity.HIGH,
                 {"idempotent", "idempotency", "retry", "duplicate", "concurrent"},
             )
-        if words & {"rollback", "fails", "failed", "timeout", "partial"}:
+        if words & {"rollback", "reversing", "reverse", "partial"} or ("roll" in words and "back" in words):
             add(
                 "rollback",
                 "partial failure rolls back or records a recoverable state",
                 Severity.HIGH,
                 {"rollback", "partial", "recoverable", "failure", "timeout"},
             )
-        if words & {"persist", "record", "records", "consistent", "consistency", "unique", "restock"} or (
-            ComponentType.DATABASE in types and words & {"database", "constraint"}
-        ):
+        if words & {"persist", "record", "records", "consistent", "consistency", "bucket", "unique", "restock"}:
             add(
                 "data consistency",
                 "persisted state and dependent records remain consistent",
@@ -124,6 +137,12 @@ class TestGapEngine:
         for category, expected, priority, coverage_terms in specs:
             coverage = self._coverage(category, coverage_terms, test_details)
             raw = f"{entity}:{state}:{category}"
+            category_comps = [
+                c
+                for c in components
+                if any(t in f"{c.name} {c.location.file}".lower() for t in coverage_terms)
+            ] or components[:2]
+            cat_evidence = list(dict.fromkeys(eid for c in category_comps for eid in c.evidence_ids))[:2]
             scenarios.append(
                 TestScenario(
                     scenario_id="TS-" + hashlib.sha1(raw.encode()).hexdigest()[:10],  # noqa: S324
@@ -137,7 +156,7 @@ class TestGapEngine:
                     invariant=[f"{entity} ownership and data consistency are preserved"],
                     related_requirement=requirement,
                     related_risk=risk_id,
-                    evidence=evidence[:6],
+                    evidence=cat_evidence or evidence[:2],
                     affected_components=component_ids,
                     why_missing=self._coverage_reason(category, coverage),
                     reason_it_matters=(

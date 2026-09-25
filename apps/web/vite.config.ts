@@ -10,4 +10,10 @@ export default defineConfig({
       '/health': process.env.VITE_API_PROXY ?? 'http://localhost:8000',
     },
   },
+  // @ts-expect-error - vitest test options in vite config
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+  },
 })

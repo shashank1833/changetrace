@@ -8,6 +8,9 @@ from pathlib import Path
 
 from changetrace_schemas import Component, ComponentType, Evidence, EvidenceType, SourceLocation
 
+from services.repository_analysis.sandbox import ParserSandbox, SandboxViolationError
+from services.repository_analysis.treesitter_parser import TreeSitterParser
+
 SUPPORTED_SUFFIXES = {".py", ".ts", ".tsx", ".js", ".jsx", ".sql", ".md"}
 IGNORED_PARTS = {".git", "node_modules", ".venv", "venv", "dist", "build", "coverage", "__pycache__"}
 
@@ -48,8 +51,13 @@ def _evidence_type(component_type: ComponentType) -> EvidenceType:
 class RepositoryAnalyzer:
     """Deterministic source indexer. Python uses stdlib AST; JS/TS use conservative patterns.
 
-    Tree-sitter can be added as an optional parser without changing this output contract.
+    Tree-sitter is integrated as an optional parser when available.
     """
+
+    def __init__(self, use_treesitter: bool = True, sandbox: ParserSandbox | None = None) -> None:
+        self.use_treesitter = use_treesitter
+        self.treesitter = TreeSitterParser() if use_treesitter else None
+        self.sandbox = sandbox or ParserSandbox()
 
     def scan(self, root: Path, snapshot_id: str, commit_sha: str, repository_id: str = "unknown") -> IndexedRepository:
         root = root.resolve()
@@ -61,16 +69,38 @@ class RepositoryAnalyzer:
             commit_sha=commit_sha,
             repository_id=repository_id,
         )
+        self.sandbox.apply_process_limits()
+        total_bytes = 0
+        file_count = 0
         for path in sorted(root.rglob("*")):
             if path.is_symlink() or not path.is_file() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
                 continue
             if any(part in IGNORED_PARTS for part in path.relative_to(root).parts):
                 continue
             try:
+                self.sandbox.validate_path(path, root)
+                file_size = self.sandbox.check_file_size(path)
+            except SandboxViolationError as exc:
+                index.parse_warnings.append(f"Sandbox limit exceeded for {path}: {exc}")
+                continue
+
+            if file_count >= self.sandbox.limits.max_files_count:
+                max_fc = self.sandbox.limits.max_files_count
+                index.parse_warnings.append(f"Reached max file scan count limit ({max_fc})")
+                break
+            if total_bytes + file_size > self.sandbox.limits.max_total_bytes:
+                max_tb = self.sandbox.limits.max_total_bytes
+                index.parse_warnings.append(f"Reached max repository size limit ({max_tb} bytes)")
+                break
+
+            try:
                 text = path.read_text(encoding="utf-8")
             except (UnicodeDecodeError, OSError) as exc:
                 index.parse_warnings.append(f"Skipped {path}: {exc}")
                 continue
+
+            total_bytes += file_size
+            file_count += 1
             relative = path.relative_to(root).as_posix()
             index.file_text[relative] = text
             self._add(
@@ -234,12 +264,20 @@ class RepositoryAnalyzer:
             (r"(?:describe|it|test)\s*\(\s*['\"]([^'\"]+)", ComponentType.TEST, "JavaScript/TypeScript test"),
             (r"(?:router|app)\.(?:get|post|put|patch|delete)\s*\(\s*['\"]([^'\"]+)", ComponentType.API, "HTTP route"),
             (r"(?:fetch|axios\.(?:get|post|put|patch|delete))\s*\(", ComponentType.INTEGRATION, "External HTTP call"),
+            (r"(?:export\s+)?enum\s+(\w+)", ComponentType.CLASS, "JavaScript/TypeScript enum"),
         ]
         for pattern, kind, reason in patterns:
             for match in re.finditer(pattern, text):
                 line = text.count("\n", 0, match.start()) + 1
                 name = match.group(1) if match.lastindex else match.group(0).split("(")[0]
                 self._add(index, file, line, line, name, kind, reason)
+        # Parse TypeScript type aliases and enums
+        for match in re.finditer(r"(?:export\s+)?type\s+([A-Za-z0-9_]+)\s*=\s*([^;\n]+)", text):
+            line = text.count("\n", 0, match.start()) + 1
+            type_name = match.group(1)
+            self._add(
+                index, file, line, line, type_name, ComponentType.CLASS, f"TypeScript type definition: {type_name}"
+            )
         for match in re.finditer(r"(?:import[^'\"]+from\s+|require\s*\()['\"]([^'\"]+)", text):
             index.imports.append((file, match.group(1), str(text.count("\n", 0, match.start()) + 1)))
         for match in re.finditer(r"\b(\w+)\s*\(", text):

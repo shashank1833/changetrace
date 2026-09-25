@@ -36,3 +36,12 @@ test('business change simulation from repository through decision and export', a
   await page.getByRole('button', { name: /Export JSON/i }).click()
   await expect((await jsonDownload).suggestedFilename()).toMatch(/\.json$/)
 })
+
+test('precision and feedback dashboard navigation in live app', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /precision/i }).click()
+  await expect(page.getByText(/Precision & Feedback Dashboard/i)).toBeVisible()
+  await expect(page.getByText(/Precision by Finding Category/i)).toBeVisible()
+})
+
+

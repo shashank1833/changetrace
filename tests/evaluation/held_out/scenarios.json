@@ -1,0 +1,127 @@
+[
+  {
+    "id": "heldout-01",
+    "category": "state_machine",
+    "change_request": "Introduce PARTIALLY_REFUNDED as a new payment state for multi-item order adjustments, retaining the fixed interchange fee.",
+    "expected_findings": [
+      {
+        "file": "services/payment_service.py",
+        "symbol": "PaymentService",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "models/payment.py",
+        "symbol": "PaymentStatus",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "services/fee_service.py",
+        "symbol": "FeeService",
+        "classification": "CANDIDATE"
+      }
+    ],
+    "expected_affected_components": [
+      "services/payment_service.py",
+      "models/payment.py",
+      "services/fee_service.py"
+    ],
+    "expected_important_evidence": [
+      "services/payment_service.py",
+      "models/payment.py"
+    ],
+    "expected_risks": [
+      "state",
+      "fee"
+    ],
+    "expected_test_gaps": [
+      "financial",
+      "state_transition"
+    ],
+    "known_false_positives": [
+      "services/currency_service.py"
+    ]
+  },
+  {
+    "id": "heldout-02",
+    "category": "cross_service",
+    "change_request": "Add support for GBP foreign currency settlement with automated FX conversion before daily batch settlement.",
+    "expected_findings": [
+      {
+        "file": "services/currency_service.py",
+        "symbol": "CurrencyService",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "services/fee_service.py",
+        "symbol": "FeeService",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "jobs/settlement_job.py",
+        "symbol": "DailySettlementJob",
+        "classification": "CANDIDATE"
+      }
+    ],
+    "expected_affected_components": [
+      "services/currency_service.py",
+      "services/fee_service.py",
+      "jobs/settlement_job.py"
+    ],
+    "expected_important_evidence": [
+      "services/currency_service.py",
+      "services/fee_service.py"
+    ],
+    "expected_risks": [
+      "currency",
+      "fx"
+    ],
+    "expected_test_gaps": [
+      "integration",
+      "currency"
+    ],
+    "known_false_positives": [
+      "docs/payments.md"
+    ]
+  },
+  {
+    "id": "heldout-03",
+    "category": "contradiction_and_policy",
+    "change_request": "Allow direct refund from AUTHORIZED state without waiting for batch settlement.",
+    "expected_findings": [
+      {
+        "file": "services/payment_service.py",
+        "symbol": "PaymentService",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "models/payment.py",
+        "symbol": "PaymentStatus",
+        "classification": "LIKELY"
+      },
+      {
+        "file": "docs/payments.md",
+        "symbol": "docs/payments.md",
+        "classification": "CANDIDATE"
+      }
+    ],
+    "expected_affected_components": [
+      "services/payment_service.py",
+      "models/payment.py",
+      "docs/payments.md"
+    ],
+    "expected_important_evidence": [
+      "services/payment_service.py",
+      "docs/payments.md"
+    ],
+    "expected_risks": [
+      "settled",
+      "refund"
+    ],
+    "expected_test_gaps": [
+      "state_transition"
+    ],
+    "known_false_positives": [
+      "services/currency_service.py"
+    ]
+  }
+]

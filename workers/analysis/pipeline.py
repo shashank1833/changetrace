@@ -60,12 +60,17 @@ class AnalysisPipeline:
                 )
             temporary = diff_analyzer.materialize_after(snapshot.path, proposed_diff)
             after_path = Path(temporary.name)
-            index = RepositoryAnalyzer().scan(
-                after_path,
-                change_set.after_snapshot_id,
-                change_set.after_commit_sha,
-                repository_id,
+            from services.repository_analysis import IncrementalIndexer
+
+            inc_result = IncrementalIndexer().update(
+                base_index=before_index,
+                new_root=after_path,
+                new_snapshot_id=change_set.after_snapshot_id,
+                new_commit_sha=change_set.after_commit_sha,
+                repository_id=repository_id,
+                change_set=change_set,
             )
+            index = inc_result.index
             change_set = diff_analyzer.enrich(change_set, before_index, index)
             graph_delta = diff_analyzer.graph_delta(before_index, index)
         intent = ChangeInterpreter().interpret(change_request)
@@ -89,6 +94,21 @@ class AnalysisPipeline:
         test_gaps = TestGapEngine().generate(intent, components, risks[0].risk_id if risks else None, index)
         plan = self._plan(intent, components, test_gaps)
         decision = DecisionEngine().decide(risks, test_gaps, contradictions, plan)
+        # Retain evidence required by verified findings and direct seed impacts
+        finding_evidence_ids: set[str] = set()
+        for r in risks:
+            finding_evidence_ids.update(r.evidence)
+        for rule in rules:
+            finding_evidence_ids.update(rule.evidence_ids)
+        for c in contradictions:
+            finding_evidence_ids.update(c.evidence_ids)
+        for gap in test_gaps:
+            finding_evidence_ids.update(gap.evidence)
+        for c in components:
+            if distances.get(c.id, 9) == 0:
+                finding_evidence_ids.update(c.evidence_ids)
+        focused_evidence = [item for item in evidence if item.id in finding_evidence_ids] or evidence
+
         counts = Counter(component.type for component in components)
         result = AnalysisResult(
             repository=snapshot.repository,
@@ -114,7 +134,7 @@ class AnalysisPipeline:
             components=components,
             candidate_components=candidates,
             graph_edges=graph.edges_for({c.id for c in components}),
-            evidence=evidence,
+            evidence=focused_evidence,
             business_rules=rules,
             state_machines=state_machines,
             contradictions=contradictions,

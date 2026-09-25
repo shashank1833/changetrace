@@ -6,10 +6,11 @@ COPY apps apps
 COPY packages packages
 COPY services services
 COPY workers workers
+COPY infrastructure infrastructure
 RUN pip install --no-cache-dir .
 RUN useradd --create-home --uid 10001 changetrace \
     && mkdir -p /var/lib/changetrace/snapshots \
     && chown -R changetrace:changetrace /app /var/lib/changetrace
 USER changetrace
 EXPOSE 8000
-CMD ["uvicorn", "changetrace_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "python infrastructure/migrations/runner.py run && uvicorn changetrace_api.main:app --host 0.0.0.0 --port 8000"]

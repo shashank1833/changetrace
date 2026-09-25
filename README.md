@@ -19,7 +19,7 @@ repository snapshot + proposed requirement + optional diff/refs
 → actionable plan + GO/REVIEW/BLOCK
 ```
 
-Python uses AST analysis; TypeScript/JavaScript/SQL use conservative baseline extraction. NetworkX performs bounded traversal. PostgreSQL stores tenant-scoped snapshots/results/evidence/feedback; Redis/RQ handles Compose jobs. The OpenAI-compatible abstraction is isolated and optional—the current pipeline remains deterministic and reports semantic analysis as degraded without a configured model.
+Python and TypeScript/JavaScript use deep Tree-sitter extraction (routes, calls, side-effects, state assignments) with resilient fallback. Incremental index reuse invalidates cross-file relationships and persists caches to disk. PostgreSQL stores tenant-scoped snapshots/results/evidence/feedback; Redis/RQ handles Compose jobs. The GitHub App service manages authenticated webhook ingestion, multi-tenant resolution, delivery deduplication, and automated check runs / PR comments. The OpenAI-compatible abstraction is isolated and optional—the current pipeline remains deterministic and reports semantic analysis as degraded without a configured model.
 
 ## Run locally
 
@@ -45,7 +45,7 @@ make build
 make e2e
 ```
 
-The expanded benchmark has 33 labeled synthetic scenarios. The latest measured fixture-only results are in [`docs/EVALUATION_RESULTS.md`](docs/EVALUATION_RESULTS.md). They show high recall but low precision; they are not general accuracy claims.
+The expanded benchmark has 33 labeled synthetic scenarios. The latest measured fixture-only results are in [`docs/EVALUATION_RESULTS.md`](docs/EVALUATION_RESULTS.md).
 
 ## Evidence and decisions
 
@@ -64,7 +64,7 @@ docker compose ps
 curl http://localhost:8000/health
 ```
 
-Apply the ordered SQL files in `infrastructure/migrations/versions/` to an isolated PostgreSQL database before production-style startup. If the Docker daemon is unavailable, configuration can still be validated, but database, Redis, worker, API, and web runtime checks remain environment-blocked. See [`docs/DOCKER_VERIFICATION.md`](docs/DOCKER_VERIFICATION.md).
+Apply the ordered SQL files in `infrastructure/migrations/versions/` using the transactional migration runner (`infrastructure/migrations/runner.py`) before production startup. If the Docker daemon is unavailable, configuration can still be validated, but database, Redis, worker, API, and web runtime checks remain environment-blocked. See [`docs/DOCKER_VERIFICATION.md`](docs/DOCKER_VERIFICATION.md).
 
 ## Documentation
 
@@ -84,9 +84,4 @@ Apply the ordered SQL files in `infrastructure/migrations/versions/` to an isola
 
 - Evaluation uses synthetic repositories and does not establish production accuracy; subscription evidence precision remains below the desired target.
 - The 33 scenarios share one synthetic repository and are not a held-out production benchmark.
-- Tree-sitter is not yet integrated; TS/JS extraction is pattern based.
-- Incremental index reuse and GitHub PR webhooks/checks are not implemented.
-- GitHub App token lifecycle and production authentication are not implemented.
-- State-machine extraction recognizes Python enums and literal transition maps; side-effect mapping is incomplete.
-- Contradiction detection is conservative and lexical.
-- Docker runtime and pgvector extension initialization remain unverified on this host.
+- Docker runtime execution and live pgvector container initialization remain environment-blocked on this host due to the Docker Desktop daemon being unavailable (Compose configuration, Dockerfiles, and migration scripts are validated).

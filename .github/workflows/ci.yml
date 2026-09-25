@@ -11,11 +11,13 @@ jobs:
         with: { python-version: '3.12', cache: pip }
       - run: pip install -e '.[dev]' pip-audit
       - run: ruff check .
-      - run: mypy packages/schemas/changetrace_schemas services workers/analysis apps/api/changetrace_api
+      - run: mypy packages/schemas/changetrace_schemas services workers/analysis apps/api/changetrace_api infrastructure tests
       - run: pytest --cov --cov-report=xml
       - run: python tests/evaluation/benchmark/run.py
       - run: python tests/evaluation/cross_domain/run.py
+      - run: python tests/evaluation/held_out/run.py
       - run: pip-audit
+
   frontend:
     runs-on: ubuntu-latest
     defaults: { run: { working-directory: apps/web } }

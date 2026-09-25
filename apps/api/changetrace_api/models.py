@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Index, String, Text
+from sqlalchemy import JSON, BigInteger, DateTime, ForeignKey, Index, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -33,6 +33,35 @@ class User(Base, TimestampMixin):
     github_user_id: Mapped[str | None] = mapped_column(String(100), unique=True)
     email: Mapped[str] = mapped_column(String(320))
     role: Mapped[str] = mapped_column(String(30), default="MEMBER")
+
+
+class WebSession(Base):
+    __tablename__ = "web_sessions"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    expires_at: Mapped[int] = mapped_column(index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class GitHubInstallation(Base, TimestampMixin):
+    __tablename__ = "github_installations"
+    installation_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id", ondelete="CASCADE"), index=True)
+    account_login: Mapped[str] = mapped_column(String(200))
+    account_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
+    target_type: Mapped[str] = mapped_column(String(50), default="Organization")
+    permissions_json: Mapped[dict] = mapped_column(JSON, default=dict)
+
+
+class GitHubWebhookDelivery(Base):
+    __tablename__ = "github_webhook_deliveries"
+    delivery_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    event_type: Mapped[str] = mapped_column(String(50), index=True)
+    installation_id: Mapped[int | None] = mapped_column(BigInteger, index=True, nullable=True)
+    organization_id: Mapped[str | None] = mapped_column(String(36), index=True, nullable=True)
+    payload_hash: Mapped[str] = mapped_column(String(64))
+    processed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 
 class Repository(Base, TimestampMixin):
@@ -65,6 +94,7 @@ class ChangeRequest(Base, TimestampMixin):
     proposed_diff: Mapped[str | None] = mapped_column(Text)
     base_ref: Mapped[str | None] = mapped_column(String(200))
     target_ref: Mapped[str | None] = mapped_column(String(200))
+    github_metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=dict)
     status: Mapped[str] = mapped_column(String(30), default="DRAFT")
 
 

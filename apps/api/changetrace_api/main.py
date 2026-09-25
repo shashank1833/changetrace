@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+import hmac
 import logging
 import time
 import uuid
-from collections import defaultdict, deque
 from contextlib import asynccontextmanager
 from pathlib import Path
-from threading import Lock
 
+import httpx
 from changetrace_schemas import (
     AnalysisResult,
     AnalysisStatus,
@@ -17,17 +17,19 @@ from changetrace_schemas import (
     JobView,
     RepositoryCreate,
 )
-from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request, WebSocket
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request, WebSocket, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from services.feedback import FeedbackCalibrationEngine
 from services.reporting import ReportExporter
+from services.retention import RetentionService, sanitize_metadata
 from workers.analysis import AnalysisPipeline
 
 from .config import get_settings
-from .database import SessionLocal, create_schema, get_session
+from .database import SessionLocal, create_schema, get_session, set_tenant_context
 from .models import (
     AnalysisJob,
     AnalysisRun,
@@ -38,13 +40,22 @@ from .models import (
     Organization,
     Repository,
     RepositorySnapshot,
+    User,
 )
-from .security import Principal, current_principal, require_write
+from .rate_limiter import get_rate_limiter
+from .security import (
+    Principal,
+    create_session,
+    current_principal,
+    oauth_state,
+    require_write,
+    revoke_session,
+    validate_oauth_state,
+)
+from .telemetry import setup_telemetry
 
 settings = get_settings()
 logger = logging.getLogger("changetrace.api")
-_rate_windows: dict[str, deque[float]] = defaultdict(deque)
-_rate_lock = Lock()
 
 
 @asynccontextmanager
@@ -66,12 +77,9 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "X-Request-ID", "X-User-ID", "X-Organization-ID", "X-Role"],
 )
-try:
-    from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-
-    FastAPIInstrumentor.instrument_app(app)
-except ImportError:  # Optional in minimal contributor environments.
-    logger.warning("opentelemetry_instrumentation_unavailable")
+setup_telemetry(app)
+_rate_limiter = get_rate_limiter()
+_rate_windows = _rate_limiter._local_windows
 
 
 @app.middleware("http")
@@ -79,16 +87,11 @@ async def secure_and_trace(request: Request, call_next):
     request_id = request.headers.get("x-request-id", str(uuid.uuid4()))
     started = time.perf_counter()
     client_key = request.client.host if request.client else "unknown"
-    now = time.monotonic()
-    with _rate_lock:
-        window = _rate_windows[client_key]
-        while window and window[0] < now - 60:
-            window.popleft()
-        if len(window) >= settings.rate_limit_per_minute:
-            response = JSONResponse(status_code=429, content={"detail": "Rate limit exceeded"})
-            _set_security_headers(response, request_id)
-            return response
-        window.append(now)
+
+    if not _rate_limiter.is_allowed(client_key, limit=settings.rate_limit_per_minute):
+        response = JSONResponse(status_code=429, content={"detail": "Rate limit exceeded"})
+        _set_security_headers(response, request_id)
+        return response
     try:
         response = await call_next(request)
     except Exception:
@@ -120,7 +123,109 @@ def health():
     return {"status": "ok", "version": app.version}
 
 
+@app.get("/api/v1/auth/github/login")
+def github_login():
+    if not settings.github_client_id or not settings.github_client_secret:
+        raise HTTPException(503, "GitHub OAuth is not configured")
+    state = oauth_state()
+    url = httpx.URL(
+        "https://github.com/login/oauth/authorize",
+        params={
+            "client_id": settings.github_client_id,
+            "redirect_uri": settings.github_callback_url,
+            "scope": "read:user user:email",
+            "state": state,
+        },
+    )
+    response = RedirectResponse(str(url), status_code=302)
+    response.set_cookie(
+        "github_oauth_state", state, max_age=600, httponly=True, secure=settings.session_cookie_secure, samesite="lax"
+    )
+    return response
+
+
+@app.get("/api/v1/auth/github/callback")
+def github_callback(code: str, state: str, request: Request):
+    cookie_state = request.cookies.get("github_oauth_state")
+    if not cookie_state or not hmac.compare_digest(cookie_state, state):
+        raise HTTPException(400, "OAuth state mismatch")
+    validate_oauth_state(state)
+    with httpx.Client(timeout=10) as client:
+        token_response = client.post(
+            "https://github.com/login/oauth/access_token",
+            json={
+                "client_id": settings.github_client_id,
+                "client_secret": settings.github_client_secret,
+                "code": code,
+                "redirect_uri": settings.github_callback_url,
+            },
+            headers={"Accept": "application/json"},
+        )
+        token_response.raise_for_status()
+        access_token = token_response.json().get("access_token")
+        if not access_token:
+            raise HTTPException(401, "GitHub denied authentication")
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        profile_response = client.get("https://api.github.com/user", headers=headers)
+        profile_response.raise_for_status()
+        profile = profile_response.json()
+        email = profile.get("email")
+        if not email:
+            emails_response = client.get("https://api.github.com/user/emails", headers=headers)
+            emails_response.raise_for_status()
+            emails = emails_response.json()
+            email = next((item["email"] for item in emails if item.get("primary") and item.get("verified")), None)
+        if not email:
+            raise HTTPException(403, "A verified GitHub email is required")
+    github_id = str(profile["id"])
+    with SessionLocal() as session:
+        user = session.scalar(select(User).where(User.github_user_id == github_id))
+        if user is None:
+            org = Organization(id=str(uuid.uuid4()), name=f"{profile.get('login', 'GitHub')} Organization")
+            user = User(
+                id=str(uuid.uuid4()), organization_id=org.id, github_user_id=github_id, email=email, role="OWNER"
+            )
+            session.add_all([org, user])
+            session.commit()
+        token, _ = create_session(user.id)
+    response = RedirectResponse(settings.web_url, status_code=302)
+    response.delete_cookie("github_oauth_state")
+    response.set_cookie(
+        "changetrace_session",
+        token,
+        max_age=settings.session_ttl_seconds,
+        httponly=True,
+        secure=settings.session_cookie_secure,
+        samesite="lax",
+    )
+    return response
+
+
+@app.get("/api/v1/auth/me")
+def auth_me(principal: Principal = Depends(current_principal), session: Session = Depends(get_session)):
+    user = session.get(User, str(principal.user_id))
+    return {
+        "user_id": str(principal.user_id),
+        "organization_id": str(principal.organization_id),
+        "role": principal.role,
+        "email": user.email if user else None,
+    }
+
+
+@app.post("/api/v1/auth/logout", status_code=204)
+def logout(request: Request):
+    revoke_session(request.cookies.get("changetrace_session"))
+    response = JSONResponse(status_code=204, content=None)
+    response.delete_cookie("changetrace_session")
+    return response
+
+
 def _tenant_get(session: Session, model, resource_id: str, principal: Principal):
+    set_tenant_context(session, principal.organization_id)
     item = session.scalar(
         select(model).where(model.id == resource_id, model.organization_id == str(principal.organization_id))
     )
@@ -129,7 +234,16 @@ def _tenant_get(session: Session, model, resource_id: str, principal: Principal)
     return item
 
 
-def _audit(session: Session, principal: Principal, action: str, resource_type: str, resource_id: str):
+def _audit(
+    session: Session,
+    principal: Principal,
+    action: str,
+    resource_type: str,
+    resource_id: str,
+    metadata: dict | None = None,
+):
+    set_tenant_context(session, principal.organization_id)
+    sanitized = sanitize_metadata(metadata or {})
     session.add(
         AuditLog(
             organization_id=str(principal.organization_id),
@@ -137,6 +251,7 @@ def _audit(session: Session, principal: Principal, action: str, resource_type: s
             action=action,
             resource_type=resource_type,
             resource_id=resource_id,
+            metadata_json=sanitized,
         )
     )
 
@@ -202,6 +317,32 @@ def sync_repository(
     _audit(session, principal, "repository.sync", "repository", repo.id)
     session.commit()
     return {"snapshot_id": snapshot.id, "commit_sha": snapshot.commit_sha, "status": "INDEXABLE"}
+
+
+@app.delete("/api/v1/repositories/{repository_id}", status_code=200)
+def delete_repository(
+    repository_id: uuid.UUID,
+    session: Session = Depends(get_session),
+    principal: Principal = Depends(current_principal),
+):
+    require_write(principal)
+    repo = _tenant_get(session, Repository, str(repository_id), principal)
+    retention = RetentionService(storage_root=_snapshot_storage_root())
+    counts = retention.purge_repository(session, repo.id)
+    _audit(session, principal, "repository.delete", "repository", str(repository_id), {"purged_counts": counts})
+    return {"status": "DELETED", "purged": counts}
+
+
+@app.post("/api/v1/retention/prune-sessions", status_code=200)
+def prune_sessions(
+    session: Session = Depends(get_session),
+    principal: Principal = Depends(current_principal),
+):
+    require_write(principal)
+    retention = RetentionService()
+    count = retention.prune_expired_sessions(session)
+    _audit(session, principal, "retention.prune_sessions", "web_sessions", "all", {"pruned_count": count})
+    return {"status": "SUCCESS", "pruned_sessions": count}
 
 
 @app.post("/api/v1/changes", status_code=201)
@@ -276,6 +417,7 @@ def _run_analysis_job(job_id: str) -> None:
         job = session.get(AnalysisJob, job_id)
         if not job:
             return
+        set_tenant_context(session, job.organization_id)
         try:
             job.status, job.progress = AnalysisStatus.INGESTING.value, "10"
             session.commit()
@@ -341,6 +483,38 @@ def _run_analysis_job(job_id: str) -> None:
             job.analysis_id, job.status, job.progress = run.id, AnalysisStatus.COMPLETED.value, "100"
             change.status = "ANALYZED"
             session.commit()
+
+            # Connect analysis results to GitHub Checks & PR comments if triggered via GitHub PR
+            gh_meta = getattr(change, "github_metadata", None) or {}
+            if gh_meta.get("repo_full_name") and gh_meta.get("head_sha"):
+                try:
+                    from services.github.app import GitHubAppService
+                    from services.github.checks import GitHubChecksService
+
+                    app_svc = GitHubAppService()
+                    token = None
+                    if gh_meta.get("installation_id"):
+                        try:
+                            token = app_svc.get_installation_token(gh_meta["installation_id"])
+                        except Exception as token_exc:
+                            logger.debug("Could not obtain GitHub installation token: %s", token_exc)
+
+                    checks_svc = GitHubChecksService(token=token)
+                    checks_svc.create_or_update_check_run(
+                        repo_full_name=gh_meta["repo_full_name"],
+                        head_sha=gh_meta["head_sha"],
+                        result=result,
+                        token=token,
+                    )
+                    if gh_meta.get("pr_number"):
+                        checks_svc.post_pr_comment(
+                            repo_full_name=gh_meta["repo_full_name"],
+                            pr_number=gh_meta["pr_number"],
+                            result=result,
+                            token=token,
+                        )
+                except Exception as gh_exc:
+                    logger.warning("Failed to publish GitHub checks/comment: %s", gh_exc)
         except Exception:
             session.rollback()
             job = session.get(AnalysisJob, job_id)
@@ -378,9 +552,12 @@ def job_status(
 
 @app.websocket("/api/v1/jobs/{job_id}/events")
 async def job_events(websocket: WebSocket, job_id: str):
+    from .security import authenticate_websocket
+
     try:
-        organization_id = uuid.UUID(websocket.headers.get("x-organization-id", "00000000-0000-0000-0000-000000000001"))
-    except ValueError:
+        principal = authenticate_websocket(websocket)
+        organization_id = principal.organization_id
+    except HTTPException:
         await websocket.close(code=1008)
         return
     await websocket.accept()
@@ -400,6 +577,52 @@ async def job_events(websocket: WebSocket, job_id: str):
                 break
         await asyncio.sleep(1)
     await websocket.close()
+
+
+@app.post("/api/v1/github/webhooks", status_code=200)
+async def github_webhook(request: Request):
+    body_bytes = await request.body()
+    signature_header = request.headers.get("x-hub-signature-256")
+    delivery_id = request.headers.get("x-github-delivery")
+    event_type = request.headers.get("x-github-event", "ping")
+
+    from services.github.webhooks import verify_signature
+
+    if settings.environment == "production" and not settings.github_webhook_secret:
+        logger.error("GitHub webhook secret is unconfigured in production environment")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="GitHub webhook secret must be configured in production",
+        )
+
+    if settings.github_webhook_secret:
+        if not signature_header or not verify_signature(body_bytes, signature_header, settings.github_webhook_secret):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Invalid or missing webhook signature (x-hub-signature-256)",
+            )
+    elif settings.environment == "production":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Webhook signature verification required",
+        )
+    else:
+        logger.warning(
+            "GitHub webhook received without signature verification in %s mode",
+            settings.environment,
+        )
+
+    import json
+
+    try:
+        payload = json.loads(body_bytes.decode("utf-8")) if body_bytes else {}
+    except json.JSONDecodeError as exc:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload") from exc
+
+    from services.github.webhooks import GitHubWebhookHandler
+
+    handler = GitHubWebhookHandler()
+    return handler.process(event_type, payload, delivery_id=delivery_id)
 
 
 def _result_for_change(change_id: str, session: Session, principal: Principal) -> AnalysisResult:
@@ -515,6 +738,100 @@ def create_finding_feedback(
     _audit(session, principal, "finding.feedback", "finding", finding_id)
     session.commit()
     return {"id": feedback.id, "decision": feedback.decision, "created_at": feedback.created_at}
+
+
+def _finding_kind(finding_id: str) -> str:
+    fid = finding_id.lower()
+    return "TEST_GAP" if "gap" in fid or "scenario" in fid else "RISK"
+
+
+@app.get("/api/v1/feedback/metrics")
+def get_feedback_metrics(
+    session: Session = Depends(get_session),
+    principal: Principal = Depends(current_principal),
+):
+    stmt = select(FindingFeedback).where(FindingFeedback.organization_id == str(principal.organization_id))
+    feedbacks = session.scalars(stmt).all()
+    records = [
+        {
+            "finding_id": f.finding_id,
+            "decision": f.decision,
+            "reason": f.reason,
+            "analyzer_version": f.analyzer_version,
+            "finding_kind": _finding_kind(f.finding_id),
+        }
+        for f in feedbacks
+    ]
+    engine = FeedbackCalibrationEngine()
+    profile = engine.calibrate(records)
+
+    by_version: dict[str, dict[str, int]] = {}
+    for f in feedbacks:
+        ver = f.analyzer_version or "unknown"
+        by_version.setdefault(ver, {"total": 0, "accepted": 0})
+        by_version[ver]["total"] += 1
+        if f.decision == "ACCEPTED":
+            by_version[ver]["accepted"] += 1
+
+    precision_by_version = {
+        ver: {
+            "total": d["total"],
+            "accepted": d["accepted"],
+            "precision": round(d["accepted"] / d["total"], 4) if d["total"] > 0 else 1.0,
+        }
+        for ver, d in by_version.items()
+    }
+
+    precision_by_kind = {
+        cat: {
+            "precision": cal.precision,
+            "total": cal.sample_count,
+            "accepted": cal.accepted_count,
+            "multiplier": cal.confidence_multiplier,
+            "penalty": cal.threshold_penalty,
+        }
+        for cat, cal in profile.categories.items()
+    }
+
+    accepted_count = sum(1 for f in feedbacks if f.decision == "ACCEPTED")
+    rejected_count = sum(1 for f in feedbacks if f.decision == "REJECTED")
+
+    return {
+        "total_feedback_count": len(feedbacks),
+        "accepted_count": accepted_count,
+        "rejected_count": rejected_count,
+        "overall_precision": profile.overall_precision,
+        "precision_by_kind": precision_by_kind,
+        "precision_by_version": precision_by_version,
+        "calibrations_active": len([c for c in profile.categories.values() if c.confidence_multiplier < 1.0]),
+    }
+
+
+@app.get("/api/v1/feedback/summary")
+def get_feedback_summary(
+    session: Session = Depends(get_session),
+    principal: Principal = Depends(current_principal),
+):
+    stmt = select(FindingFeedback).where(FindingFeedback.organization_id == str(principal.organization_id))
+    feedbacks = session.scalars(stmt).all()
+    records = [
+        {
+            "finding_id": f.finding_id,
+            "decision": f.decision,
+            "reason": f.reason,
+            "analyzer_version": f.analyzer_version,
+            "finding_kind": _finding_kind(f.finding_id),
+        }
+        for f in feedbacks
+    ]
+    engine = FeedbackCalibrationEngine()
+    profile = engine.calibrate(records)
+    return {
+        "rejection_reasons": profile.rejection_reasons,
+        "calibrated_penalties": {cat: cal.threshold_penalty for cat, cal in profile.categories.items()},
+        "calibrated_multipliers": {cat: cal.confidence_multiplier for cat, cal in profile.categories.items()},
+        "rules": {cat: cal.rule_explanation for cat, cal in profile.categories.items()},
+    }
 
 
 @app.get("/api/v1/changes/{change_id}/plan")

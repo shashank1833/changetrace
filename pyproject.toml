@@ -23,6 +23,7 @@ dependencies = [
   "opentelemetry-sdk>=1.29,<2",
   "opentelemetry-instrumentation-fastapi>=0.50b0,<1",
   "python-multipart>=0.0.17,<1",
+  "PyJWT[crypto]>=2.9,<3",
 ]
 
 [project.optional-dependencies]
@@ -33,7 +34,9 @@ dev = [
   "pytest-asyncio>=0.24,<1",
   "ruff>=0.8,<1",
   "mypy>=1.13,<2",
+  "fakeredis>=2.20,<3",
 ]
+
 
 [tool.hatch.build.targets.wheel]
 packages = ["apps/api/changetrace_api", "packages/schemas/changetrace_schemas", "services", "workers"]
@@ -41,26 +44,36 @@ packages = ["apps/api/changetrace_api", "packages/schemas/changetrace_schemas", 
 [tool.pytest.ini_options]
 pythonpath = [".", "apps/api", "packages/schemas"]
 testpaths = ["tests"]
-norecursedirs = ["tests/evaluation/demo_repository"]
+norecursedirs = [
+  "tests/evaluation/demo_repository",
+  "tests/evaluation/cross_domain/subscription_repository",
+  "tests/evaluation/held_out/fintech_repository",
+]
 addopts = "-q --strict-markers"
 markers = ["integration: integration tests", "evaluation: benchmark tests"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 120
-exclude = ["tests/evaluation/demo_repository", "apps/web/node_modules"]
+exclude = [
+  "tests/evaluation/demo_repository",
+  "tests/evaluation/cross_domain/subscription_repository",
+  "tests/evaluation/held_out/fintech_repository",
+  "apps/web/node_modules",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["B008"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 plugins = ["pydantic.mypy"]
 ignore_missing_imports = true
 exclude = [
   "tests/evaluation/demo_repository/",
   "tests/evaluation/cross_domain/subscription_repository/",
+  "tests/evaluation/held_out/fintech_repository/",
 ]
 explicit_package_bases = true
 

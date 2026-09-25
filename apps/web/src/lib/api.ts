@@ -4,7 +4,7 @@ const API = import.meta.env.VITE_API_URL ?? ''
 const headers = { 'Content-Type': 'application/json' }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API}${path}`, { ...init, headers: { ...headers, ...init?.headers } })
+  const response = await fetch(`${API}${path}`, { ...init, credentials: 'include', headers: { ...headers, ...init?.headers } })
   if (!response.ok) {
     const body = await response.json().catch(() => ({ detail: `Request failed: ${response.status}` }))
     throw new Error(typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail))
@@ -13,6 +13,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  loginUrl: `${API}/api/v1/auth/github/login`,
+  me: () => request<{ user_id: string; organization_id: string; role: string; email?: string }>('/api/v1/auth/me'),
+  logout: () => request<void>('/api/v1/auth/logout', { method: 'POST' }),
   repositories: () => request<Repository[]>('/api/v1/repositories'),
   createRepository: (body: { name: string; source_path: string }) =>
     request<Repository>('/api/v1/repositories', { method: 'POST', body: JSON.stringify(body) }),
@@ -29,4 +32,21 @@ export const api = {
   ),
   report: (analysisId: string, format: 'json' | 'markdown') =>
     request<Analysis | { format: string; content: string }>(`/api/v1/analyses/${analysisId}/report?format=${format}`),
+  feedbackMetrics: () =>
+    request<{
+      total_feedback_count: number
+      accepted_count: number
+      rejected_count: number
+      overall_precision: number
+      precision_by_kind: Record<string, { precision: number; total: number; accepted: number; multiplier: number; penalty: number }>
+      precision_by_version: Record<string, { precision: number; total: number; accepted: number }>
+      calibrations_active: number
+    }>('/api/v1/feedback/metrics'),
+  feedbackSummary: () =>
+    request<{
+      rejection_reasons: Record<string, number>
+      calibrated_penalties: Record<string, number>
+      calibrated_multipliers: Record<string, number>
+      rules: Record<string, string>
+    }>('/api/v1/feedback/summary'),
 }

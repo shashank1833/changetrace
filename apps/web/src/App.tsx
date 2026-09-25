@@ -5,12 +5,13 @@ import {
 } from 'lucide-react'
 import { ImpactGraph } from './components/ImpactGraph'
 import { EvidenceDrawer } from './components/EvidenceDrawer'
+import { PrecisionDashboard } from './components/PrecisionDashboard'
 import { api } from './lib/api'
 import type { Analysis, Component, Evidence, Repository } from './types'
 
 const demoPath = 'tests/evaluation/demo_repository'
 const demoRequest = 'Add RETURNED as a new order state that can occur after shipment and allow refunds after successful warehouse inspection.'
-type Tab = 'simulation' | 'impact' | 'risks' | 'evidence' | 'tests' | 'decision'
+type Tab = 'simulation' | 'impact' | 'risks' | 'evidence' | 'tests' | 'decision' | 'precision'
 
 export default function App() {
   const [analysis, setAnalysis] = useState<Analysis | null>(null)
@@ -27,8 +28,10 @@ export default function App() {
   const [error, setError] = useState('')
   const [tab, setTab] = useState<Tab>('simulation')
   const [feedback, setFeedback] = useState<Record<string, string>>({})
+  const [currentUser, setCurrentUser] = useState<{ user_id: string; organization_id: string; role: string; email?: string } | null>(null)
 
   useEffect(() => {
+    api.me().then(setCurrentUser).catch(() => setCurrentUser(null))
     api.repositories().then((items) => {
       setRepositories(items)
       if (items[0]) { setRepositoryId(items[0].id); setSourcePath(items[0].source_path ?? '') }
@@ -88,11 +91,30 @@ export default function App() {
     const anchor = document.createElement('a'); anchor.href = url; anchor.download = `changetrace-${analysis.analysis_id}.${format === 'json' ? 'json' : 'md'}`; anchor.click(); URL.revokeObjectURL(url)
   }
 
+  async function handleLogout() {
+    try {
+      await api.logout()
+      setCurrentUser(null)
+    } catch {
+      // ignore
+    }
+  }
+
   return <div className="app-shell">
     <header>
       <button className="brand brand-button" onClick={() => setTab('simulation')}><span>CT</span> ChangeTrace</button>
-      <nav>{(['simulation', 'impact', 'risks', 'evidence', 'tests', 'decision'] as Tab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)} disabled={!analysis && item !== 'simulation'}>{item === 'tests' ? 'Test Gaps' : title(item)}</button>)}</nav>
-      <div className={`snapshot ${snapshot ? 'ready' : ''}`}>{snapshot ? snapshot.commit_sha.slice(0, 8) : 'NOT INDEXED'} <i/></div>
+      <nav>{(['simulation', 'impact', 'risks', 'evidence', 'tests', 'decision', 'precision'] as Tab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)} disabled={!analysis && item !== 'simulation' && item !== 'precision'}>{item === 'tests' ? 'Test Gaps' : item === 'precision' ? 'Precision' : title(item)}</button>)}</nav>
+      <div className="header-right">
+        {currentUser ? (
+          <div className="user-profile">
+            <span className="user-email">{currentUser.email || currentUser.role}</span>
+            <button className="auth-button logout" onClick={handleLogout}>Sign out</button>
+          </div>
+        ) : (
+          <a className="auth-button login" href={api.loginUrl}>Sign in with GitHub</a>
+        )}
+        <div className={`snapshot ${snapshot ? 'ready' : ''}`}>{snapshot ? snapshot.commit_sha.slice(0, 8) : 'NOT INDEXED'} <i/></div>
+      </div>
     </header>
     <main>
       {tab === 'simulation' && <>
@@ -118,6 +140,7 @@ export default function App() {
       {analysis && tab === 'evidence' && <EvidenceView analysis={analysis} onSelect={setSelected}/>}
       {analysis && tab === 'tests' && <TestView analysis={analysis} pickEvidence={pickEvidence}/>}
       {analysis && tab === 'decision' && <DecisionView analysis={analysis} exportReport={exportReport}/>}
+      {tab === 'precision' && <PrecisionDashboard />}
     </main>
     <EvidenceDrawer evidence={selected} onClose={() => setSelected(undefined)}/>
   </div>

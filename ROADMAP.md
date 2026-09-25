@@ -1,25 +1,32 @@
 # Roadmap
 
-## Completed vertical slice
+## Completed Milestones
 
-Repository snapshots, Python AST plus baseline TS/JS/SQL indexing, graph traversal, structured intent, immutable evidence, deterministic risk/confidence, adversarial status, test gaps, verification, API/UI, PostgreSQL/Redis definitions, Docker/CI, and the original controlled demo.
+### Core Analysis & Deep Extraction
+- **Tree-sitter Integration:** Multi-language extraction for Python, TypeScript/JavaScript, and SQL. Extracts route definitions (FastAPI & Express), call/import hierarchies, database mutations, HTTP calls, and state assignments with resilient fallback.
+- **Cross-Language State Machines:** State and transition extraction across Python enums and TypeScript types/unions, mapped to side-effects and test assertions.
+- **Advanced Contradiction Detection:** Behavioral opposition detection across documentation vs code, conflicting code guards across services, and test expectations vs unguarded implementations.
+- **Incremental Index Reuse:** Cache invalidation for modified and deleted files, cross-file edge rebuilding, and persistent disk cache (`save_cache`/`load_cache`) with full fallback.
 
-## Current milestone — business change simulation
+### Precision & Risk Modeling
+- **Directed Path Ranking:** Causal reachability traversal with dead-code exclusion and boundary-aware candidate filtering.
+- **Diff-Aware Simulation:** Unified Git diff parsing, changed symbol seeding, and before/after graph delta analysis.
+- **Feedback & Calibration:** Human-in-the-loop finding feedback, explainable precision calibration dashboards, and strict isolation preventing automatic model retraining.
 
-- **P0.1 Docker runtime verification:** blocked by unavailable Docker Desktop daemon; configuration validated and exact rerun documented.
-- **P0.2 expanded benchmark:** 33 machine-readable scenarios and measured baseline implemented. Precision is currently low and remains the principal quality target.
-- **P0.3 diff-aware simulation:** proposed unified diff and local branch/commit comparison, before/after indexes, graph delta, changed-component impact seeding, API persistence, and UI input implemented.
-- **P1.1 state-machine reasoning:** Python enum states and literal transition maps implemented at baseline depth.
-- **P1.2 contradiction detection:** conservative documentation/code paired-evidence detector implemented.
-- **P1.3 evidence quality:** strength and quality score implemented and shown in UI.
+### GitHub Integration & Production Lifecycle
+- **GitHub App & Token Lifecycle:** Installation token minting with JWTs, normalized PEM private key parsing, Redis-coordinated caching, and mock rejection in production.
+- **Signed Webhooks & Multi-Tenancy:** `X-Hub-Signature-256` HMAC verification, multi-tenant installation-to-organization mapping, and `X-GitHub-Delivery` replay deduplication.
+- **Checks & PR Comments:** Automatic `create_or_update_check_run` and `post_pr_comment` execution upon analysis completion.
+- **Database Migrations:** Transactional migration runner with advisory locks (`schema_migration_locks`) and Docker startup integration.
+- **Frontend Quality:** Vitest unit and component test suite covering API client, `PrecisionDashboard`, `EvidenceDrawer`, and main application.
 
-## Next, in order
+## Environment-Blocked
 
-1. Improve impact/evidence precision using directed path ranking, dead-code reachability, and boundary-aware candidate thresholds; re-run the held-out benchmark.
-2. Expand transition side-effect and transition-test mapping, including TypeScript Tree-sitter queries.
-3. Add safe incremental index reuse with full-analysis fallback and measured timings.
-4. Expand finding feedback reporting and precision dashboards. Feedback must not retrain models automatically.
-5. Add GitHub App authentication, signed webhooks, PR diff ingestion, checks, and concise comments only after core precision is acceptable.
-6. Add production migration runner, PostgreSQL RLS, distributed rate limits, OTel exporter, sandbox limits, and container runtime verification.
+- **P0.1 Docker Runtime Verification:** Configuration and Dockerfiles validated; container spin-up blocked on Windows host due to unavailable Docker Desktop daemon service access.
 
-Language expansion remains gated on measured core quality.
+## Next Priorities
+
+1. Expand Tree-sitter grammars to additional target languages (Go, Java, Rust).
+2. Continuous evaluation against held-out customer repositories beyond the 33 synthetic benchmark scenarios.
+3. OpenTelemetry distributed tracing exporter and production sandbox isolation limits.
+

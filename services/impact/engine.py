@@ -140,9 +140,10 @@ class ImpactEngine:
             # the request concerns refund_order. Operation-specific qualifiers must
             # also occur in the component; generic domain overlap cannot satisfy them.
             meaningful_matches = all_matches - domain_terms
-            concepts = {self._concept(term) for term in meaningful_matches if term != "return"}
+            allow_return = "return" in terms
+            concepts = {self._concept(term) for term in meaningful_matches if term != "return" or allow_return}
             identity_concepts = {
-                self._concept(term) for term in identity_matches - domain_terms if term != "return"
+                self._concept(term) for term in identity_matches - domain_terms if term != "return" or allow_return
             }
             content_concepts = {
                 self._concept(term) for term in content_matches - domain_terms if term != "return"
@@ -171,14 +172,25 @@ class ImpactEngine:
                 likely_seeds.add(component.id)
 
         distances = graph.impact_neighborhood(likely_seeds, depth=2)
+        rankings = graph.directed_path_ranking(likely_seeds, depth=3)
+        dead_code = graph.find_dead_code()
         selected: dict[str, Component] = {}
         for component_id, (status, _score, matches) in lexical.items():
             source = graph.components[component_id]
             distance = distances.get(component_id)
             relationship = self._causal_relationship(component_id, likely_seeds, graph)
-            if status == ImpactStatus.CANDIDATE and distance == 1 and relationship:
+            path_score = rankings.get(component_id, 0.0)
+
+            # Exclude unreachable dead code from being promoted to LIKELY unless explicitly targeted
+            explicit_dead_target = bool(terms & {"unused", "dead", "experiment", "preview", "remove", "delete"})
+            if component_id in dead_code and status == ImpactStatus.CANDIDATE and not explicit_dead_target:
+                status = ImpactStatus.CANDIDATE
+                relationship = None
+
+            if status == ImpactStatus.CANDIDATE and distance == 1 and relationship and component_id not in dead_code:
                 status = ImpactStatus.LIKELY
-                reason = f"Likely match on {', '.join(sorted(matches))}, supported by {relationship}"
+                matched_str = ", ".join(sorted(matches))
+                reason = f"Likely match on {matched_str}, supported by {relationship} (rank: {round(path_score, 2)})"
                 path = [
                     f"CHANGE terms {sorted(matches)}",
                     f"ENTITY {self._entity_label(intent)}",
@@ -206,7 +218,7 @@ class ImpactEngine:
             )
 
         # Promote related symbols only inside a file that already has an independently
-        # likely symbol.  Cross-file IMPORTS adjacency is not enough: it previously
+        # likely symbol. Cross-file IMPORTS adjacency is not enough: it previously
         # pulled callers, callees, tests, and sibling APIs into almost every result.
         likely_files = {
             component.location.file
@@ -216,13 +228,29 @@ class ImpactEngine:
         for component_id, (status, _score, matches) in lexical.items():
             current = selected[component_id]
             source = graph.components[component_id]
+            encloses_likely = source.type == ComponentType.CLASS and any(
+                other.impact_status in {ImpactStatus.LIKELY, ImpactStatus.CONFIRMED}
+                and other.location.file == source.location.file
+                and (
+                    source.location.line_start <= other.location.line_start <= source.location.line_end
+                    or other.name.startswith(f"{source.name}.")
+                )
+                and other.name != source.name
+                for other in selected.values()
+            )
             if (
                 status != ImpactStatus.CANDIDATE
                 or current.impact_status != ImpactStatus.CANDIDATE
                 or source.location.file not in likely_files
-                or (domain_terms and source.type not in {ComponentType.BUSINESS_RULE, ComponentType.STATE})
+                or component_id in dead_code
+                or (
+                    domain_terms
+                    and not encloses_likely
+                    and source.type not in {ComponentType.BUSINESS_RULE, ComponentType.STATE}
+                )
             ):
                 continue
+
             selected[component_id] = source.model_copy(
                 update={
                     "reason": f"Likely match on {', '.join(sorted(matches))}, supported by a same-file affected symbol",
@@ -341,15 +369,17 @@ class ImpactEngine:
             terms -= {"return", "returned", "returns"}
         return terms
 
-    @staticmethod
-    def _tokens(value: str) -> set[str]:
+    @classmethod
+    def _tokens(cls, value: str) -> set[str]:
         value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
-        return {
+        raw_tokens = {
             token
             for part in re.findall(r"[A-Za-z][A-Za-z0-9_]*", value)
             for token in part.lower().split("_")
             if len(token) >= 3 and token not in _CODE_WORDS
         }
+        concepts = {cls._concept(t) for t in raw_tokens}
+        return raw_tokens | concepts
 
     @staticmethod
     def _concept(term: str) -> str:
@@ -357,6 +387,12 @@ class ImpactEngine:
             return "return"
         if term in {"refund", "refunded", "refunds"}:
             return "refund"
+        if term in {"cancel", "cancelled", "cancelling", "cancellation", "cancellations"}:
+            return "cancel"
+        if term in {"inspect", "inspected", "inspecting", "inspection", "inspections"}:
+            return "inspect"
+        if term in {"admin", "administrator", "administrators"}:
+            return "admin"
         return ChangeInterpreter._stem(term)
 
     @staticmethod
