@@ -79,23 +79,23 @@ def current_principal(
     x_role: str = Header(default="OWNER"),
 ) -> Principal:
     settings = get_settings()
+    if changetrace_session:
+        with SessionLocal() as session:
+            web_session = session.scalar(select(WebSession).where(WebSession.token_hash == _digest(changetrace_session)))
+            if web_session and web_session.expires_at > int(time.time()):
+                user = session.get(User, web_session.user_id)
+                if user:
+                    return Principal(UUID(user.id), UUID(user.organization_id), user.role)
+            elif web_session:
+                session.delete(web_session)
+                session.commit()
     if settings.auth_mode == "development":
         if x_role not in {"OWNER", "ADMIN", "MEMBER", "VIEWER"}:
             raise HTTPException(status_code=403, detail="Invalid role")
         return Principal(x_user_id, x_organization_id, x_role)
     if not changetrace_session:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required")
-    with SessionLocal() as session:
-        web_session = session.scalar(select(WebSession).where(WebSession.token_hash == _digest(changetrace_session)))
-        if not web_session or web_session.expires_at <= int(time.time()):
-            if web_session:
-                session.delete(web_session)
-                session.commit()
-            raise HTTPException(status_code=401, detail="Session expired")
-        user = session.get(User, web_session.user_id)
-        if not user:
-            raise HTTPException(status_code=401, detail="Invalid session")
-        return Principal(UUID(user.id), UUID(user.organization_id), user.role)
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session expired")
 
 
 def require_write(principal: Principal) -> None:

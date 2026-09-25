@@ -72,10 +72,15 @@ class RepositoryAnalyzer:
         self.sandbox.apply_process_limits()
         total_bytes = 0
         file_count = 0
-        for path in sorted(root.rglob("*")):
+        import os
+        paths: list[Path] = []
+        for dirpath, dirnames, filenames in os.walk(root):
+            dirnames[:] = sorted([d for d in dirnames if d not in IGNORED_PARTS and not d.startswith(".")])
+            for filename in filenames:
+                paths.append(Path(dirpath) / filename)
+        paths.sort()
+        for path in paths:
             if path.is_symlink() or not path.is_file() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
-                continue
-            if any(part in IGNORED_PARTS for part in path.relative_to(root).parts):
                 continue
             try:
                 self.sandbox.validate_path(path, root)

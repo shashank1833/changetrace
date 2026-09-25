@@ -92,10 +92,15 @@ class IncrementalIndexer:
         )
 
         current_files: dict[str, Path] = {}
-        for path in sorted(new_root.rglob("*")):
+        import os
+        paths: list[Path] = []
+        for dirpath, dirnames, filenames in os.walk(new_root):
+            dirnames[:] = sorted([d for d in dirnames if d not in IGNORED_PARTS and not d.startswith(".")])
+            for filename in filenames:
+                paths.append(Path(dirpath) / filename)
+        paths.sort()
+        for path in paths:
             if path.is_symlink() or not path.is_file() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
-                continue
-            if any(part in IGNORED_PARTS for part in path.relative_to(new_root).parts):
                 continue
             rel = path.relative_to(new_root).as_posix()
             current_files[rel] = path

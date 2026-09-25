@@ -89,14 +89,18 @@ class SnapshotService:
     @staticmethod
     def _directory_hash(path: Path) -> str:
         digest = hashlib.sha256()
-        ignored = {".git", "node_modules", ".venv", "venv", "dist", "build", "coverage", "__pycache__"}
-        for file in sorted(path.rglob("*")):
-            relative = file.relative_to(path)
-            if file.is_symlink() or not file.is_file() or any(part in ignored for part in relative.parts):
-                continue
-            digest.update(relative.as_posix().encode())
-            try:
-                digest.update(file.read_bytes())
-            except OSError:
-                continue
+        ignored = {".git", "node_modules", ".venv", "venv", "dist", "build", "coverage", "__pycache__", ".emergent"}
+        import os
+        for root, dirs, files in os.walk(path):
+            dirs[:] = sorted([d for d in dirs if d not in ignored and not d.startswith(".")])
+            for filename in sorted(files):
+                file = Path(root) / filename
+                if file.is_symlink() or not file.is_file() or filename.startswith("."):
+                    continue
+                relative = file.relative_to(path)
+                digest.update(relative.as_posix().encode())
+                try:
+                    digest.update(file.read_bytes())
+                except OSError:
+                    continue
         return digest.hexdigest()

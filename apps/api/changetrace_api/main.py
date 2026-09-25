@@ -337,7 +337,9 @@ def sync_repository(
         repo.source_path = str(snapshot.path)
     else:
         raise HTTPException(422, "Repository has no source")
-    if session.get(RepositorySnapshot, snapshot.id) is None:
+    existing_snap = session.get(RepositorySnapshot, snapshot.id)
+    final_snapshot_id = snapshot.id
+    if existing_snap is None:
         session.add(
             RepositorySnapshot(
                 id=snapshot.id,
@@ -347,9 +349,22 @@ def sync_repository(
                 status="VALID",
             )
         )
+    elif existing_snap.repository_id != repo.id:
+        scoped_id = f"snap-{repo.id[:8]}-{snapshot.id[5:]}"
+        final_snapshot_id = scoped_id
+        if session.get(RepositorySnapshot, scoped_id) is None:
+            session.add(
+                RepositorySnapshot(
+                    id=scoped_id,
+                    repository_id=repo.id,
+                    commit_sha=snapshot.commit_sha,
+                    version="0.1.0",
+                    status="VALID",
+                )
+            )
     _audit(session, principal, "repository.sync", "repository", repo.id)
     session.commit()
-    return {"snapshot_id": snapshot.id, "commit_sha": snapshot.commit_sha, "status": "INDEXABLE"}
+    return {"snapshot_id": final_snapshot_id, "commit_sha": snapshot.commit_sha, "status": "INDEXABLE"}
 
 
 @app.delete("/api/v1/repositories/{repository_id}", status_code=200)
@@ -485,7 +500,9 @@ def _run_analysis_job(job_id: str) -> None:
             )
             job.status, job.progress = AnalysisStatus.VERIFICATION.value, "90"
             session.commit()
-            if session.get(RepositorySnapshot, result.snapshot_id) is None:
+            existing_snap = session.get(RepositorySnapshot, result.snapshot_id)
+            final_snap_id = result.snapshot_id
+            if existing_snap is None:
                 session.add(
                     RepositorySnapshot(
                         id=result.snapshot_id,
@@ -495,6 +512,19 @@ def _run_analysis_job(job_id: str) -> None:
                         status="VALID",
                     )
                 )
+            elif existing_snap.repository_id != repository.id:
+                scoped_id = f"snap-{repository.id[:8]}-{result.snapshot_id[5:]}"
+                final_snap_id = scoped_id
+                if session.get(RepositorySnapshot, scoped_id) is None:
+                    session.add(
+                        RepositorySnapshot(
+                            id=scoped_id,
+                            repository_id=repository.id,
+                            commit_sha=result.commit_sha,
+                            version=result.analyzer_version,
+                            status="VALID",
+                        )
+                    )
             run = AnalysisRun(
                 id=str(result.analysis_id),
                 organization_id=job.organization_id,
