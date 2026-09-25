@@ -1,4 +1,9 @@
-# Next Implementation Assessment
+# Next Implementation Assessment (Historical Pre-Implementation Snapshot)
+
+> [!NOTE]
+> **Historical Archive Notice**: This document reflects an early pre-implementation gap analysis completed on **2026-09-09**.
+> For the current production implementation status, benchmark measurements, and architecture, refer to [README.md](../README.md) and [ROADMAP.md](ROADMAP.md).
+> All features identified as gaps below (including Tree-sitter AST parsing, incremental indexing, GitHub App integration, production authentication, PostgreSQL RLS migrations, and containerization) have since been implemented and verified.
 
 Assessment completed 2026-09-09 before implementation. The repository was an uncommitted but working modular monolith with React, FastAPI, SQLAlchemy, NetworkX, deterministic parsing/risk/test generation, evidence hashing, Redis/RQ configuration, and a one-scenario benchmark.
 

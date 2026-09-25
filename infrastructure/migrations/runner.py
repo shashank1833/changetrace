@@ -161,12 +161,13 @@ class MigrationRunner:
                         )
                     )
                     now = datetime.now(UTC)
+                    now_val = now.isoformat() if self.engine.dialect.name == "sqlite" else now
                     conn.execute(
                         text(
                             "INSERT INTO schema_migration_locks (lock_id, locked_by, locked_at) "
                             "VALUES (1, 'migration_runner', :now)"
                         ),
-                        {"now": now},
+                        {"now": now_val},
                     )
                     return True
             except Exception:
@@ -174,9 +175,10 @@ class MigrationRunner:
                 try:
                     with self.engine.begin() as conn:
                         cutoff = datetime.now(UTC) - timedelta(seconds=60)
+                        cutoff_val = cutoff.isoformat() if self.engine.dialect.name == "sqlite" else cutoff
                         conn.execute(
                             text("DELETE FROM schema_migration_locks WHERE lock_id = 1 AND locked_at < :cutoff"),
-                            {"cutoff": cutoff},
+                            {"cutoff": cutoff_val},
                         )
                 except Exception:
                     pass
@@ -277,13 +279,14 @@ class MigrationRunner:
                         raise
 
                 now = datetime.now(UTC)
+                now_val = now.isoformat() if is_sqlite else now
                 insert_sql = (
                     "INSERT INTO schema_migrations (version, checksum, applied_at) "
                     "VALUES (:version, :checksum, :applied_at)"
                 )
                 conn.execute(
                     text(insert_sql),
-                    {"version": version, "checksum": checksum, "applied_at": now},
+                    {"version": version, "checksum": checksum, "applied_at": now_val},
                 )
                 newly_applied.append(version)
                 logger.info("Successfully applied %s", version)

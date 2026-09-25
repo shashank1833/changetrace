@@ -20,3 +20,4 @@ pytest-asyncio>=1.4,<2
 ruff>=0.8,<1
 mypy>=1.13,<2
 fakeredis>=2.20,<3
+anyio>=4.14.2,<5

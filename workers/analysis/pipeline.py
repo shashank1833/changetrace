@@ -98,8 +98,6 @@ class AnalysisPipeline:
         finding_evidence_ids: set[str] = set()
         for r in risks:
             finding_evidence_ids.update(r.evidence)
-        for rule in rules:
-            finding_evidence_ids.update(rule.evidence_ids)
         for c in contradictions:
             finding_evidence_ids.update(c.evidence_ids)
         for gap in test_gaps:
