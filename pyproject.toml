@@ -29,9 +29,9 @@ dependencies = [
 [project.optional-dependencies]
 analysis = ["tree-sitter>=0.23,<1", "tree-sitter-language-pack>=0.6,<1"]
 dev = [
-  "pytest>=8.3,<9",
+  "pytest>=8.4,<10",
   "pytest-cov>=6,<7",
-  "pytest-asyncio>=0.24,<1",
+  "pytest-asyncio>=1.4,<2",
   "ruff>=0.8,<1",
   "mypy>=1.13,<2",
   "fakeredis>=2.20,<3",

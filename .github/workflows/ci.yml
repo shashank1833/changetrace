@@ -16,7 +16,8 @@ jobs:
       - run: python tests/evaluation/benchmark/run.py
       - run: python tests/evaluation/cross_domain/run.py
       - run: python tests/evaluation/held_out/run.py
-      - run: pip-audit
+      - run: pip-audit -r requirements.txt
+
 
   frontend:
     runs-on: ubuntu-latest

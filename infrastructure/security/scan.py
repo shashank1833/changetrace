@@ -104,14 +104,19 @@ def audit_dockerfiles(root: Path = REPO_ROOT) -> list[dict[str, Any]]:
 def audit_dependencies() -> list[dict[str, Any]]:
     """Run pip-audit and npm audit if available."""
     findings = []
-    # Check pip-audit
+    # Check pip-audit for project requirements
     try:
-        cmd = ["pip-audit", "--format", "json"]
+        req_file = REPO_ROOT / "requirements.txt"
+        if req_file.exists():
+            cmd = ["pip-audit", "-r", str(req_file), "--format", "json"]
+        else:
+            cmd = ["pip-audit", "--format", "json"]
         res = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_ROOT, check=False)
         if res.returncode != 0 and res.stdout:
             findings.append({"type": "PYTHON_DEPENDENCY_VULNERABILITY", "output": res.stdout[:500]})
     except FileNotFoundError:
         pass
+
 
     # Check npm audit
     npm_dir = REPO_ROOT / "apps" / "web"
