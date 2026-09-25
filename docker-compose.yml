@@ -35,6 +35,12 @@ services:
       CHANGETRACE_QUEUE_MODE: redis
       CHANGETRACE_LOCAL_REPOSITORY_ROOT: /workspace
       CHANGETRACE_SNAPSHOT_STORAGE_ROOT: /var/lib/changetrace/snapshots
+      CHANGETRACE_AUTH_MODE: ${CHANGETRACE_AUTH_MODE:-development}
+      CHANGETRACE_GITHUB_CLIENT_ID: ${CHANGETRACE_GITHUB_CLIENT_ID:-}
+      CHANGETRACE_GITHUB_CLIENT_SECRET: ${CHANGETRACE_GITHUB_CLIENT_SECRET:-}
+      CHANGETRACE_GITHUB_CALLBACK_URL: ${CHANGETRACE_GITHUB_CALLBACK_URL:-http://localhost:5173/api/v1/auth/github/callback}
+      CHANGETRACE_WEB_URL: ${CHANGETRACE_WEB_URL:-http://localhost:5173}
+      CHANGETRACE_SESSION_SECRET: ${CHANGETRACE_SESSION_SECRET:-changetrace-secret-session-key-32chars}
     volumes: ["./tests/evaluation/demo_repository:/workspace/demo:ro", "snapshot_data:/var/lib/changetrace/snapshots"]
     ports: ["8000:8000"]
     depends_on:
@@ -50,6 +56,12 @@ services:
       CHANGETRACE_REDIS_URL: redis://redis:6379/0
       CHANGETRACE_LOCAL_REPOSITORY_ROOT: /workspace
       CHANGETRACE_SNAPSHOT_STORAGE_ROOT: /var/lib/changetrace/snapshots
+      CHANGETRACE_AUTH_MODE: ${CHANGETRACE_AUTH_MODE:-development}
+      CHANGETRACE_GITHUB_CLIENT_ID: ${CHANGETRACE_GITHUB_CLIENT_ID:-}
+      CHANGETRACE_GITHUB_CLIENT_SECRET: ${CHANGETRACE_GITHUB_CLIENT_SECRET:-}
+      CHANGETRACE_GITHUB_CALLBACK_URL: ${CHANGETRACE_GITHUB_CALLBACK_URL:-http://localhost:5173/api/v1/auth/github/callback}
+      CHANGETRACE_WEB_URL: ${CHANGETRACE_WEB_URL:-http://localhost:5173}
+      CHANGETRACE_SESSION_SECRET: ${CHANGETRACE_SESSION_SECRET:-changetrace-secret-session-key-32chars}
     volumes: ["./tests/evaluation/demo_repository:/workspace/demo:ro", "snapshot_data:/var/lib/changetrace/snapshots"]
     depends_on:
       postgres: { condition: service_healthy }
