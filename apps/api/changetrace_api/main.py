@@ -905,6 +905,18 @@ def _safe_local_path(source_path: str) -> Path:
         ):
             return (workspace_root / "demo").resolve()
 
+    # Check for mounted Smart-Resume-Analyzer
+    if (workspace_root / "smart-resume-analyzer").exists():
+        if "smart-resume-analyzer" in normalized.lower():
+            return (workspace_root / "smart-resume-analyzer").resolve()
+
+    # Check for mounted test_repositories
+    if (workspace_root / "test_repositories").exists():
+        if "career-navigator-ai" in normalized.lower():
+            return (workspace_root / "test_repositories" / "career-navigator-ai").resolve()
+        if "facial-emotion-recognition" in normalized.lower():
+            return (workspace_root / "test_repositories" / "Facial-Emotion-Recognition-Using-Deep-Learning").resolve()
+
     # If it is a relative path or subfolder within workspace_root
     candidate = (workspace_root / source_path).resolve()
     if candidate.exists() and (candidate == workspace_root or workspace_root in candidate.parents):
