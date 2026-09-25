@@ -66,6 +66,10 @@ async def lifespan(_app: FastAPI):
         if session.get(Organization, org_id) is None:
             session.add(Organization(id=org_id, name="Development Organization"))
             session.commit()
+        user_id = "00000000-0000-0000-0000-000000000001"
+        if session.get(User, user_id) is None:
+            session.add(User(id=user_id, organization_id=org_id, email="dev@changetrace.local", role="OWNER"))
+            session.commit()
     yield
 
 
@@ -126,6 +130,31 @@ def health():
 @app.get("/api/v1/auth/github/login")
 def github_login():
     if not settings.github_client_id or not settings.github_client_secret:
+        if settings.auth_mode == "development":
+            with SessionLocal() as session:
+                user_id = "00000000-0000-0000-0000-000000000001"
+                org_id = "00000000-0000-0000-0000-000000000001"
+                user = session.get(User, user_id)
+                if user is None:
+                    user = User(
+                        id=user_id,
+                        organization_id=org_id,
+                        email="dev@changetrace.local",
+                        role="OWNER",
+                    )
+                    session.add(user)
+                    session.commit()
+                token, _ = create_session(user_id)
+            response = RedirectResponse(settings.web_url, status_code=302)
+            response.set_cookie(
+                "changetrace_session",
+                token,
+                max_age=settings.session_ttl_seconds,
+                httponly=True,
+                secure=settings.session_cookie_secure,
+                samesite="lax",
+            )
+            return response
         raise HTTPException(503, "GitHub OAuth is not configured")
     state = oauth_state()
     url = httpx.URL(
