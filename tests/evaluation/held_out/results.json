@@ -8,7 +8,7 @@
   "false_positive_rate": 0.0,
   "unsupported_claim_rate": 0.0,
   "evidence_validity_rate": 1.0,
-  "median_analysis_seconds": 0.129,
+  "median_analysis_seconds": 0.288,
   "rows": [
     {
       "id": "heldout-01",
