@@ -170,12 +170,26 @@ class TestGapEngine:
         qualifier_terms.update(field_nouns)
 
         scenarios: list[TestScenario] = []
+        executable_components = [
+            c for c in components if c.type in {ComponentType.API, ComponentType.FUNCTION, ComponentType.CLASS}
+        ]
+        production_components = executable_components or [
+            c for c in components if c.type not in {ComponentType.FILE, ComponentType.TEST}
+        ]
         for category, expected, priority, coverage_terms in specs:
-            category_comps = [
-                c
-                for c in components
-                if any(t in f"{c.name} {c.location.file}".lower() for t in coverage_terms)
-            ] or components[:2]
+            if category in {"negative path", "input validation"}:
+                category_comps = [
+                    c
+                    for c in production_components
+                    if c.type in {ComponentType.API, ComponentType.CLASS}
+                    or any(t in f"{c.name} {c.location.file}".lower() for t in coverage_terms)
+                ] or production_components[:2]
+            else:
+                category_comps = [
+                    c
+                    for c in production_components
+                    if any(t in f"{c.name} {c.location.file}".lower() for t in coverage_terms)
+                ] or production_components[:2]
             target_names = {c.name.lower() for c in category_comps}
             coverage = self._coverage(category, coverage_terms, test_details, target_names, qualifier_terms)
             raw = f"{entity}:{state}:{category}"
