@@ -17,7 +17,7 @@ from changetrace_schemas import (
     JobView,
     RepositoryCreate,
 )
-from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request, WebSocket, status
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Request, Response, WebSocket, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import select
@@ -235,7 +235,17 @@ def github_callback(code: str, state: str, request: Request):
 
 
 @app.get("/api/v1/auth/me")
-def auth_me(principal: Principal = Depends(current_principal), session: Session = Depends(get_session)):
+def auth_me(
+    request: Request,
+    principal: Principal = Depends(current_principal),
+    session: Session = Depends(get_session),
+):
+    session_token = request.cookies.get("changetrace_session")
+    if not session_token and settings.auth_mode == "development":
+        has_explicit_user_header = any(k.lower() == "x-user-id" for k in request.headers.keys())
+        if not has_explicit_user_header:
+            raise HTTPException(401, "Authentication required")
+
     user = session.get(User, str(principal.user_id))
     return {
         "user_id": str(principal.user_id),
@@ -248,8 +258,8 @@ def auth_me(principal: Principal = Depends(current_principal), session: Session 
 @app.post("/api/v1/auth/logout", status_code=204)
 def logout(request: Request):
     revoke_session(request.cookies.get("changetrace_session"))
-    response = JSONResponse(status_code=204, content=None)
-    response.delete_cookie("changetrace_session")
+    response = Response(status_code=204)
+    response.delete_cookie("changetrace_session", path="/", httponly=True, samesite="lax")
     return response
 
 
@@ -294,8 +304,18 @@ def create_repository(
     require_write(principal)
     if not payload.source_path and not payload.github_url:
         raise HTTPException(422, "source_path or github_url is required")
+    raw_source = payload.source_path.strip() if payload.source_path else None
+    github_url = payload.github_url.strip() if payload.github_url else None
+    if raw_source and (raw_source.startswith("https://") or raw_source.startswith("http://") or raw_source.startswith("git@")):
+        github_url = raw_source
+        raw_source = None
     repository = Repository(
-        id=str(uuid.uuid4()), organization_id=str(principal.organization_id), **payload.model_dump()
+        id=str(uuid.uuid4()),
+        organization_id=str(principal.organization_id),
+        name=payload.name,
+        source_path=raw_source,
+        github_url=github_url,
+        default_branch=payload.default_branch,
     )
     session.add(repository)
     _audit(session, principal, "repository.create", "repository", repository.id)
@@ -326,14 +346,15 @@ def sync_repository(
     repo = _tenant_get(session, Repository, str(repository_id), principal)
     from services.repository_analysis import SnapshotService
 
-    if repo.source_path:
+    if repo.source_path and not (repo.source_path.startswith("https://") or repo.source_path.startswith("http://") or repo.source_path.startswith("git@")):
         try:
             safe_path = _safe_local_path(repo.source_path)
         except ValueError as exc:
             raise HTTPException(400, str(exc)) from exc
         snapshot = SnapshotService().from_local(safe_path)
-    elif repo.github_url:
-        snapshot = SnapshotService().clone_github(repo.github_url, workspace_root=_snapshot_storage_root())
+    elif repo.github_url or (repo.source_path and (repo.source_path.startswith("https://") or repo.source_path.startswith("http://") or repo.source_path.startswith("git@"))):
+        url = repo.github_url or repo.source_path
+        snapshot = SnapshotService().clone_github(url, workspace_root=_snapshot_storage_root())
         repo.source_path = str(snapshot.path)
     else:
         raise HTTPException(422, "Repository has no source")
@@ -449,11 +470,15 @@ def analyze_change(
     _audit(session, principal, "analysis.queue", "analysis_job", job.id)
     session.commit()
     if settings.queue_mode == "redis":
-        from redis import Redis
-        from rq import Queue, Retry
+        try:
+            from redis import Redis
+            from rq import Queue, Retry
 
-        queue = Queue("changetrace", connection=Redis.from_url(settings.redis_url))
-        queue.enqueue(_run_analysis_job, job.id, retry=Retry(max=2, interval=[10, 30]))
+            queue = Queue("changetrace", connection=Redis.from_url(settings.redis_url))
+            queue.enqueue(_run_analysis_job, job.id, retry=Retry(max=2, interval=[10, 30]))
+        except Exception as exc:
+            logger.warning("Redis queue unavailable (%s); falling back to inline background execution", exc)
+            background.add_task(_run_analysis_job, job.id)
     else:
         # Inline background execution keeps contributor setup credential-free.
         background.add_task(_run_analysis_job, job.id)
@@ -953,6 +978,9 @@ def _safe_local_path(source_path: str) -> Path:
         return candidate
 
     path = Path(source_path).expanduser().resolve()
+    if settings.environment == "development" and path.is_dir():
+        return path
+
     allowed_roots = (
         workspace_root,
         _snapshot_storage_root(),

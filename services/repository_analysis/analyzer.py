@@ -179,19 +179,19 @@ class RepositoryAnalyzer:
                     else ComponentType.FUNCTION
                 )
                 decorators = {self._name(d) for d in node.decorator_list}
-                if decorators & {
-                    "router.get",
-                    "router.post",
-                    "router.put",
-                    "router.patch",
-                    "router.delete",
-                    "app.get",
-                    "app.post",
-                }:
+                is_api_route = any(
+                    any(d.endswith(f".{verb}") for verb in ("get", "post", "put", "patch", "delete", "route", "api_route"))
+                    or "router." in d or "app." in d or "blueprint." in d or "bp." in d
+                    for d in decorators
+                )
+                is_background_job = (
+                    bool(decorators & {"task", "shared_task", "celery.task", "scheduler.scheduled_job", "cron"})
+                    or any(part in file.lower().replace("\\", "/").split("/") for part in ("jobs", "workers", "tasks", "cron"))
+                    or any(x in node.name.lower() for x in ("worker", "cron_job", "background_task", "celery_task"))
+                )
+                if is_api_route:
                     kind = ComponentType.API
-                elif decorators & {"task", "shared_task", "celery.task", "scheduler.scheduled_job", "cron"} or any(
-                    x in node.name.lower() for x in ("worker", "job", "cron")
-                ):
+                elif is_background_job:
                     kind = ComponentType.JOB
                 self._add(
                     index,
@@ -265,6 +265,7 @@ class RepositoryAnalyzer:
     def _parse_javascript(self, index: IndexedRepository, file: str, text: str) -> None:
         patterns = [
             (r"(?:export\s+)?(?:async\s+)?function\s+(\w+)", ComponentType.FUNCTION, "JavaScript/TypeScript function"),
+            (r"(?:export\s+)?(?:const|let|var)\s+([A-Za-z0-9_]+)\s*=\s*(?:async\s*)?(?:\([^)]*\)|[A-Za-z0-9_]+)\s*=>", ComponentType.FUNCTION, "JavaScript/TypeScript function"),
             (r"(?:export\s+)?class\s+(\w+)", ComponentType.CLASS, "JavaScript/TypeScript class"),
             (r"(?:describe|it|test)\s*\(\s*['\"]([^'\"]+)", ComponentType.TEST, "JavaScript/TypeScript test"),
             (r"(?:router|app)\.(?:get|post|put|patch|delete)\s*\(\s*['\"]([^'\"]+)", ComponentType.API, "HTTP route"),

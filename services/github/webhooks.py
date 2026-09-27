@@ -296,13 +296,22 @@ class GitHubWebhookHandler:
             # 5. Enqueue execution
             settings = get_settings()
             if settings.queue_mode == "redis":
-                from redis import Redis
-                from rq import Queue, Retry
+                try:
+                    from redis import Redis
+                    from rq import Queue, Retry
 
-                from apps.api.changetrace_api.main import _run_analysis_job
+                    from apps.api.changetrace_api.main import _run_analysis_job
 
-                q = Queue("changetrace", connection=Redis.from_url(settings.redis_url))
-                q.enqueue(_run_analysis_job, job.id, retry=Retry(max=2, interval=[10, 30]))
+                    conn = Redis.from_url(settings.redis_url)
+                    conn.ping()
+                    q = Queue("changetrace", connection=conn)
+                    q.enqueue(_run_analysis_job, job.id, retry=Retry(max=2, interval=[10, 30]))
+                except Exception:
+                    import threading
+
+                    from apps.api.changetrace_api.main import _run_analysis_job
+                    thread = threading.Thread(target=_run_analysis_job, args=(job.id,), daemon=True)
+                    thread.start()
             else:
                 import threading
 

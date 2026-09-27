@@ -1,32 +1,37 @@
 {
   "scenarios": 3,
-  "impact_precision": 0.5384615384615384,
-  "impact_recall": 0.7777777777777778,
-  "impact_f1": 0.6363636363636364,
+  "impact_precision": 0.5454545454545454,
+  "impact_recall": 0.6666666666666666,
+  "impact_f1": 0.6,
   "evidence_precision": 0.36363636363636365,
-  "risk_precision": 0.6666666666666666,
+  "risk_precision": 1.0,
+  "risk_recall": 0.8333333333333334,
+  "risk_f1": 0.9090909090909091,
   "false_positive_rate": 0.0,
   "unsupported_claim_rate": 0.0,
   "evidence_validity_rate": 1.0,
-  "median_analysis_seconds": 0.095,
+  "median_analysis_seconds": 0.143,
   "rows": [
     {
       "id": "heldout-01",
-      "impact_precision": 1.0,
-      "impact_recall": 1.0,
-      "risk_precision": 1.0
+      "impact_precision": 0.6666666666666666,
+      "impact_recall": 0.6666666666666666,
+      "risk_precision": 1.0,
+      "risk_recall": 1.0
     },
     {
       "id": "heldout-02",
-      "impact_precision": 0.3333333333333333,
-      "impact_recall": 0.6666666666666666,
-      "risk_precision": 0.0
+      "impact_precision": 0.6,
+      "impact_recall": 1.0,
+      "risk_precision": 1.0,
+      "risk_recall": 1.0
     },
     {
       "id": "heldout-03",
-      "impact_precision": 0.5,
-      "impact_recall": 0.6666666666666666,
-      "risk_precision": 1.0
+      "impact_precision": 0.3333333333333333,
+      "impact_recall": 0.3333333333333333,
+      "risk_precision": 1.0,
+      "risk_recall": 0.5
     }
   ]
 }

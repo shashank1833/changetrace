@@ -96,6 +96,67 @@ def test_github_checks_service_markdown():
     assert "Verify authorization" in md
 
 
+def test_github_checks_service_markdown_with_explainable_drivers():
+    service = GitHubChecksService()
+    result = AnalysisResult(
+        repository="test-repo",
+        commit_sha="abcdef1234567890",
+        snapshot_id="snap-test",
+        analyzer_version="0.2.0",
+        model_version="deterministic-v1",
+        change_request="Expose external webhook endpoint",
+        intent=ChangeIntent(),
+        impact_summary=ImpactSummary(
+            affected_files=3,
+            affected_components=4,
+            business_rules=2,
+            apis=1,
+            database_entities=0,
+            background_jobs=1,
+            integrations=1,
+            related_tests=1,
+        ),
+        components=[],
+        graph_edges=[],
+        evidence=[],
+        business_rules=[],
+        state_machines=[],
+        contradictions=[],
+        risks=[],
+        test_gaps=[],
+        change_plan=["Verify webhook authentication"],
+        decision=ChangeDecision(
+            status=DecisionStatus.REVIEW,
+            rationale=[
+                "1 high-confidence high/critical risk(s) supported by 2 evidence reference(s)",
+                "Risk Score: 78 / 100 (HIGH)",
+                "Decision Drivers:",
+                "  + 2 downstream components affected",
+                "  + 1 state transition exposed",
+                "  + API route contract affected",
+                "  - no database schema change",
+                "  - no documentation contradictions detected",
+                "Evidence: 3 verified source spans, 0 unsupported claims",
+            ],
+            required_actions=["Verify webhook authentication"],
+        ),
+    )
+
+    md = service.build_summary_markdown(result)
+    assert "⚠️ ChangeTrace Decision: **REVIEW**" in md
+    assert "### Decision Rationale" in md
+    assert "**Risk Score: 78 / 100 (HIGH)**" in md
+    assert "#### Key Drivers" in md
+    assert "- `+` 2 downstream components affected" in md
+    assert "- `+` 1 state transition exposed" in md
+    assert "- `+` API route contract affected" in md
+    assert "- `-` no database schema change" in md
+    assert "- `-` no documentation contradictions detected" in md
+    assert "#### Evidence Integrity" in md
+    assert "Evidence: 3 verified source spans, 0 unsupported claims" in md
+
+
+
 def test_webhook_handler_ping():
     handler = GitHubWebhookHandler()
     res = handler.process("ping", {})

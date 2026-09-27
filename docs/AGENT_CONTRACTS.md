@@ -1,23 +1,26 @@
-# Agent Contracts
+# Engine & Analysis Service Contracts
 
-## Change Interpreter
-Input: request text and optional deterministic diff summary. Output: strict `ChangeIntent`. It may not invent source locations. Malformed output retries once and falls back to deterministic extraction.
+> [!NOTE]
+> ChangeTrace rejects "multi-agent" marketing buzzwords. All core components are deterministic, bounded, schema-constrained Python analysis engines operating inside a synchronous, fail-closed verification pipeline.
 
-## Business Rule Discovery
-Input: extracted condition/state structures and allowed evidence IDs. Output: statement, `EXPLICIT|INFERRED|UNCERTAIN|CONTRADICTORY`, confidence, source locations, snapshot, and evidence IDs. Inferred rules are never displayed as confirmed facts.
+## Change Interpreter Contract
+Input: request text and optional unified Git diff. Output: strict `ChangeIntent`. It may not invent source locations. Fallback uses deterministic multi-domain keyword and structure extraction.
 
-## Risk Reasoning
-Input: immutable deterministic factors, affected component IDs, state transitions, and allowed evidence. Output: explanation and action only. It cannot alter numeric score, severity boundaries, commit, or evidence.
+## Business Rule & Contradiction Discovery
+Input: extracted condition/state structures and verified evidence IDs. Output: statement, `EXPLICIT|INFERRED|UNCERTAIN|CONTRADICTORY`, confidence, source locations, snapshot, and evidence IDs. Inferred rules are never displayed as confirmed facts.
+
+## Risk Reasoning Engine
+Input: immutable deterministic factors, affected component IDs, state transitions, and allowed evidence. Output: explanation and component-specific action only. It cannot alter numeric scores, severity boundaries, commit SHAs, or evidence hashes.
 
 ## Test Gap Generator
-Input: intent, rules, affected boundaries, existing tests, and allowed evidence. Output: actor/preconditions/action/result/invariant/requirement/components/evidence/coverage. It must deduplicate scenarios and avoid count inflation.
+Input: intent, rules, affected boundaries, existing tests, and allowed evidence. Output: derived scenario specifications (`COVERED`, `MISSING`, `CONTRADICTED`). It must deduplicate scenarios and avoid count inflation.
 
-## Adversarial Reviewer
-Input: risk plus supporting and candidate counter-evidence. Output: `SUPPORTED|WEAKLY_SUPPORTED|CONTESTED|INSUFFICIENT_EVIDENCE` and bounded confidence adjustment. It cannot remove provenance.
+## Adversarial Verifier
+Input: calculated risks plus supporting and candidate counter-evidence (existing tests, guards). Output: `SUPPORTED|WEAKLY_SUPPORTED|CONTESTED|INSUFFICIENT_EVIDENCE` and bounded confidence adjustment. It cannot remove provenance.
 
-## Explanation Generator
-Input: already verified finding and reasoning path. Output: concise user-facing explanation. It cannot add components, evidence, or facts.
+## Pipeline Release Gate (Decision Engine)
+Input: verified risks, test gaps, contradictions, and actionable change plan. Output: deterministic `GO`, `REVIEW`, or `BLOCK` decision. No probabilistic model chooses the release decision.
 
-## Global controls
+## Global Invariants
 
-No agent has tools or unrestricted repository authority. Repository comments/docs are untrusted data. Calls have structured output, schema validation, timeout, bounded retries, provider/model/prompt version, usage metadata, and failure handling. Prompts/source are not written to general logs. Unknown evidence IDs invalidate output. The current production path uses deterministic fallbacks and marks semantic analysis degraded.
+No service has unrestricted repository authority or network access. Repository comments/docs are untrusted data. All outputs use strict Pydantic schemas and allowed evidence IDs. The core production path is deterministic, reproducible, and verifiable.

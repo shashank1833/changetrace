@@ -2,9 +2,12 @@
 
 > **Know what your change will break before you make it.**
 
-ChangeTrace is an evidence-first **Business Change Simulator**. It connects a natural-language requirement and optional proposed Git diff to affected code, business rules, states, data paths, integrations, tests, deterministic risks, and a GO / REVIEW / BLOCK recommendation.
+ChangeTrace is an evidence-first **Git-Native Change Impact & State-Machine Simulator**. It connects a natural-language requirement and optional proposed Git diff directly to affected code, cross-language state machines, database models, API contracts, deterministic risks, verified test gaps, and a fail-closed GO / REVIEW / BLOCK decision for Pull Requests.
 
-It is not a generic code reviewer, chatbot, CMDB, observability suite, or autonomous coding agent.
+### Strategic Scope Boundaries
+
+- **In-Scope (Kept & Hardened):** Git repository intelligence, unified diffs, AST parsing (Python, TS/JS, SQL via Tree-sitter), in-memory directed dependency graphs (NetworkX), immutable SHA-256 evidence verification, deterministic 95-point risk engine, cross-service contradiction detection, test-gap derivation, and automated GitHub Check Runs / PR comments.
+- **Explicitly Out-of-Scope (Killed):** No CRM (Salesforce) or ERP (SAP/NetSuite) connectors; no Jira ticket or Confluence wiki crawling; no spreadsheet/CSV business rule pipelines; no runtime log/telemetry ingestion; no universal enterprise CMDB; no "multi-agent" marketing hype; no hardcoded business-rule heuristics; no fake/demo numbers; and no generic AI-generated change plans.
 
 ## Implemented workflow
 
@@ -73,7 +76,7 @@ Apply the ordered SQL files in `infrastructure/migrations/versions/` using the t
 - [Business rules](docs/BUSINESS_RULES.md)
 - [Data model](docs/DATA_MODEL.md)
 - [API](docs/API_SPEC.md)
-- [Agent contracts](docs/AGENT_CONTRACTS.md)
+- [Engine contracts](docs/AGENT_CONTRACTS.md)
 - [Threat model](docs/THREAT_MODEL.md)
 - [Evaluation plan](docs/EVALUATION_PLAN.md) and [results](docs/EVALUATION_RESULTS.md)
 - [Implementation assessment](docs/NEXT_IMPLEMENTATION_ASSESSMENT.md)

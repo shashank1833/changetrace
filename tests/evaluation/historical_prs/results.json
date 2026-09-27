@@ -1,0 +1,82 @@
+{
+  "scenarios": 5,
+  "diff_patch_validity_rate": 1.0,
+  "graph_delta_success_rate": 1.0,
+  "decision_accuracy": 1.0,
+  "impact_precision": 0.3181818181818182,
+  "impact_recall": 1.0,
+  "impact_f1": 0.4827586206896552,
+  "risk_precision": 0.6,
+  "risk_recall": 0.6666666666666666,
+  "risk_f1": 0.631578947368421,
+  "unsupported_claim_rate": 0.0,
+  "evidence_validity_rate": 1.0,
+  "median_analysis_seconds": 0.265,
+  "rows": [
+    {
+      "id": "pr-01-order-state-invalidation",
+      "title": "PR #104: Add RETURNED state to order lifecycle",
+      "category": "state_machine_transition",
+      "diff_parsed": true,
+      "decision": "REVIEW",
+      "expected_decision": "REVIEW",
+      "decision_matched": true,
+      "impact_precision": 0.25,
+      "impact_recall": 1.0,
+      "risk_precision": 0.0,
+      "duration_seconds": 0.313
+    },
+    {
+      "id": "pr-02-fintech-fee-surcharge-break",
+      "title": "PR #215: Add dynamic international currency fee surcharge",
+      "category": "financial_calculation",
+      "diff_parsed": true,
+      "decision": "REVIEW",
+      "expected_decision": "REVIEW",
+      "decision_matched": true,
+      "impact_precision": 0.5,
+      "impact_recall": 1.0,
+      "risk_precision": 1.0,
+      "duration_seconds": 0.261
+    },
+    {
+      "id": "pr-03-fintech-missing-settlement-guard",
+      "title": "PR #288: Allow settlement execution from INITIALIZED state",
+      "category": "authorization_bypass",
+      "diff_parsed": true,
+      "decision": "REVIEW",
+      "expected_decision": "REVIEW",
+      "decision_matched": true,
+      "impact_precision": 0.3333333333333333,
+      "impact_recall": 1.0,
+      "risk_precision": 1.0,
+      "duration_seconds": 0.255
+    },
+    {
+      "id": "pr-04-safe-additive-order-utility",
+      "title": "PR #312: Add helper method to format order tracking reference",
+      "category": "safe_additive_refactor",
+      "diff_parsed": true,
+      "decision": "GO",
+      "expected_decision": "GO",
+      "decision_matched": true,
+      "impact_precision": 1.0,
+      "impact_recall": 1.0,
+      "risk_precision": 0.0,
+      "duration_seconds": 0.265
+    },
+    {
+      "id": "pr-05-subscription-pause-state",
+      "title": "PR #405: Add PAUSED state to subscription billing lifecycle",
+      "category": "subscription_lifecycle",
+      "diff_parsed": true,
+      "decision": "REVIEW",
+      "expected_decision": "REVIEW",
+      "decision_matched": true,
+      "impact_precision": 0.25,
+      "impact_recall": 1.0,
+      "risk_precision": 1.0,
+      "duration_seconds": 0.275
+    }
+  ]
+}

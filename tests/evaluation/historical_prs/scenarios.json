@@ -1,0 +1,86 @@
+[
+  {
+    "id": "pr-01-order-state-invalidation",
+    "repository": "demo_repository",
+    "title": "PR #104: Add RETURNED state to order lifecycle",
+    "change_request": "Add RETURNED after shipment and allow a refund after inspection.",
+    "diff": "diff --git a/backend/models/order.py b/backend/models/order.py\n--- a/backend/models/order.py\n+++ b/backend/models/order.py\n@@ -5,6 +5,7 @@ class OrderStatus(str, Enum):\n     CREATED = \"CREATED\"\n     PAID = \"PAID\"\n     SHIPPED = \"SHIPPED\"\n+    RETURNED = \"RETURNED\"\n     CANCELLED = \"CANCELLED\"\n \n \n",
+    "expected_impacted_files": [
+      "backend/models/order.py",
+      "backend/services/refund_service.py"
+    ],
+    "expected_risks": [
+      "order",
+      "state"
+    ],
+    "expected_decision": "REVIEW",
+    "category": "state_machine_transition",
+    "rationale": "Adding RETURNED introduces downstream state machine branching without verified transition safeguards."
+  },
+  {
+    "id": "pr-02-fintech-fee-surcharge-break",
+    "repository": "held_out/fintech_repository",
+    "title": "PR #215: Add dynamic international currency fee surcharge",
+    "change_request": "Add currency fee surcharge for international payment settlement",
+    "diff": "diff --git a/services/fee_service.py b/services/fee_service.py\n--- a/services/fee_service.py\n+++ b/services/fee_service.py\n@@ -9,7 +9,7 @@ class FeeService:\n         base_fee = int(amount_cents * 0.029) + 30\n         if currency != \"USD\":\n             # Multi-currency surcharge 1%\n-            base_fee += int(amount_cents * 0.01)\n+            base_fee += int(amount_cents * 0.015) + 50\n         return base_fee\n \n     def refund_fee_reversal(self, fee_cents: int) -> int:\n",
+    "expected_impacted_files": [
+      "services/fee_service.py"
+    ],
+    "expected_risks": [
+      "currency",
+      "settlement"
+    ],
+    "expected_decision": "REVIEW",
+    "category": "financial_calculation",
+    "rationale": "Modifying fee calculation affects settlement totals and payment reconciliation invariants."
+  },
+  {
+    "id": "pr-03-fintech-missing-settlement-guard",
+    "repository": "held_out/fintech_repository",
+    "title": "PR #288: Allow settlement execution from INITIALIZED state",
+    "change_request": "Allow direct settlement from initialized payment status",
+    "diff": "diff --git a/services/payment_service.py b/services/payment_service.py\n--- a/services/payment_service.py\n+++ b/services/payment_service.py\n@@ -28,7 +28,7 @@ class PaymentService:\n         return record\n \n     def settle(self, record: PaymentRecord) -> PaymentRecord:\n-        if record.status != PaymentStatus.AUTHORIZED:\n+        if record.status not in (PaymentStatus.AUTHORIZED, PaymentStatus.INITIALIZED):\n             raise ValueError(f\"Cannot settle from {record.status}\")\n         record.status = PaymentStatus.SETTLING\n         fee = self.fee_service.calculate_fee(record.amount_cents, record.currency)\n",
+    "expected_impacted_files": [
+      "services/payment_service.py"
+    ],
+    "expected_risks": [
+      "settlement",
+      "currency"
+    ],
+    "expected_decision": "REVIEW",
+    "category": "authorization_bypass",
+    "rationale": "Allowing settlement from INITIALIZED bypasses the payment authorization requirement."
+  },
+  {
+    "id": "pr-04-safe-additive-order-utility",
+    "repository": "demo_repository",
+    "title": "PR #312: Add helper method to format order tracking reference",
+    "change_request": "Add helper method to format order tracking reference without modifying state",
+    "diff": "diff --git a/backend/models/order.py b/backend/models/order.py\n--- a/backend/models/order.py\n+++ b/backend/models/order.py\n@@ -13,3 +13,6 @@ class Order:\n     customer_id: int\n     status: OrderStatus\n     inspection_passed: bool\n+\n+    def format_tracking_code(self) -> str:\n+        return f\"ORD-{self.id:06d}\"\n",
+    "expected_impacted_files": [
+      "backend/models/order.py"
+    ],
+    "expected_risks": [],
+    "expected_decision": "GO",
+    "category": "safe_additive_refactor",
+    "rationale": "Pure additive method without state mutations, database schema alterations, or breaking caller changes."
+  },
+  {
+    "id": "pr-05-subscription-pause-state",
+    "repository": "cross_domain/subscription_repository",
+    "title": "PR #405: Add PAUSED state to subscription billing lifecycle",
+    "change_request": "Add PAUSED state for customer billing subscriptions",
+    "diff": "diff --git a/backend/models/subscription.py b/backend/models/subscription.py\n--- a/backend/models/subscription.py\n+++ b/backend/models/subscription.py\n@@ -4,6 +4,7 @@ from enum import StrEnum\n class SubscriptionStatus(StrEnum):\n     TRIAL = \"TRIAL\"\n     ACTIVE = \"ACTIVE\"\n+    PAUSED = \"PAUSED\"\n     PAST_DUE = \"PAST_DUE\"\n     SUSPENDED = \"SUSPENDED\"\n     CANCELLED = \"CANCELLED\"\n",
+    "expected_impacted_files": [
+      "backend/models/subscription.py",
+      "backend/services/subscription_service.py"
+    ],
+    "expected_risks": [
+      "state",
+      "transition"
+    ],
+    "expected_decision": "REVIEW",
+    "category": "subscription_lifecycle",
+    "rationale": "Adding PAUSED state requires validating billing cycle invariants and subscription pause/resume transitions."
+  }
+]

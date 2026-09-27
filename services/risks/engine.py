@@ -14,7 +14,17 @@ from changetrace_schemas import (
     SupportStatus,
 )
 
-CRITICAL_TERMS = {"refund", "payment", "authorization", "permission", "warehouse", "order"}
+CRITICAL_TERMS = {
+    "refund",
+    "payment",
+    "authorization",
+    "permission",
+    "warehouse",
+    "order",
+    "fee",
+    "settlement",
+    "currency",
+}
 INTEGRATION_TYPES = {ComponentType.INTEGRATION, ComponentType.API, ComponentType.JOB}
 
 
@@ -52,9 +62,12 @@ class RiskEngine:
         distances: dict[str, int],
         expected_test_gaps: int = 1,
         state_machines: list[StateMachine] | None = None,
+        intent: object | None = None,
     ) -> list[Risk]:
         if not components:
             return []
+        import re
+
         evidence = list(dict.fromkeys(eid for component in components for eid in component.evidence_ids))
         boundary_types = {component.type for component in components}
         names = " ".join(component.name.lower() for component in components)
@@ -90,13 +103,45 @@ class RiskEngine:
         score = normalized_score(factors)
         confidence = min(0.98, 0.45 + min(len(evidence), 8) * 0.05 + min(len(rules), 3) * 0.05)
         central = sorted(components, key=lambda c: (distances.get(c.id, 9), -len(c.evidence_ids)))[:8]
-        claim = "The proposed behavior crosses existing business conditions and dependency boundaries."
-        title = "Existing change path may not support the proposed behavior"
-        claim_terms = {"business", "condition", "dependency"}
-        if "refund" in names:
-            claim = "The proposed state change may bypass or conflict with current refund eligibility processing."
+        central_component = central[0]
+        all_text = " ".join(f"{c.name} {c.location.file}" for c in central).lower()
+        has_state = bool(state_machines or ComponentType.STATE in boundary_types or transition_count > 0 or "state" in names)
+
+        intent_terms = set()
+        if intent:
+            intent_terms.update(getattr(intent, "entities", []))
+            intent_terms.update(getattr(intent, "actions", []))
+            intent_terms.update(getattr(intent, "states_added", []))
+            for c in getattr(intent, "constraints", []) + getattr(intent, "expected_behaviors", []):
+                intent_terms.update(re.findall(r"[a-z0-9_]+", c.lower()))
+        intent_terms = {t.lower() for t in intent_terms}
+
+        claim_terms: set[str] = set()
+        if "refund" in intent_terms or (not intent and "refund" in names):
+            claim = "The proposed refund change may bypass or conflict with current refund eligibility and processing conditions."
             title = "Refund processing change path requires explicit verification"
-            claim_terms = {"refund", "eligible", "eligibility"}
+            claim_terms = {"refund", "eligible", "eligibility", "condition"}
+        elif "currency" in intent_terms or "fx" in intent_terms or "settlement" in intent_terms or (not intent and ("currency" in names or "fx" in names)):
+            claim = "The proposed currency settlement change affects automated FX conversion, fee calculation, and dependent processing paths."
+            title = "Foreign currency and FX settlement change path requires verification"
+            claim_terms = {"currency", "fx", "settlement", "fee"}
+        elif "fee" in intent_terms or (not intent and "fee" in names):
+            claim = "The proposed fee change affects fee service calculation and payment adjustments."
+            title = "State transition and fee processing change path requires verification"
+            claim_terms = {"fee", "payment", "state", "transition"}
+        elif "authorization" in names or "permission" in names or "authorization" in intent_terms or "permission" in intent_terms:
+            claim = f"The requested authorization change affects the existing {central_component.name} change path and condition checks."
+            title = "Authorization change path requires verification"
+            claim_terms = {"authorization", "permission", "access", "condition"}
+        elif bool(intent and getattr(intent, "states_added", None)) or bool(intent_terms & {"state", "transition", "pause", "paused"}):
+            claim = f"The proposed state transition and status change in {central_component.name} introduces unverified lifecycle paths."
+            title = f"State transition and {central_component.name} change path requires verification"
+            claim_terms = {"state", "status", "transition", "lifecycle", central_component.name.lower()}
+        else:
+            claim = "The proposed behavior crosses existing business conditions and dependency boundaries."
+            title = "Existing change path may not support the proposed behavior"
+            claim_terms = {"business", "condition", "dependency"}
+
         evidence_by_component = {
             evidence_id: component
             for component in components
@@ -115,14 +160,8 @@ class RiskEngine:
             )
         ]
         if not compatible_evidence:
-            # Use a precise claim that the selected component evidence can support
-            # instead of attaching unrelated provenance to a generic risk statement.
-            central_component = sorted(components, key=lambda c: (distances.get(c.id, 9), -len(c.evidence_ids)))[0]
             claim = f"The requested change affects the existing {central_component.name} change path."
             title = "Existing change path requires verification"
-            if "authorization" in names or "permission" in names:
-                claim = f"The requested authorization change affects the existing {central_component.name} change path."
-                title = "Authorization change path requires verification"
             compatible_evidence = list(central_component.evidence_ids)
         evidence = compatible_evidence
         risk_id = "RISK-" + hashlib.sha1((title + ":".join(evidence)).encode()).hexdigest()[:10]  # noqa: S324

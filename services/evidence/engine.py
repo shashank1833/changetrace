@@ -7,7 +7,9 @@ from services.repository_analysis import IndexedRepository
 
 
 class EvidenceEngine:
-    def collect(self, index: IndexedRepository, components: list[Component]) -> list[Evidence]:
+    def collect(
+        self, index: IndexedRepository, components: list[Component], intent: object | None = None
+    ) -> list[Evidence]:
         strengths = {
             evidence_id: component.evidence_strength
             for component in components
@@ -23,7 +25,7 @@ class EvidenceEngine:
                 evidence.model_copy(
                     update={
                         "strength": strengths[evidence.id],
-                        "quality_score": self.quality_score(evidence, strengths[evidence.id]) if valid else 0.0,
+                        "quality_score": self.quality_score(evidence, strengths[evidence.id], intent=intent) if valid else 0.0,
                         "status": "VALID" if valid else "INVALID",
                     }
                 )
@@ -31,7 +33,9 @@ class EvidenceEngine:
         return result
 
     @staticmethod
-    def quality_score(evidence: Evidence, strength: EvidenceStrength) -> float:
+    def quality_score(
+        evidence: Evidence, strength: EvidenceStrength, intent: object | None = None
+    ) -> float:
         base = {
             EvidenceStrength.DIRECT: 0.98,
             EvidenceStrength.STRONG: 0.88,
@@ -44,7 +48,36 @@ class EvidenceEngine:
             base -= 0.05
         if not evidence.snippet.strip():
             base -= 0.25
-        return max(0.0, min(1.0, base))
+        if intent is not None:
+            intent_tokens = EvidenceEngine._intent_tokens(intent)
+            if intent_tokens:
+                evidence_tokens = EvidenceEngine._claim_tokens(
+                    f"{evidence.location.file} {evidence.location.symbol or ''} {evidence.snippet}"
+                )
+                overlap = intent_tokens & evidence_tokens
+                if not overlap and strength != EvidenceStrength.DIRECT:
+                    base = min(base, 0.45)
+                elif len(overlap) >= 2:
+                    base = min(1.0, base + 0.05)
+        return max(0.0, min(1.0, round(base, 2)))
+
+    @staticmethod
+    def _intent_tokens(intent: object) -> set[str]:
+        tokens = set()
+        search_terms = getattr(intent, "search_terms", set())
+        if isinstance(search_terms, set):
+            tokens.update(t.lower() for t in search_terms)
+        domain_terms = getattr(intent, "domain_terms", set())
+        if isinstance(domain_terms, set):
+            tokens.update(t.lower() for t in domain_terms)
+        for e in getattr(intent, "entities", []):
+            tokens.add(str(e).lower())
+        for a in getattr(intent, "actions", []):
+            tokens.add(str(a).lower())
+        for phrase in getattr(intent, "constraints", []) + getattr(intent, "expected_behaviors", []):
+            tokens.update(EvidenceEngine._claim_tokens(str(phrase)))
+        return tokens - {"the", "this", "that", "with", "from", "into", "change", "code", "file", "path"}
+
 
     def validate(self, evidence: Evidence, index: IndexedRepository) -> bool:
         if (
@@ -108,10 +141,12 @@ class EvidenceEngine:
     @staticmethod
     def supports_claim(evidence: Evidence, claim: str) -> bool:
         """Require claim/evidence concept overlap; provenance alone is not support."""
+        if evidence.location.symbol and len(evidence.location.symbol) >= 3 and evidence.location.symbol.lower() in claim.lower():
+            return True
         ignored = {
             "the", "this", "that", "with", "from", "into", "existing", "proposed",
             "behavior", "change", "current", "requires", "explicit", "verification",
-            "processing", "path", "state", "order", "may", "not",
+            "processing", "path", "state", "may", "not",
         }
         claim_terms = {word for word in EvidenceEngine._claim_tokens(claim) if word not in ignored}
         evidence_terms = EvidenceEngine._claim_tokens(

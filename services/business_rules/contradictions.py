@@ -154,31 +154,45 @@ class ContradictionDetector:
             if not test_asserts_rejection:
                 continue
             test_terms = self._terms(te.snippet)
+            matching_ces: list[Evidence] = []
+            matched_domains: set[str] = set()
+
             for c in code_rules:
                 ce = by_id.get(c.evidence_ids[0]) if c.evidence_ids else None
                 if not ce or ce.id == te.id:
                     continue
                 overlap = test_terms & self._terms(ce.snippet)
-                domain_overlap = overlap & {"cancel", "refund", "delete", "pause", "resume"}
+                domain_overlap = overlap & {"cancel", "refund", "delete", "pause"}
+                if {"pause", "resume"} <= overlap:
+                    domain_overlap.add("resume")
                 if len(domain_overlap) >= 1 and len(overlap) >= 2:
                     if not _NEGATION.search(ce.snippet):
-                        pair = (te.id, ce.id)
-                        if pair not in seen:
-                            seen.add(pair)
-                            digest = hashlib.sha1(":".join(pair).encode()).hexdigest()[:12]
-                            claim_msg = (
-                                f"Test in {te.location.file} expects rejection for "
-                                f"{', '.join(sorted(domain_overlap))}, but implementation in "
-                                f"{ce.location.file} has no corresponding guard or rejection check."
-                            )
-                            contradictions.append(
-                                Contradiction(
-                                    id=f"CON-{digest}",
-                                    claim=claim_msg,
-                                    confidence=0.80,
-                                    evidence_ids=[te.id, ce.id],
-                                )
-                            )
+                        matching_ces.append(ce)
+                        matched_domains |= domain_overlap
+
+            if matching_ces:
+                # Group all conflicting code sites for this test into a single contradiction
+                target_ids = sorted({ce.id for ce in matching_ces})
+                pair_key = (te.id, ":".join(target_ids))
+                if pair_key not in seen:
+                    seen.add(pair_key)
+                    evidence_ids = [te.id] + target_ids[:5]
+                    digest = hashlib.sha1(f"{te.id}:{':'.join(target_ids)}".encode()).hexdigest()[:12]
+                    site_files = sorted({ce.location.file for ce in matching_ces})
+                    files_str = ", ".join(site_files)
+                    claim_msg = (
+                        f"Test in {te.location.file} expects rejection for "
+                        f"{', '.join(sorted(matched_domains))}, but implementation in "
+                        f"{files_str} ({len(matching_ces)} site(s)) has no corresponding guard or rejection check."
+                    )
+                    contradictions.append(
+                        Contradiction(
+                            id=f"CON-{digest}",
+                            claim=claim_msg,
+                            confidence=0.80,
+                            evidence_ids=evidence_ids,
+                        )
+                    )
 
         return contradictions[:10]
 

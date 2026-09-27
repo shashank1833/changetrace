@@ -52,3 +52,28 @@ def test_unrelated_test_does_not_remove_gap(tmp_path: Path):
     scenarios = generate(tmp_path, "def test_math():\n    assert 1 + 1 == 2\n")
     happy = next(item for item in scenarios if item.category == "happy path")
     assert happy.coverage != CoverageStatus.EXISTING_TEST
+
+
+def test_api_field_change_generates_validation_and_caller_gaps(tmp_path: Path):
+    (tmp_path / "server.py").write_text(
+        "def align_job(request):\n    return {'score': 95}\n"
+    )
+    (tmp_path / "test_server.py").write_text(
+        "def test_other():\n    assert True\n"
+    )
+    index = RepositoryAnalyzer().scan(tmp_path, "snapshot", "commit")
+    components = [item for item in index.components if item.type != ComponentType.FILE]
+    intent = ChangeInterpreter().interpret(
+        "Change the job alignment API to support a new required location field. "
+        "The frontend JobMatch page should send the location, the backend should validate it, "
+        "and the engine should use it."
+    )
+    scenarios = TestGapEngine().generate(intent, components, None, index)
+    categories = {s.category for s in scenarios}
+    assert "happy path" in categories
+    assert "negative path" in categories
+    assert "input validation" in categories
+    assert "caller contract" in categories
+    assert "downstream consumption" in categories
+    assert all(s.coverage in {CoverageStatus.UNCERTAIN, CoverageStatus.MISSING} for s in scenarios)
+

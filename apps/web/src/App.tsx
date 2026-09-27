@@ -45,7 +45,16 @@ export default function App() {
 
   async function ensureRepository() {
     if (repositoryId) return repositoryId
-    const created = await api.createRepository({ name: 'E-commerce Order Service', source_path: sourcePath })
+    const trimmed = sourcePath.trim()
+    const isGithub = trimmed.startsWith('https://github.com/') || trimmed.startsWith('http://github.com/') || trimmed.startsWith('git@')
+    const name = isGithub 
+      ? trimmed.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '') 
+      : (trimmed.split(/[/\\]/).filter(Boolean).pop() || 'Custom Repository')
+    const created = await api.createRepository(
+      isGithub 
+        ? { name, github_url: trimmed } 
+        : { name, source_path: trimmed }
+    )
     setRepositories((current) => [...current, created]); setRepositoryId(created.id)
     return created.id
   }
@@ -94,9 +103,10 @@ export default function App() {
   async function handleLogout() {
     try {
       await api.logout()
-      setCurrentUser(null)
     } catch {
       // ignore
+    } finally {
+      setCurrentUser(null)
     }
   }
 
@@ -120,9 +130,9 @@ export default function App() {
       {tab === 'simulation' && <>
         <section className="hero"><p className="eyebrow">BUSINESS CHANGE SIMULATOR</p><h1>Know what your change will<br/><em>break before you make it.</em></h1><p>Trace proposed behavior through code, rules, data, integrations, and tests—with source evidence behind every conclusion.</p></section>
         <section className="repository-card">
-          <div className="repo-icon"><GitBranch/></div><div><p className="eyebrow">{repository ? 'SELECTED REPOSITORY' : 'DEMO REPOSITORY'}</p><h3>{repository?.name ?? 'E-commerce Order Service'}</h3><p>{sourcePath || 'Choose a repository path'} · Python / TypeScript / SQL</p></div>
-          <div className="repo-actions"><select value={repositoryId} onChange={(event) => { setRepositoryId(event.target.value); const repo = repositories.find((item) => item.id === event.target.value); if (repo) setSourcePath(repo.source_path ?? '') }}><option value="">New local repository</option>{repositories.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select><button className="secondary" onClick={sync}>SYNC</button><span className={snapshot ? 'indexed' : 'unverified'}>● {snapshot ? snapshot.status : 'NOT INDEXED'}</span></div>
-          {!repositoryId && <input className="path-input" aria-label="Repository path" value={sourcePath} onChange={(event) => setSourcePath(event.target.value)} />}
+          <div className="repo-icon"><GitBranch/></div><div><p className="eyebrow">{repository ? 'SELECTED REPOSITORY' : 'NEW REPOSITORY'}</p><h3>{repository?.name ?? (sourcePath ? sourcePath.split(/[/\\]/).filter(Boolean).pop() : 'New Repository')}</h3><p>{sourcePath || 'Enter a local folder path or GitHub URL'} · Python / TypeScript / SQL</p></div>
+          <div className="repo-actions"><select value={repositoryId} onChange={(event) => { setRepositoryId(event.target.value); const repo = repositories.find((item) => item.id === event.target.value); if (repo) setSourcePath(repo.source_path ?? repo.github_url ?? '') }}><option value="">New repository (local path or GitHub URL)</option>{repositories.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select><button className="secondary" onClick={sync}>SYNC</button><span className={snapshot ? 'indexed' : 'unverified'}>● {snapshot ? snapshot.status : 'NOT INDEXED'}</span></div>
+          {!repositoryId && <input className="path-input" aria-label="Repository path or GitHub URL" placeholder="e.g. C:\path\to\repo or https://github.com/owner/repo" value={sourcePath} onChange={(event) => setSourcePath(event.target.value)} />}
           {snapshot && <div className="commit-line">snapshot {snapshot.snapshot_id} · commit {snapshot.commit_sha}</div>}
         </section>
         <section className="composer">

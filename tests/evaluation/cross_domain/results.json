@@ -1,18 +1,18 @@
 {
   "metrics": {
     "scenarios": 15,
-    "impact_precision": 0.5689655172413793,
-    "impact_recall": 0.7857142857142857,
-    "impact_f1": 0.66,
-    "evidence_precision": 0.37777777777777777,
-    "evidence_recall": 0.8095238095238095,
-    "evidence_f1": 0.5151515151515151,
-    "test_gap_precision": 0.6521739130434783,
+    "impact_precision": 0.47058823529411764,
+    "impact_recall": 0.7619047619047619,
+    "impact_f1": 0.5818181818181817,
+    "evidence_precision": 0.22058823529411764,
+    "evidence_recall": 0.7142857142857143,
+    "evidence_f1": 0.33707865168539325,
+    "test_gap_precision": 0.42857142857142855,
     "test_gap_recall": 0.6818181818181818,
-    "test_gap_f1": 0.6666666666666666,
-    "irrelevant_selection_rate": 0.14285714285714285,
+    "test_gap_f1": 0.5263157894736843,
+    "irrelevant_selection_rate": 0.19047619047619047,
     "unsupported_claim_rate": 0.0,
-    "median_analysis_seconds": 0.1
+    "median_analysis_seconds": 0.16
   },
   "scenarios": [
     {
@@ -36,7 +36,6 @@
       "found": [
         "backend/integrations/billing.py",
         "backend/jobs/renewal_job.py",
-        "backend/models/subscription.py",
         "backend/services/billing_service.py",
         "backend/services/pause_preview.py"
       ],
@@ -44,7 +43,9 @@
         "backend/integrations/billing.py",
         "backend/services/pause_preview.py"
       ],
-      "missing": []
+      "missing": [
+        "backend/models/subscription.py"
+      ]
     },
     {
       "id": "invoice-processing-cancel",
@@ -67,11 +68,13 @@
         "backend/jobs/renewal_job.py",
         "backend/models/subscription.py",
         "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "false_positives": [
         "backend/jobs/renewal_job.py",
         "backend/models/subscription.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "missing": []
@@ -80,12 +83,20 @@
       "id": "past-due-notification",
       "category": "notification",
       "found": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/jobs/renewal_job.py",
         "backend/models/subscription.py",
         "backend/services/billing_service.py",
         "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "false_positives": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/jobs/renewal_job.py",
         "backend/services/billing_service.py",
         "backend/services/subscription_service.py"
       ],
@@ -108,23 +119,29 @@
       "id": "payment-rollback",
       "category": "rollback",
       "found": [
+        "backend/api/billing.py",
+        "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/jobs/renewal_job.py",
         "backend/models/subscription.py",
         "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "false_positives": [
+        "backend/api/billing.py",
+        "backend/jobs/billing_event_job.py",
+        "backend/jobs/renewal_job.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
-      "missing": [
-        "backend/integrations/billing.py"
-      ]
+      "missing": []
     },
     {
       "id": "billing-api-contract",
       "category": "API contract",
       "found": [
         "backend/api/billing.py",
-        "backend/api/subscriptions.py",
         "backend/integrations/billing.py",
         "backend/jobs/billing_event_job.py",
         "backend/models/subscription.py",
@@ -133,7 +150,6 @@
         "backend/services/subscription_service.py"
       ],
       "false_positives": [
-        "backend/api/subscriptions.py",
         "backend/jobs/billing_event_job.py",
         "backend/models/subscription.py",
         "backend/services/notification_service.py",
@@ -145,14 +161,20 @@
       "id": "renewal-background-job",
       "category": "background job",
       "found": [
+        "backend/api/billing.py",
         "backend/integrations/billing.py",
+        "backend/jobs/billing_event_job.py",
         "backend/jobs/renewal_job.py",
         "backend/models/subscription.py",
         "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "false_positives": [
+        "backend/api/billing.py",
+        "backend/jobs/billing_event_job.py",
         "backend/services/billing_service.py",
+        "backend/services/notification_service.py",
         "backend/services/subscription_service.py"
       ],
       "missing": []
@@ -162,14 +184,14 @@
       "category": "database",
       "found": [
         "backend/models/subscription.py",
-        "backend/services/billing_service.py",
-        "schema.sql"
+        "backend/services/billing_service.py"
       ],
       "false_positives": [
         "backend/services/billing_service.py"
       ],
       "missing": [
-        "backend/repositories/subscription_repository.py"
+        "backend/repositories/subscription_repository.py",
+        "schema.sql"
       ]
     },
     {

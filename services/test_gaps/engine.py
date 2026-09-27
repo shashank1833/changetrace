@@ -42,21 +42,48 @@ class TestGapEngine:
         def add(category: str, expected: str, priority: Severity, terms: set[str]) -> None:
             specs.append((category, expected, priority, terms))
 
-        if (words & {"display", "notify", "eligibility", "revenue"}) or ("add" in words and not intent.states_added):
-            add("happy path", "the proposed change succeeds", Severity.HIGH, {"happy", "success", "succeeds"})
+        # Baseline happy path is an essential requirement for any change
+        add("happy path", f"the proposed change succeeds under valid inputs for {entity}", Severity.HIGH, {"happy", "success", "succeeds", "valid"})
+
         if (
             words & {"prevent", "reject", "fails", "failed", "cannot", "invalid", "stop", "denied"}
             or ("do" in words and "not" in words)
             or ("require" in words and "before" in words)
             or ("eligibility" in words and "api" in words)
             or ("only" in words and bool(words & {"customer", "owner", "owns"}))
+            or bool(words & {"required", "mandatory", "validate", "validation"})
         ):
             add(
                 "negative path",
-                "an invalid change is rejected without side effects",
+                "an invalid change or missing required parameter is rejected without side effects",
                 Severity.HIGH,
-                {"invalid", "reject", "cannot", "raises", "denied", "failure"},
+                {"invalid", "reject", "cannot", "raises", "denied", "failure", "validate", "validation", "missing", "required"},
             )
+
+        if words & {"required", "mandatory", "validate", "validation", "field", "param", "parameter", "schema", "format"}:
+            add(
+                "input validation",
+                f"malformed, missing, or empty {entity} inputs are rejected with validation error",
+                Severity.HIGH,
+                {"validate", "validation", "invalid", "missing", "required", "schema", "field"},
+            )
+
+        if words & {"frontend", "client", "caller", "ui", "page", "send", "consumer"}:
+            add(
+                "caller contract",
+                f"caller correctly packages and sends {entity} parameters according to API contract",
+                Severity.HIGH,
+                {"caller", "client", "frontend", "contract", "send", "payload", "page"},
+            )
+
+        if words & {"engine", "service", "calc", "calculate", "calculating", "calculation", "downstream", "process", "use"}:
+            add(
+                "downstream consumption",
+                f"downstream engine/calculation correctly processes and incorporates {entity} inputs",
+                Severity.HIGH,
+                {"engine", "calc", "calculate", "process", "downstream", "service"},
+            )
+
         if (
             words & {"authorize", "authorization", "permission", "owner", "owned", "administrator"}
             or ("customer" in words and bool(words & {"only", "request", "own", "owns"}))
@@ -133,16 +160,46 @@ class TestGapEngine:
         }
         test_details = self._test_details(test_components, index, production_names)
         component_ids = [component.id for component in components[:8]]
+        # Identify specific novel qualifiers (e.g. fields, new entities, states)
+        qualifier_terms = set()
+        for e in intent.entities:
+            qualifier_terms.add(e.lower())
+        for s in intent.states_added:
+            qualifier_terms.add(s.lower())
+        field_nouns = words & {"location", "address", "phone", "email", "amount", "currency", "reason", "metadata", "score"}
+        qualifier_terms.update(field_nouns)
+
         scenarios: list[TestScenario] = []
         for category, expected, priority, coverage_terms in specs:
-            coverage = self._coverage(category, coverage_terms, test_details)
-            raw = f"{entity}:{state}:{category}"
             category_comps = [
                 c
                 for c in components
                 if any(t in f"{c.name} {c.location.file}".lower() for t in coverage_terms)
             ] or components[:2]
+            target_names = {c.name.lower() for c in category_comps}
+            coverage = self._coverage(category, coverage_terms, test_details, target_names, qualifier_terms)
+            raw = f"{entity}:{state}:{category}"
             cat_evidence = list(dict.fromkeys(eid for c in category_comps for eid in c.evidence_ids))[:2]
+
+            if category in {"negative path", "input validation"}:
+                cat_preconditions = [f"{entity} API or function endpoint is reachable"]
+                cat_action = f"submit request with missing or invalid {entity} parameters"
+            elif category == "caller contract":
+                cat_preconditions = [f"client interface is configured with target {entity} endpoint"]
+                cat_action = f"dispatch caller payload with required {entity} data"
+            elif category == "downstream consumption":
+                cat_preconditions = [f"valid {entity} input is forwarded to downstream processing"]
+                cat_action = f"calculate result incorporating provided {entity} parameters"
+            elif category == "authorization":
+                cat_preconditions = [f"actor credentials or session provided for {entity}"]
+                cat_action = f"request {entity} operation with unauthorized caller"
+            elif category == "state transition":
+                cat_preconditions = [f"{entity}.status is an allowed predecessor for {state}"]
+                cat_action = f"transition {entity} to {state}"
+            else:
+                cat_preconditions = [f"prerequisites and valid parameters for {entity} are satisfied"]
+                cat_action = f"execute {requirement}"
+
             scenarios.append(
                 TestScenario(
                     scenario_id="TS-" + hashlib.sha1(raw.encode()).hexdigest()[:10],  # noqa: S324
@@ -150,14 +207,14 @@ class TestGapEngine:
                     category=category,
                     behavior=f"Verify {category} behavior for {requirement}",
                     actor="authorized customer",
-                    preconditions=[f"{entity}.status is an allowed predecessor for {state}"],
-                    action=f"transition {entity} to {state}",
+                    preconditions=cat_preconditions,
+                    action=cat_action,
                     expected_result=expected,
                     invariant=[f"{entity} ownership and data consistency are preserved"],
                     related_requirement=requirement,
                     related_risk=risk_id,
                     evidence=cat_evidence or evidence[:2],
-                    affected_components=component_ids,
+                    affected_components=[c.id for c in category_comps[:5]] if category_comps else component_ids,
                     why_missing=self._coverage_reason(category, coverage),
                     reason_it_matters=(
                         f"A regression in {category} could violate the requested behavior or domain invariant."
@@ -180,12 +237,9 @@ class TestGapEngine:
             normalized = f"{component.name} {snippet}".lower().replace("_", " ")
             tokens = set(re.findall(r"[a-z][a-z0-9_]+", normalized))
             called = {
-                name for name in production_names if re.search(rf"\b{re.escape(name)}\s*\(", snippet, re.I)
+                name for name in production_names if re.search(rf"\b{re.escape(name)}\b", snippet, re.I)
             }
             has_assertion = bool(re.search(r"\bassert\b|pytest\.raises|expect\s*\(", snippet, re.I))
-            # Parameterized/state-transition and integration tests often express
-            # equivalent coverage through values and mocked boundaries rather than
-            # category words in the test name.
             signals = set(tokens)
             if re.search(r"parametrize|each\s*\(", snippet, re.I):
                 signals.add("parameterized")
@@ -198,24 +252,35 @@ class TestGapEngine:
 
     @staticmethod
     def _coverage(
-        category: str, terms: set[str], details: list[tuple[set[str], bool, bool, set[str]]]
+        category: str,
+        terms: set[str],
+        details: list[tuple[set[str], bool, bool, set[str]]],
+        target_names: set[str] | None = None,
+        qualifier_terms: set[str] | None = None,
     ) -> CoverageStatus:
         equivalent = {
             "state transition": {"transition", "parameterized"},
             "integration failure": {"integration", "timeout", "failure"},
             "negative path": {"raises", "denied", "invalid", "reject", "failure"},
+            "input validation": {"validate", "validation", "invalid", "missing", "required", "raises", "status_code", "400", "422"},
+            "caller contract": {"caller", "contract", "client", "frontend", "consumer"},
+            "downstream consumption": {"engine", "calc", "calculate", "process", "downstream"},
             "authorization": {"authorization", "permission", "owner", "owned", "denied"},
             "idempotency": {"duplicate", "retry", "idempotent", "parameterized"},
             "duplicate event": {"duplicate", "event", "repeated", "parameterized"},
         }.get(category, set())
         partial = False
-        for tokens, calls_affected, has_assertion, _called in details:
+        for tokens, calls_affected, has_assertion, called in details:
+            calls_target = bool(called & target_names) if target_names else calls_affected
+            qualifier_matched = bool(tokens & qualifier_terms) if qualifier_terms else True
             explicit = bool(tokens & terms)
             equivalent_behavior = bool(tokens & equivalent)
-            positive_behavior = category == "happy path" and calls_affected
-            if has_assertion and calls_affected and (explicit or equivalent_behavior or positive_behavior):
+            positive_behavior = category == "happy path" and calls_target and qualifier_matched
+            if has_assertion and calls_target and qualifier_matched and (explicit or equivalent_behavior or positive_behavior):
                 return CoverageStatus.COVERED
-            if explicit or equivalent_behavior or calls_affected:
+            if calls_target and (has_assertion or explicit or equivalent_behavior):
+                partial = True
+            elif qualifier_matched and (explicit or equivalent_behavior):
                 partial = True
         if partial:
             return CoverageStatus.PARTIALLY_COVERED

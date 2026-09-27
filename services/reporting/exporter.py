@@ -70,5 +70,16 @@ class ReportExporter:
         lines.extend(["", "## Recommended actions"])
         lines.extend(f"{number}. {step}" for number, step in enumerate(result.change_plan, 1))
         lines.extend(["", "## Decision rationale"])
-        lines.extend(f"- {reason}" for reason in result.decision.rationale)
+        for reason in result.decision.rationale:
+            clean = reason.strip()
+            if clean.startswith("+ ") or clean.startswith("- "):
+                lines.append(f"  - `{clean[0]}` {clean[2:]}")
+            elif clean == "Decision Drivers:":
+                lines.append(f"- **{clean}**")
+            elif clean.startswith("Risk Score:"):
+                lines.append(f"- **{clean}**")
+            elif clean.startswith("Evidence:"):
+                lines.append(f"- **Evidence:** {clean[9:].strip()}")
+            else:
+                lines.append(f"- {clean}")
         return "\n\n".join(lines)

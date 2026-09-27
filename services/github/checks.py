@@ -22,13 +22,44 @@ class GitHubChecksService:
             DecisionStatus.BLOCK: "🛑",
         }.get(result.decision.status, "ℹ️")
 
+        # Categorize rationale items for structured GitHub presentation
+        policy_items: list[str] = []
+        risk_score_item: str | None = None
+        driver_items: list[str] = []
+        evidence_item: str | None = None
+
+        for item in result.decision.rationale:
+            stripped = item.strip()
+            if stripped == "Decision Drivers:":
+                continue
+            if stripped.startswith("+ ") or stripped.startswith("- "):
+                driver_items.append(stripped)
+            elif stripped.startswith("Risk Score:"):
+                risk_score_item = stripped
+            elif stripped.startswith("Evidence:"):
+                evidence_item = stripped
+            else:
+                policy_items.append(stripped)
+
         lines = [
             f"## {decision_emoji} ChangeTrace Decision: **{result.decision.status.value}**",
             "",
-            "### Rationale",
+            "### Decision Rationale",
         ]
-        for r in result.decision.rationale:
-            lines.append(f"- {r}")
+        for p in policy_items:
+            lines.append(f"- {p}")
+        if risk_score_item:
+            lines.append(f"- **{risk_score_item}**")
+
+        if driver_items:
+            lines.extend(["", "#### Key Drivers"])
+            for d in driver_items:
+                badge = d[0]
+                text = d[2:].strip()
+                lines.append(f"- `{badge}` {text}")
+
+        if evidence_item:
+            lines.extend(["", "#### Evidence Integrity", f"- {evidence_item}"])
 
         lines.extend([
             "",

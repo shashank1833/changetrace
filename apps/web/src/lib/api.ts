@@ -9,6 +9,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     const body = await response.json().catch(() => ({ detail: `Request failed: ${response.status}` }))
     throw new Error(typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail))
   }
+  if (response.status === 204 || response.headers.get('content-length') === '0') {
+    return undefined as unknown as T
+  }
   return response.json() as Promise<T>
 }
 
@@ -17,7 +20,7 @@ export const api = {
   me: () => request<{ user_id: string; organization_id: string; role: string; email?: string }>('/api/v1/auth/me'),
   logout: () => request<void>('/api/v1/auth/logout', { method: 'POST' }),
   repositories: () => request<Repository[]>('/api/v1/repositories'),
-  createRepository: (body: { name: string; source_path: string }) =>
+  createRepository: (body: { name: string; source_path?: string; github_url?: string }) =>
     request<Repository>('/api/v1/repositories', { method: 'POST', body: JSON.stringify(body) }),
   syncRepository: (id: string) =>
     request<{ snapshot_id: string; commit_sha: string; status: string }>(`/api/v1/repositories/${id}/sync`, { method: 'POST' }),

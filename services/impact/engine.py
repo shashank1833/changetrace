@@ -52,6 +52,64 @@ _GENERIC_TERMS = {
     "while",
     "with",
     "without",
+    "backend",
+    "frontend",
+    "endpoint",
+    "endpoints",
+    "api",
+    "apis",
+    "page",
+    "pages",
+    "service",
+    "services",
+    "server",
+    "client",
+    "controller",
+    "handler",
+    "handlers",
+    "route",
+    "routes",
+    "router",
+    "routers",
+    "app",
+    "application",
+    "system",
+    "file",
+    "files",
+    "path",
+    "paths",
+    "src",
+    "code",
+    "component",
+    "components",
+    "module",
+    "modules",
+    "layer",
+    "interface",
+    "interfaces",
+    "util",
+    "utils",
+    "helper",
+    "helpers",
+    "middleware",
+    "middlewares",
+    "schema",
+    "schemas",
+    "model",
+    "models",
+    "use",
+    "using",
+    "used",
+    "uses",
+    "where",
+    "how",
+    "support",
+    "supports",
+    "supported",
+    "supporting",
+    "could",
+    "would",
+    "must",
 }
 _CODE_WORDS = set(keyword.kwlist) | {
     "async",
@@ -95,8 +153,15 @@ class ImpactEngine:
         domain_terms = {
             term
             for term, files in identity_files.items()
-            if len(files) >= 4 and len(files) / max(1, len(repository_files)) >= 0.50
+            if len(files) >= 10 or (len(files) >= 4 and len(files) / max(1, len(repository_files)) >= 0.50)
         }
+        # If all constituent sub-tokens of a snake_case compound belong to domain terms, the compound is also a domain term
+        expanded_domain = set(domain_terms)
+        for term in terms:
+            parts = term.split("_")
+            if len(parts) >= 2 and all(p in domain_terms for p in parts):
+                expanded_domain.add(term)
+        domain_terms = expanded_domain
         # Do not suppress the sole vocabulary anchor for a request. Domain terms
         # become non-discriminating only when the request also supplies a qualifier.
         if terms <= domain_terms:
@@ -107,16 +172,18 @@ class ImpactEngine:
         for component in index.components:
             if component.type == ComponentType.FILE:
                 continue
-            identity_terms = self._identity_tokens(f"{component.name} {component.location.file}")
+            symbol_terms = self._identity_tokens(component.name)
+            file_terms = self._identity_tokens(component.location.file)
             snippet = "\n".join(
                 evidence_by_id[evidence_id].snippet
                 for evidence_id in component.evidence_ids
                 if evidence_id in evidence_by_id
             )
             content_terms = self._source_tokens(snippet, component.location.file)
-            identity_matches = terms & identity_terms
+            symbol_matches = terms & symbol_terms
+            file_matches = terms & file_terms
             content_matches = terms & content_terms
-            all_matches = identity_matches | content_matches
+            all_matches = symbol_matches | file_matches | content_matches
             intent_words = set().union(
                 *(self._tokens(value) for value in intent.constraints + intent.expected_behaviors)
             )
@@ -126,7 +193,7 @@ class ImpactEngine:
                 ComponentType.DOCUMENT,
                 ComponentType.JOB,
                 ComponentType.TEST,
-            } and not (identity_matches - domain_terms):
+            } and not (symbol_matches - domain_terms):
                 # Type words such as "API" or "job" identify a boundary, not which
                 # endpoint/job is causally relevant in a vocabulary-dense domain.
                 typed_signal = False
@@ -135,24 +202,16 @@ class ImpactEngine:
             ):
                 continue
 
-            # Two independent concepts are required for a likely lexical impact. A
-            # single name such as refund_description remains a candidate even when
-            # the request concerns refund_order. Operation-specific qualifiers must
-            # also occur in the component; generic domain overlap cannot satisfy them.
             meaningful_matches = all_matches - domain_terms
             allow_return = "return" in terms
             concepts = {self._concept(term) for term in meaningful_matches if term != "return" or allow_return}
             identity_concepts = {
-                self._concept(term) for term in identity_matches - domain_terms if term != "return" or allow_return
+                self._concept(term) for term in symbol_matches - domain_terms if term != "return" or allow_return
             }
             content_concepts = {
                 self._concept(term) for term in content_matches - domain_terms if term != "return"
             }
-            corroborated = len(concepts) >= 2 and (
-                len(identity_concepts) >= 2
-                or bool(identity_concepts and (content_concepts - identity_concepts))
-                or (not domain_terms and len(content_concepts) >= 2)
-            )
+            corroborated = len(concepts) >= 2 and len(identity_concepts) >= 1
             explicit_state_reference = self._explicit_state_reference(component, all_matches, intent)
             boundary_needs_identity = component.type in {
                 ComponentType.API,
@@ -163,10 +222,10 @@ class ImpactEngine:
             lexical_likely = corroborated and (not boundary_needs_identity or bool(identity_concepts))
             status = (
                 ImpactStatus.LIKELY
-                if lexical_likely or typed_signal or explicit_state_reference
+                if (lexical_likely or explicit_state_reference)
                 else ImpactStatus.CANDIDATE
             )
-            score = len(identity_matches) * 3 + len(content_matches)
+            score = len(symbol_matches) * 5 + len(file_matches) * 2 + len(content_matches)
             lexical[component.id] = (status, score, all_matches)
             if status == ImpactStatus.LIKELY:
                 likely_seeds.add(component.id)
@@ -238,16 +297,29 @@ class ImpactEngine:
                 and other.name != source.name
                 for other in selected.values()
             )
+            enclosed_by_likely = any(
+                other.impact_status in {ImpactStatus.LIKELY, ImpactStatus.CONFIRMED}
+                and other.type == ComponentType.CLASS
+                and other.location.file == source.location.file
+                and other.location.line_start <= source.location.line_start <= other.location.line_end
+                and other.name != source.name
+                for other in selected.values()
+            )
+            calls_likely_in_file = any(
+                (graph.graph.has_edge(source.id, other.id) or graph.graph.has_edge(other.id, source.id))
+                and other.impact_status in {ImpactStatus.LIKELY, ImpactStatus.CONFIRMED}
+                and other.location.file == source.location.file
+                for other in selected.values()
+            )
+            is_rule_or_state = source.type in {ComponentType.BUSINESS_RULE, ComponentType.STATE}
+            causally_connected = encloses_likely or enclosed_by_likely or calls_likely_in_file or is_rule_or_state
+
             if (
                 status != ImpactStatus.CANDIDATE
                 or current.impact_status != ImpactStatus.CANDIDATE
                 or source.location.file not in likely_files
                 or component_id in dead_code
-                or (
-                    domain_terms
-                    and not encloses_likely
-                    and source.type not in {ComponentType.BUSINESS_RULE, ComponentType.STATE}
-                )
+                or not causally_connected
             ):
                 continue
 
@@ -367,7 +439,8 @@ class ImpactEngine:
         states = {cls._concept(value.lower()) for value in intent.states_added + intent.states_removed}
         if not (entities & {"return", "refund", "order"} or "return" in states):
             terms -= {"return", "returned", "returns"}
-        return terms
+        concepts = {cls._concept(t) for t in terms}
+        return (terms | {c for c in concepts if c}) - _GENERIC_TERMS
 
     @classmethod
     def _tokens(cls, value: str) -> set[str]:
@@ -393,6 +466,8 @@ class ImpactEngine:
             return "inspect"
         if term in {"admin", "administrator", "administrators"}:
             return "admin"
+        if term in {"align", "aligned", "aligning", "alignment", "alignments"}:
+            return "align"
         return ChangeInterpreter._stem(term)
 
     @staticmethod
@@ -472,6 +547,15 @@ class ImpactEngine:
     def _identity_tokens(cls, value: str) -> set[str]:
         tokens = cls._tokens(value)
         normalized = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
+        parts = [p.lower() for p in re.findall(r"[A-Za-z][A-Za-z0-9]*", normalized) if len(p) >= 3]
+        for i in range(len(parts) - 1):
+            tokens.add(f"{parts[i]}_{parts[i + 1]}")
+            if any(ch.isupper() for ch in value):
+                tokens.add(f"{parts[i]}{parts[i + 1]}")
+        if any(ch.isupper() for ch in value):
+            clean = re.sub(r"[^A-Za-z0-9]", "", value).lower()
+            if len(clean) >= 6:
+                tokens.add(clean)
         raw_parts = {
             part for token in re.findall(r"[A-Za-z][A-Za-z0-9_]*", normalized) for part in token.lower().split("_")
         }

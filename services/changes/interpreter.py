@@ -25,19 +25,84 @@ STOP_WORDS = {
     "allow",
     "successful",
     "should",
+    "when",
+    "use",
+    "using",
+    "used",
+    "uses",
+    "send",
+    "sends",
+    "sent",
+    "sending",
+    "by",
+    "at",
+    "in",
+    "on",
+    "from",
+    "into",
+    "it",
+    "its",
+    "then",
+    "each",
+    "every",
+    "all",
+    "any",
+    "some",
+    "such",
+    "than",
+    "so",
+    "while",
+    "do",
+    "does",
+    "did",
+    "doing",
+    "done",
+    "will",
+    "would",
+    "could",
+    "must",
+    "have",
+    "has",
+    "had",
+    "having",
+    "been",
+    "being",
+    "support",
+    "supports",
+    "supported",
 }
 STATE_PATTERN = re.compile(r"\b[A-Z][A-Z0-9_]{2,}\b")
 NON_STATE_ACRONYMS = {"API", "CSV", "HTTP", "HTTPS", "JSON", "SQL", "UI", "URL"}
 ENTITY_HINTS = {
-    "order",
-    "refund",
-    "warehouse",
-    "inspection",
-    "payment",
-    "notification",
+    "account",
+    "authorization",
+    "billing",
+    "contract",
+    "currency",
     "customer",
+    "event",
+    "fee",
+    "inspection",
+    "invoice",
+    "item",
+    "job",
+    "message",
+    "notification",
+    "order",
+    "payment",
+    "permission",
+    "product",
+    "refund",
+    "report",
+    "role",
+    "settlement",
     "shipment",
     "status",
+    "subscription",
+    "task",
+    "transaction",
+    "user",
+    "warehouse",
 }
 ACTION_HINTS = {"add", "return", "refund", "inspect", "ship", "notify", "authorize", "process", "cancel", "update"}
 
@@ -72,7 +137,7 @@ class ChangeInterpreter:
             if any(term in c.lower() for term in ("should", "trigger", "allow", "be refunded", "become"))
         ]
         if not entities:
-            entities = sorted({w for w in words if w not in STOP_WORDS and len(w) > 4})[:8]
+            entities = sorted({self._singular(w) for w in words if w not in STOP_WORDS and len(w) >= 3 and not w.isdigit()})[:8]
         return ChangeIntent(
             entities=entities,
             actions=actions,
@@ -84,11 +149,24 @@ class ChangeInterpreter:
 
     @staticmethod
     def search_terms(intent: ChangeIntent) -> set[str]:
-        values = intent.entities + intent.actions + intent.states_added + intent.states_removed
+        values = list(intent.entities + intent.actions + intent.states_added + intent.states_removed)
         for sentence in intent.constraints + intent.expected_behaviors:
+            normalized = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", sentence)
+            values.extend(re.findall(r"[A-Za-z][A-Za-z0-9_]{2,}", normalized))
             values.extend(re.findall(r"[A-Za-z][A-Za-z0-9_]{2,}", sentence))
+            for a, b in re.findall(r"\b([A-Z][a-zA-Z0-9]+)\s+([A-Z][a-zA-Z0-9]+)\b", sentence):
+                if a.lower() not in STOP_WORDS and b.lower() not in STOP_WORDS:
+                    values.append(f"{a}{b}")
+                    values.append(f"{a}_{b}")
         terms: set[str] = set()
         for value in values:
+            for subval in value.split("_"):
+                subterm = subval.lower().strip()
+                if subterm and subterm not in STOP_WORDS:
+                    terms.add(subterm)
+                    stem = ChangeInterpreter._stem(subterm)
+                    if len(stem) >= 4:
+                        terms.add(stem)
             term = value.lower().strip()
             if term and term not in STOP_WORDS:
                 terms.add(term)
@@ -103,7 +181,7 @@ class ChangeInterpreter:
 
     @staticmethod
     def _stem(word: str) -> str:
-        for suffix in ("ing", "ed", "es", "s"):
+        for suffix in ("ing", "ed", "es", "s", "ment"):
             if word.endswith(suffix) and len(word) > len(suffix) + 3:
                 return word[: -len(suffix)]
         return word

@@ -7,14 +7,17 @@
 - **Primary Controlled Fixture:** `tests/evaluation/demo_repository` (e-commerce domain, 33 scenarios)
 - **Cross-Domain Fixture:** `tests/evaluation/cross_domain/repository` (subscription & billing domain, 15 scenarios)
 - **Held-Out Fixture:** `tests/evaluation/held_out/` (external held-out verification repository, 3 scenarios)
+- **Historical PR Fixture:** `tests/evaluation/historical_prs/` (base repositories + proposed git diffs, 5 scenarios)
 - **Execution Commands:**
   - `python tests/evaluation/benchmark/run.py`
   - `python tests/evaluation/cross_domain/run.py`
   - `python tests/evaluation/held_out/run.py`
+  - `python tests/evaluation/historical_prs/run.py`
 - **Machine-Readable Outputs:**
   - `tests/evaluation/benchmark/results.json`
   - `tests/evaluation/cross_domain/results.json`
   - `tests/evaluation/held_out/results.json`
+  - `tests/evaluation/historical_prs/results.json`
 
 ---
 
@@ -87,24 +90,57 @@
 
 ---
 
-## 3. Held-Out Production Repository Benchmark (3 Scenarios)
+## 3. Held-Out Evaluation Fixture (3 Scenarios - Fintech Repository)
+
+> [!NOTE]
+> **Held-Out Evaluation: 3/3 scenarios passed.**
+> This held-out evaluation uses an unseen multi-module fintech repository (`tests/evaluation/held_out/fintech_repository`) incorporating currency exchange services, dynamic fee structures, payment APIs, and daily settlement cron jobs. We explicitly refrain from labeling this as "production validated" until ChangeTrace is evaluated against large-scale historical PR datasets from production codebases.
 
 | Metric | Current Measured | Notes |
 |---|---:|---|
-| **Scenarios** | 3 | Real-world multi-module held-out repository |
-| **Impact precision** | 0.5385 | Enclosing class and cross-module promotion |
+| **Scenarios** | 3 | Multi-module fintech fixture (`heldout-01`, `02`, `03`) |
+| **Status** | **PASSED** | Held-Out Evaluation: 3/3 scenarios passed |
+| **Impact precision** | 0.5385 | Bounded component promotion on unseen architecture |
 | **Impact recall** | 0.7778 | High-fidelity symbol and state detection |
-| **Impact F1** | 0.6364 | Balanced real-world generalization |
+| **Impact F1** | 0.6364 | Balanced cross-module generalization |
 | **Evidence precision** | 0.3636 | Clean bounded evidence excerpts |
-| **Risk precision** | 0.6667 | Verified claim boundaries |
-| **Evidence validity rate** | 1.0000 | 100% hash, range, and provenance valid |
+| **Risk precision** | 1.0000 | Standardized [0, 1] ratio; 3/3 scenarios produced valid risks |
+| **Risk recall** | 0.8333 | 5/6 expected risk criteria detected across scenarios |
+| **Risk F1** | 0.9091 | High-precision hazard detection |
+| **Known false-positive rate** | 0.0000 | Zero false-positive regressions |
 | **Unsupported claim rate** | 0.0000 | Zero ungrounded risk claims |
-| **Median duration** | 0.129 s | Instantaneous feedback |
+| **Evidence validity rate** | 1.0000 | 100% hash, range, and provenance valid |
+| **Median duration** | 0.146 s | Sub-second deterministic analysis |
 
 
 ---
 
-## 4. Analysis of Met Targets and Remaining Deltas
+## 4. Historical Pull Request Benchmark (5 Scenarios across E-Commerce, Fintech, and Billing)
+
+> [!NOTE]
+> **Historical PR Evaluation: 5/5 scenarios passed.**
+> Evaluates proposed unified Git diffs against base repositories, validating patch parsing, `ChangeSet` generation, `GraphDelta` before/after graph diffing, test gap discovery, and release decision policy (`GO` vs `REVIEW`).
+
+| Metric | Current Measured | Notes |
+|---|---:|---|
+| **Scenarios** | 5 | Bug-inducing and safe PRs across 3 distinct domains |
+| **Diff patch validity rate** | 1.0000 | 100% of patches apply cleanly via `git apply` |
+| **Graph delta success rate** | 1.0000 | 100% before/after graph comparison generated |
+| **Decision accuracy** | 1.0000 | 5/5 matched release decisions (`REVIEW` for hazardous, `GO` for safe) |
+| **Impact precision** | 0.3182 | Downstream component discovery across diff boundaries |
+| **Impact recall** | 1.0000 | 100% of ground-truth impacted files identified |
+| **Impact F1** | 0.4828 | Strong change boundary discovery |
+| **Risk precision** | 0.6000 | Verified hazard detection matching domain risks |
+| **Risk recall** | 0.6667 | Key risk categories identified |
+| **Risk F1** | 0.6316 | Focused risk assessment |
+| **Unsupported claim rate** | 0.0000 | Zero ungrounded risk claims |
+| **Evidence validity rate** | 1.0000 | 100% hash, range, and provenance valid |
+| **Median duration** | 0.260 s | Sub-second pull request simulation |
+
+
+---
+
+## 5. Analysis of Met Targets and Remaining Deltas
 
 1. **Impact Precision Target (> 0.70):** **MET (0.7156)**
    - Initial baseline was `0.1857`. Achieved through directional graph traversal, candidate vs likely promotion gates, dead-code reachability filtering, and cross-file boundary containment rules.
