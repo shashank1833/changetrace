@@ -8,6 +8,8 @@ htmlcov/
 .venv/
 .audit-venv/
 .env
+.env.*
+!.env.example
 *.db
 mypy-debug.txt
 *run-output.txt
