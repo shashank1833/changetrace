@@ -38,17 +38,17 @@ dev = [
   "fakeredis>=2.20,<3",
 ]
 
-
 [tool.hatch.build.targets.wheel]
-packages = ["apps/api/changetrace_api", "packages/schemas/changetrace_schemas", "services", "workers"]
+packages = ["backend/apps/api/changetrace_api", "backend/packages/schemas/changetrace_schemas", "backend/services", "backend/workers"]
 
 [tool.pytest.ini_options]
-pythonpath = [".", "apps/api", "packages/schemas"]
-testpaths = ["tests"]
+pythonpath = ["backend", "backend/apps/api", "backend/packages/schemas"]
+testpaths = ["backend/tests"]
 norecursedirs = [
-  "tests/evaluation/demo_repository",
-  "tests/evaluation/cross_domain/subscription_repository",
-  "tests/evaluation/held_out/fintech_repository",
+  "backend/tests/evaluation/demo_repository",
+  "backend/tests/evaluation/cross_domain/subscription_repository",
+  "backend/tests/evaluation/held_out/fintech_repository",
+  "frontend",
 ]
 addopts = "-q --strict-markers"
 markers = ["integration: integration tests", "evaluation: benchmark tests"]
@@ -57,10 +57,10 @@ markers = ["integration: integration tests", "evaluation: benchmark tests"]
 target-version = "py311"
 line-length = 120
 exclude = [
-  "tests/evaluation/demo_repository",
-  "tests/evaluation/cross_domain/subscription_repository",
-  "tests/evaluation/held_out/fintech_repository",
-  "apps/web/node_modules",
+  "backend/tests/evaluation/demo_repository",
+  "backend/tests/evaluation/cross_domain/subscription_repository",
+  "backend/tests/evaluation/held_out/fintech_repository",
+  "frontend/node_modules",
 ]
 
 [tool.ruff.lint]
@@ -72,11 +72,11 @@ python_version = "3.12"
 plugins = ["pydantic.mypy"]
 ignore_missing_imports = true
 exclude = [
-  "tests/evaluation/demo_repository/",
-  "tests/evaluation/cross_domain/subscription_repository/",
-  "tests/evaluation/held_out/fintech_repository/",
+  "backend/tests/evaluation/demo_repository/",
+  "backend/tests/evaluation/cross_domain/subscription_repository/",
+  "backend/tests/evaluation/held_out/fintech_repository/",
 ]
 explicit_package_bases = true
 
 [tool.coverage.run]
-source = ["apps/api/changetrace_api", "services", "packages/schemas/changetrace_schemas"]
+source = ["backend/apps/api/changetrace_api", "backend/services", "backend/packages/schemas/changetrace_schemas"]

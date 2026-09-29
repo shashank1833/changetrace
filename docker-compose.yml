@@ -12,26 +12,26 @@ services:
       retries: 10
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infrastructure/migrations/versions:/docker-entrypoint-initdb.d:ro
+      - ./backend/infrastructure/migrations/versions:/docker-entrypoint-initdb.d:ro
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
   redis:
     image: redis:7.4-alpine
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --requirepass ${CHANGETRACE_REDIS_PASSWORD:-local-redis-pass}
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${CHANGETRACE_REDIS_PASSWORD:-local-redis-pass}", "ping"]
       interval: 5s
       timeout: 3s
       retries: 10
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
   api:
     build:
-      context: .
+      context: ./backend
       dockerfile: infrastructure/docker/api.Dockerfile
     environment:
       CHANGETRACE_DATABASE_URL: postgresql+psycopg://changetrace:${POSTGRES_PASSWORD:-local-only-change-me}@postgres:5432/changetrace
-      CHANGETRACE_REDIS_URL: redis://redis:6379/0
+      CHANGETRACE_REDIS_URL: redis://:${CHANGETRACE_REDIS_PASSWORD:-local-redis-pass}@redis:6379/0
       CHANGETRACE_QUEUE_MODE: redis
       CHANGETRACE_LOCAL_REPOSITORY_ROOT: /workspace
       CHANGETRACE_SNAPSHOT_STORAGE_ROOT: /var/lib/changetrace/snapshots
@@ -42,22 +42,22 @@ services:
       CHANGETRACE_WEB_URL: ${CHANGETRACE_WEB_URL:-http://localhost:5173}
       CHANGETRACE_SESSION_SECRET: ${CHANGETRACE_SESSION_SECRET:-changetrace-secret-session-key-32chars}
     volumes:
-      - ./tests/evaluation/demo_repository:/workspace/demo:ro
+      - ./backend/tests/evaluation/demo_repository:/workspace/demo:ro
       - C:/Users/shash/Desktop/Smart-Resume-Analyzer:/workspace/smart-resume-analyzer:ro
       - C:/Users/shash/test_repositories:/workspace/test_repositories:ro
       - snapshot_data:/var/lib/changetrace/snapshots
-    ports: ["8000:8000"]
+    ports: ["127.0.0.1:8000:8000"]
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
   worker:
     build:
-      context: .
+      context: ./backend
       dockerfile: infrastructure/docker/api.Dockerfile
-    command: rq worker --url redis://redis:6379/0 changetrace
+    command: rq worker --url redis://:${CHANGETRACE_REDIS_PASSWORD:-local-redis-pass}@redis:6379/0 changetrace
     environment:
       CHANGETRACE_DATABASE_URL: postgresql+psycopg://changetrace:${POSTGRES_PASSWORD:-local-only-change-me}@postgres:5432/changetrace
-      CHANGETRACE_REDIS_URL: redis://redis:6379/0
+      CHANGETRACE_REDIS_URL: redis://:${CHANGETRACE_REDIS_PASSWORD:-local-redis-pass}@redis:6379/0
       CHANGETRACE_LOCAL_REPOSITORY_ROOT: /workspace
       CHANGETRACE_SNAPSHOT_STORAGE_ROOT: /var/lib/changetrace/snapshots
       CHANGETRACE_AUTH_MODE: ${CHANGETRACE_AUTH_MODE:-development}
@@ -67,7 +67,7 @@ services:
       CHANGETRACE_WEB_URL: ${CHANGETRACE_WEB_URL:-http://localhost:5173}
       CHANGETRACE_SESSION_SECRET: ${CHANGETRACE_SESSION_SECRET:-changetrace-secret-session-key-32chars}
     volumes:
-      - ./tests/evaluation/demo_repository:/workspace/demo:ro
+      - ./backend/tests/evaluation/demo_repository:/workspace/demo:ro
       - C:/Users/shash/Desktop/Smart-Resume-Analyzer:/workspace/smart-resume-analyzer:ro
       - C:/Users/shash/test_repositories:/workspace/test_repositories:ro
       - snapshot_data:/var/lib/changetrace/snapshots
@@ -76,9 +76,9 @@ services:
       redis: { condition: service_healthy }
   web:
     build:
-      context: .
-      dockerfile: infrastructure/docker/web.Dockerfile
-    ports: ["5173:80"]
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports: ["127.0.0.1:5173:80"]
     depends_on: [api]
 volumes:
   postgres_data:
