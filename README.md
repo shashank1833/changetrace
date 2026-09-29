@@ -167,32 +167,13 @@ cd frontend && npm test
 
 ## Production Deployment
 
-### 1. Environment Configuration
-Create `.env.production` with secure credentials:
+ChangeTrace supports production container deployment with PostgreSQL Row-Level Security, Redis worker queues, and reverse-proxy SSL configurations.
 
-```ini
-CHANGETRACE_ENVIRONMENT=production
-CHANGETRACE_AUTH_MODE=oauth
-CHANGETRACE_SESSION_COOKIE_SECURE=true
-CHANGETRACE_SESSION_SECRET=<64-char-random-hex>
-CHANGETRACE_ALLOWED_ORIGINS=https://changetrace.yourdomain.com
-CHANGETRACE_WEB_URL=https://changetrace.yourdomain.com
-CHANGETRACE_GITHUB_CLIENT_ID=<your-github-client-id>
-CHANGETRACE_GITHUB_CLIENT_SECRET=<your-github-client-secret>
-CHANGETRACE_GITHUB_CALLBACK_URL=https://changetrace.yourdomain.com/api/v1/auth/github/callback
-POSTGRES_PASSWORD=<strong-postgres-password>
-CHANGETRACE_REDIS_PASSWORD=<strong-redis-password>
-```
+For the full production deployment checklist, environment variables reference, and free domain/SSL setup, see the [**Production Deployment Guide**](docs/DEPLOYMENT.md).
 
-### 2. Launch with Production Compose
 ```bash
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 ```
-
-### 3. Free Domain & SSL Options (If you don't own a custom domain)
-- **Public VPS (AWS, DigitalOcean, Hetzner):** Use **`sslip.io`** (e.g., `https://<your-ip>.sslip.io`) with Let's Encrypt Certbot.
-- **Local / Home Server:** Use **Cloudflare Tunnel** (`cloudflared tunnel --url http://localhost:8080`) for instant free HTTPS.
-- **Local Testing:** GitHub OAuth officially supports `http://localhost:8080` without requiring any domain.
 
 ---
 
